@@ -1,0 +1,40 @@
+.layout-container-demo .el-header {
+    display: flex;
+    position: relative;
+    background-color: rgb(176, 196, 222)    ;
+    color: var(--el-text-color-primary);
+    justify-content: flex-end;
+    font-size: 25px;
+    margin-bottom: 2px;
+    margin-left: 2px;
+    align-items: center;
+  }
+  .layout-container-demo .el-aside {
+    color: var(--el-text-color-primary);
+    background: rgb(240,240,240);
+    width: 300px;
+    height: 100%;
+    margin-right: 2px;
+    margin-left: px;
+    
+  }
+  
+  .layout-container-demo .el-menu {
+    background: rgb(176, 196, 222);
+    background-clip: border-box;
+    color: white;
+  }
+  .layout-container-demo .el-main {
+    padding: 0;
+    background:rgb(240,240,240);
+  
+  }
+  .layout-container-demo .toolbar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    right: 20px;
+  }
+  
+  
