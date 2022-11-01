@@ -1,4 +1,5 @@
 <template>
+  <div>
   <el-container class="layout-container-demo" >
     <SideBar/>
     <el-container>
@@ -125,6 +126,7 @@
       </div>
     </template>
   </el-dialog>
+</div>
 </template>
 
 <script>
