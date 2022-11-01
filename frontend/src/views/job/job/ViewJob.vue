@@ -11,6 +11,10 @@
                     </div>
                     <div class="main-container">
                         <div class="job-category">
+                            <el-card class="box-card">
+                            <template #header>
+                            
+                            </template>
                             <el-collapse v-model="activeNames" @change="handleChange">
                                 <el-collapse-item name="1" >
                                     <template #title>
@@ -57,9 +61,19 @@
                                         </el-row>
                                     </div>
                                 </el-collapse-item>
-                                <el-collapse-item name="2">
+                                </el-collapse>
+                            </el-card>
+                        </div>
+
+                        <div class="job-category">
+                            <el-card class="box-card">
+                            <template #header>
+                            
+                            </template>
+                            <el-collapse v-model="activeNames" @change="handleChange">
+                                <el-collapse-item name="1" >
                                     <template #title>
-                                        <div class="title"><b>Manager</b></div>
+                                        <div class="title"><b>DEV</b></div>
                                     </template>
                                     <div class="job-item">
                                         <el-row>
@@ -102,10 +116,14 @@
                                         </el-row>
                                     </div>
                                 </el-collapse-item>
-                            </el-collapse>
+                                </el-collapse>
+                            </el-card>
                         </div>
                     </div>
-                </el-main>   
+
+                  
+                </el-main>  
+
         </el-container>     
    </el-container>
    </el-container>
@@ -427,11 +445,8 @@ export default {
 
 .job-category{
     margin-left: 100px;
+    margin-bottom: 20px;
     width: 1000px;
-}
-
-.job-category .el-collapse .el-collapse-item {
-    border: 0.5px solid rgb(135, 206, 250);
 }
 
 .button-add-job{
