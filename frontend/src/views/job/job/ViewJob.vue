@@ -3,125 +3,195 @@
  <el-container class="layout-container-demo" >
     <SideBar/>
     <el-container>
-        <el-header style="height:50px"><HeaderView/></el-header>
+            <el-header style="height:50px;"><HeaderView/></el-header>
+             <div style="height:30px; text-align:left; transform: translateY(30%);">
+                 <span style="margin-left:20px; "><b>Home - Job</b></span>
+            </div>
+       
         <el-container>
-                 <el-main>
+                 <el-main style="display: flex;flex-direction: column;">
+                  <el-row>
+                    <el-col :span="22">
                     <div class="button-add-job">
                         <el-button type="primary" @click="dialogVisible = true">Add New Job</el-button>
                     </div>
-                    <div class="main-container">
-                        <div class="job-category">
-                            <el-card class="box-card">
-                            <template #header>
-                            
-                            </template>
-                            <el-collapse v-model="activeNames" @change="handleChange">
-                                <el-collapse-item name="1" >
-                                    <template #title>
-                                        <div class="title"><b>DEV</b></div>
-                                    </template>
-                                    <div class="job-item">
-                                        <el-row>
-                                            <el-col :span="8">Doctor</el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="8"><el-icon color="red"><location /></el-icon> Ho Chi Minh city</el-col>
-                                            <el-col :span="8">10 candidates apply</el-col>
-                                            <el-col :span="8">
-                                                <el-button link><Edit style="width: 1em; height: 1em; margin-left: 10px" color="blue" /></el-button>
-                                                <el-button link @click="outerVisible = true"><Delete style="width: 1em; height: 1em; margin-left : 5px" color="black" /></el-button>
-                                            </el-col>
-                                        </el-row>
-                                       
-                                    </div>
-                                    <div class="job-item">
-                                        <el-row>
-                                            <el-col :span="8">Doctor</el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="8"><el-icon color="red"><location /></el-icon> Ho Chi Minh city</el-col>
-                                            <el-col :span="8">10 candidates apply</el-col>
-                                            <el-col :span="8">
-                                                <el-button link><Edit style="width: 1em; height: 1em; margin-left: 10px" color="blue" /></el-button>
-                                                <el-button link @click="outerVisible = true"><Delete style="width: 1em; height: 1em; margin-left : 5px" color="black" /></el-button>
-                                            </el-col>
-                                        </el-row>
-                                    </div>
-                                    <div class="job-item">
-                                        <el-row>
-                                            <el-col :span="8">Doctor</el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="8"><el-icon color="red"><location /></el-icon> Da Nang city</el-col>
-                                            <el-col :span="8">10 candidates apply</el-col>
-                                            <el-col :span="8">
-                                                <el-button link><Edit style="width: 1em; height: 1em; margin-left: 10px" color="blue" /></el-button>
-                                                <el-button link @click="outerVisible = true"><Delete style="width: 1em; height: 1em; margin-left : 5px" color="black" /></el-button>
-                                            </el-col>
-                                        </el-row>
-                                    </div>
-                                </el-collapse-item>
-                                </el-collapse>
-                            </el-card>
-                        </div>
+                    </el-col>
+                  </el-row>
 
-                        <div class="job-category">
-                            <el-card class="box-card">
-                            <template #header>
-                            
-                            </template>
-                            <el-collapse v-model="activeNames" @change="handleChange">
-                                <el-collapse-item name="1" >
-                                    <template #title>
-                                        <div class="title"><b>DEV</b></div>
+                    <div class="main-container" style="display:flex;flex-direction:column">
+                        <el-row>
+                            <el-col :span="2"></el-col>
+                            <el-col :span="20">
+                                <div class="job-category">
+                                    <el-card class="box-card">
+                                    <template #header>
+                                    
                                     </template>
-                                    <div class="job-item">
-                                        <el-row>
-                                            <el-col :span="8">Doctor</el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="8"><el-icon color="red"><location /></el-icon> Ho Chi Minh city</el-col>
-                                            <el-col :span="8">10 candidates apply</el-col>
-                                            <el-col :span="8">
-                                                <el-button link><Edit style="width: 1em; height: 1em; margin-left: 10px" color="blue" /></el-button>
-                                                <el-button link @click="outerVisible = true"><Delete style="width: 1em; height: 1em; margin-left : 5px" color="black" /></el-button>
-                                            </el-col>
-                                        </el-row>
+                                    <el-collapse v-model="activeNames" @change="handleChange">
+                                        <el-collapse-item name="1" style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);">
+                                            <template #title>
+                                                <div class="title" ><b>DEV </b></div>
+                                            </template>
                                        
-                                    </div>
-                                    <div class="job-item">
-                                        <el-row>
-                                            <el-col :span="8">Doctor</el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="8"><el-icon color="red"><location /></el-icon> Ho Chi Minh city</el-col>
-                                            <el-col :span="8">10 candidates apply</el-col>
-                                            <el-col :span="8">
-                                                <el-button link><Edit style="width: 1em; height: 1em; margin-left: 10px" color="blue" /></el-button>
-                                                <el-button link @click="outerVisible = true"><Delete style="width: 1em; height: 1em; margin-left : 5px" color="black" /></el-button>
-                                            </el-col>
-                                        </el-row>
-                                    </div>
-                                    <div class="job-item">
-                                        <el-row>
-                                            <el-col :span="8">Doctor</el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="8"><el-icon color="red"><location /></el-icon> Da Nang city</el-col>
-                                            <el-col :span="8">10 candidates apply</el-col>
-                                            <el-col :span="8">
-                                                <el-button link><Edit style="width: 1em; height: 1em; margin-left: 10px" color="blue" /></el-button>
-                                                <el-button link @click="outerVisible = true"><Delete style="width: 1em; height: 1em; margin-left : 5px" color="black" /></el-button>
-                                            </el-col>
-                                        </el-row>
-                                    </div>
-                                </el-collapse-item>
-                                </el-collapse>
-                            </el-card>
-                        </div>
-                    </div>
+                                            <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
+                                                <li v-for="i in count" :key="i" class="infinite-list-item" >
+                                                    <div class="job-item" >
+                                                        <el-row style="margin-top:10px;margin-bottom: 7px;">
+                                                            <el-col :span="4" style="cursor:pointer">Software Enginer</el-col>
+                                                            <el-col :span="20" style="text-align:right" >  <el-switch size="small" v-model="value2" class="ml-2" style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"/></el-col>
+                                                        </el-row>
+                                                        <el-row>
+                                                            <el-col :span="8"><el-icon color="red"><location /></el-icon> Ho Chi Minh city</el-col>
+                                                            <el-col :span="8" style="text-align:center">10 candidates apply</el-col>
+                                                            <el-col :span="8" style="text-align:right">
+                                                                <el-button link><Edit style="width: 1em; height: 1em; margin-left: 10px" color="blue" /></el-button>
+                                                                <el-button link @click="outerVisible = true"><Delete style="width: 1em; height: 1em; margin-left : 5px" color="black" /></el-button>
+                                                            </el-col>
+                                                        </el-row>
+                                                    
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            
+                                        </el-collapse-item>
+                                        </el-collapse>
+                                    </el-card>
+                                </div>
+                            </el-col>
+                            <el-col :span="2"></el-col>
 
-                  
+                        </el-row>
+                        <el-row>
+                            <el-col :span="2"></el-col>
+                            <el-col :span="20">
+                                <div class="job-category">
+                                    <el-card class="box-card">
+                                    <template #header>
+                                    
+                                    </template>
+                                    <el-collapse v-model="activeNames" @change="handleChange">
+                                        <el-collapse-item name="1" style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);">
+                                            <template #title>
+                                                <div class="title" ><b>Manager </b></div>
+                                            </template>
+                                       
+                                            <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
+                                                <li v-for="i in count" :key="i" class="infinite-list-item" >
+                                                    <div class="job-item" >
+                                                        <el-row style="margin-top:10px;margin-bottom: 7px;">
+                                                            <el-col :span="4" style="cursor:pointer">Software Enginer</el-col>
+                                                            <el-col :span="20" style="text-align:right" >  <el-switch size="small" v-model="value2" class="ml-2" style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"/></el-col>
+                                                        </el-row>
+                                                        <el-row>
+                                                            <el-col :span="8"><el-icon color="red"><location /></el-icon> Ho Chi Minh city</el-col>
+                                                            <el-col :span="8" style="text-align:center">10 candidates apply</el-col>
+                                                            <el-col :span="8" style="text-align:right">
+                                                                <el-button link><Edit style="width: 1em; height: 1em; margin-left: 10px" color="blue" /></el-button>
+                                                                <el-button link @click="outerVisible = true"><Delete style="width: 1em; height: 1em; margin-left : 5px" color="black" /></el-button>
+                                                            </el-col>
+                                                        </el-row>
+                                                    
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            
+                                        </el-collapse-item>
+                                        </el-collapse>
+                                    </el-card>
+                                </div>
+                            </el-col>
+                            <el-col :span="2"></el-col>
+
+                        </el-row>
+
+                        <el-row>
+                            <el-col :span="2"></el-col>
+                            <el-col :span="20">
+                                <div class="job-category">
+                                    <el-card class="box-card">
+                                    <template #header>
+                                    
+                                    </template>
+                                    <el-collapse v-model="activeNames" @change="handleChange">
+                                        <el-collapse-item name="1" style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);">
+                                            <template #title>
+                                                <div class="title" ><b>HR </b></div>
+                                            </template>
+                                       
+                                            <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
+                                                <li v-for="i in count" :key="i" class="infinite-list-item" style="height:70px;background-color: #f0f2f5;">
+                                                    <div class="job-item" style="display : flex; flex-direction:column; width: 100%;">
+                                                        <el-row style="margin-top:10px;margin-bottom: 7px;">
+                                                            <el-col :span="4" style="cursor:pointer">Software Enginer</el-col>
+                                                            <el-col :span="20" style="text-align:right" >  <el-switch size="small" v-model="value2" class="ml-2" style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"/></el-col>
+                                                        </el-row>
+                                                        <el-row>
+                                                            <el-col :span="8"><el-icon color="red"><location /></el-icon> Ho Chi Minh city</el-col>
+                                                            <el-col :span="8" style="text-align:center">10 candidates apply</el-col>
+                                                            <el-col :span="8" style="text-align:right">
+                                                                <el-button link><Edit style="width: 1em; height: 1em; margin-left: 10px" color="blue" /></el-button>
+                                                                <el-button link @click="outerVisible = true"><Delete style="width: 1em; height: 1em; margin-left : 5px" color="black" /></el-button>
+                                                            </el-col>
+                                                        </el-row>
+                                                    
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            
+                                        </el-collapse-item>
+                                        </el-collapse>
+                                    </el-card>
+                                </div>
+                            </el-col>
+                            <el-col :span="2"></el-col>
+
+                        </el-row>
+
+                        <el-row>
+                            <el-col :span="2"></el-col>
+                            <el-col :span="20">
+                                <div class="job-category">
+                                    <el-card class="box-card">
+                                    <template #header>
+                                    
+                                    </template>
+                                    <el-collapse v-model="activeNames" @change="handleChange">
+                                        <el-collapse-item name="1" style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);">
+                                            <template #title>
+                                                <div class="title" ><b>QA </b></div>
+                                            </template>
+                                       
+                                            <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
+                                                <li v-for="i in count" :key="i" class="infinite-list-item" >
+                                                    <div class="job-item">
+                                                        <el-row style="margin-top:10px;margin-bottom: 7px;">
+                                                            <el-col :span="4" style="cursor:pointer">Software Enginer</el-col>
+                                                            <el-col :span="20" style="text-align:right" >  <el-switch size="small" v-model="value2" class="ml-2" style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"/></el-col>
+                                                        </el-row>
+                                                        <el-row>
+                                                            <el-col :span="8"><el-icon color="red"><location /></el-icon> Ho Chi Minh city</el-col>
+                                                            <el-col :span="8" style="text-align:center">10 candidates apply</el-col>
+                                                            <el-col :span="8" style="text-align:right">
+                                                                <el-button link><Edit style="width: 1em; height: 1em; margin-left: 10px" color="blue" /></el-button>
+                                                                <el-button link @click="outerVisible = true"><Delete style="width: 1em; height: 1em; margin-left : 5px" color="black" /></el-button>
+                                                            </el-col>
+                                                        </el-row>
+                                                    
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            
+                                        </el-collapse-item>
+                                        </el-collapse>
+                                    </el-card>
+                                </div>
+                            </el-col>
+                            <el-col :span="2"></el-col>
+
+                        </el-row>
+
+                                       
+                    </div>          
                 </el-main>  
 
         </el-container>     
@@ -143,9 +213,7 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="CreateJob()">
-          Create
-        </el-button>
+        <el-button type="primary" @click="CreateJob()">Create</el-button>
       </span>
     </template>
   </el-dialog>
@@ -169,7 +237,7 @@
   </el-form>
 
     <template #footer>
-      <span class="dialog-footer">
+      <span class="dialog-footer" style="text-align: left;">
         <el-button @click="dialogVisible1 = false">Cancel</el-button>
         <el-button type="primary" @click="dialogVisible1 = false">
           Save
@@ -346,7 +414,9 @@ export default {
             ],
             optionsSkill:[],
             list_skills : [],
-            value_skill :''
+            value_skill :'',
+            count :10,
+            value2 : true
         }
     },
     components:{
@@ -403,78 +473,12 @@ export default {
                 this.options = []
             }
             
-        }
+        },
     }
 }
 </script>
 
 <style lang="scss">
 @import  "../../../assets/css/index.css";
-
-.main-container .el-card{
-    width: 100%;
-}
-
-.title{
-    font-size: 18px;
-    margin-left: 20px;
-
-}
-
-.el-collapse-item{
-    margin-bottom: 30px;
-}
-
-.job-item {
-    margin-bottom: 10px;
-    border-top: 0.5px solid rgb(95, 158, 160);
-    height: 70px;
-    text-align: left;
-    font-size: 15px;
-
-    .text-job-item{
-        margin: 10px 20px;
-
-    }
-}
-
-.el-row {
-    margin-bottom: 20px;
-}
-
-
-.job-category{
-    margin-left: 100px;
-    margin-bottom: 20px;
-    width: 1000px;
-}
-
-.button-add-job{
-    text-align: right;
-    margin-bottom: 20px;
-    margin-top: 20px;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.text {
-  font-size: 14px;
-}
-
-.item {
-  margin-bottom: 18px;
-}
-
-.box-card {
-  width: 530px;
-}
-
-.location-item{
-    margin-left: 30px;
-    text-align: left;
-}
+@import "./index.scss"
 </style>
