@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AddLocation from '../views/job/location/AddLocation.vue'
 import ViewJob from '../views/job/job/ViewJob.vue'
+import EditJob from '../views/job/job/EditJob.vue'
+import AddSkill from '../views/job/skill/AddSkill.vue'
 
 const routes = [
   {
@@ -27,6 +29,17 @@ const routes = [
     name: 'viewJob',
     component: ViewJob
   },
+  {
+    path: '/edit_job',
+    name: 'editJob',
+    component: EditJob
+  },
+  {
+    path: '/skill',
+    name: 'addSkill',
+    component: AddSkill
+  },
+
 ]
 
 const router = createRouter({

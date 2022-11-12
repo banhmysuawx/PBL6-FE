@@ -1,13 +1,14 @@
 .layout-container-demo .el-header {
     display: flex;
     position: relative;
-    background-color: rgb(176, 196, 222)    ;
+    background-color: white;
     color: var(--el-text-color-primary);
     justify-content: flex-end;
     font-size: 25px;
     margin-bottom: 2px;
     margin-left: 2px;
     align-items: center;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
   }
   .layout-container-demo .el-aside {
     color: var(--el-text-color-primary);
@@ -20,13 +21,13 @@
   }
   
   .layout-container-demo .el-menu {
-    background: rgb(176, 196, 222);
+    background: rgb(48, 65, 86);
     background-clip: border-box;
-    color: white;
+    height: 100%;
   }
   .layout-container-demo .el-main {
     padding: 0;
-    background:rgb(240,240,240);
+    background:#f0f2f5;
   
   }
   .layout-container-demo .toolbar {
