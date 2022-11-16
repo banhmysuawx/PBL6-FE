@@ -59,16 +59,6 @@
   background-position: center center;
   /* background-color: #cae1f4; */
 }
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-.logo img {
-  max-width: 250px;
-  filter: brightness(0) invert(1);
-}
 
 .login-area {
   text-align: center;
