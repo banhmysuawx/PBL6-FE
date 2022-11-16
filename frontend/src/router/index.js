@@ -1,10 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import AddLocation from "../views/job/location/AddLocation.vue";
-import ViewJob from "../views/job/job/ViewJob.vue";
 import RegisterView from "../views/RegisterView.vue";
 import LoginView from "../views/LoginView.vue";
-
+import ProfileView from "../views/Profile/ProfileView.vue";
+import admin from "./admin.js";
 const routes = [
   {
     path: "/",
@@ -12,15 +11,11 @@ const routes = [
     component: HomeView,
   },
   {
-    path: "/location",
-    name: "addLocation",
-    component: AddLocation,
+    path: "/profile",
+    name: "profile",
+    component: ProfileView,
   },
-  {
-    path: "/job",
-    name: "viewJob",
-    component: ViewJob,
-  },
+  ...admin,
   {
     path: "/login",
     name: "login",
