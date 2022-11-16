@@ -29,15 +29,15 @@
             <span>Dashboard</span>
           </router-link>
         </a-menu-item>
+        <a-menu-item key="1">
+          <MenuOutlined />
+          <span>Job Mananagement</span>
+        </a-menu-item>
         <a-menu-item key="addLocation">
           <router-link :to="{ name: 'addLocation' }">
-            <MenuOutlined />
-            <span>Job Mananagement</span>
+            <EnvironmentOutlined />
+            <span>Location Management</span>
           </router-link>
-        </a-menu-item>
-        <a-menu-item key="/login">
-          <EnvironmentOutlined />
-          <span>Location Management</span>
         </a-menu-item>
         <a-menu-item key="4">
           <TeamOutlined />
