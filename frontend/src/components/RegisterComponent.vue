@@ -25,19 +25,19 @@
                   <FormItem name="email">
                     <Input
                       placeholder="Enter your email"
-                      v-model="model.email"
+                      v-model:value="model.email"
                     ></Input>
                   </FormItem>
                   <FormItem name="password">
                     <InputPassword
                       placeholder="Enter your password"
-                      v-model="model.password"
+                      v-model:value="model.password"
                     ></InputPassword>
                   </FormItem>
                   <FormItem name="password2">
                     <InputPassword
                       placeholder="Confirm Your Password"
-                      v-model="model.password2"
+                      v-model:value="model.password2"
                     ></InputPassword>
                   </FormItem>
                   <FormItem name="date">
@@ -51,7 +51,7 @@
                   <FormItem name="gender">
                     <Select
                       name="gender"
-                      v-model="model.gender"
+                      v-model:value="model.gender"
                       @change="handleChange"
                       class="select-model"
                     >
@@ -63,7 +63,7 @@
                   <FormItem name="Role">
                     <Select
                       name="role"
-                      v-model="model.role"
+                      v-model:value="model.role"
                       @change="handleChange"
                       class="select-model"
                     >
