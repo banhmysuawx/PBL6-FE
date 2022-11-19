@@ -25,11 +25,14 @@
                 @submit.prevent="login"
               >
                 <FormItem name="email">
-                  <Input v-model="model.email" placeholder="Email"></Input>
+                  <Input
+                    v-model:value="model.email"
+                    placeholder="Email"
+                  ></Input>
                 </FormItem>
                 <FormItem name="password">
                   <Input
-                    v-model="model.password"
+                    v-model:value="model.password"
                     placeholder="Password"
                   ></Input>
                 </FormItem>
@@ -109,8 +112,7 @@ export default {
       await axios
         .post("https://api.quangdinh.me/auth/login", this.model)
         .then((response) => {
-          const accessToken = response.data.tokens.access;
-          console.log(accessToken);
+          return response.data.tokens.access;
         })
         .catch((error) => {
           console.log(error);
