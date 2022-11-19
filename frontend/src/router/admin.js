@@ -13,6 +13,16 @@ const admin = [
         name: "addLocation",
         component: () => import("../views/job/location/AddLocation.vue"),
       },
+      {
+        path: "edit_job",
+        name: "editJob",
+        component: () => import("../views/job/job/EditJob.vue"),
+      },
+      {
+        path: "skill",
+        name: "addSkill",
+        component: () => import("../views/job/skill/AddSkill.vue"),
+      },
     ],
   },
 ];

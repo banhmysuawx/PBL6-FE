@@ -4,6 +4,7 @@ import RegisterView from "../views/RegisterView.vue";
 import LoginView from "../views/LoginView.vue";
 import ProfileView from "../views/Profile/ProfileView.vue";
 import admin from "./admin.js";
+import AppliedJob from "../views/AppliedJob.vue";
 const routes = [
   {
     path: "/",
@@ -25,6 +26,11 @@ const routes = [
     path: "/register",
     name: "register",
     component: RegisterView,
+  },
+  {
+    path: "/applied-jobs",
+    name: "appliedJob",
+    component: AppliedJob,
   },
 ];
 
