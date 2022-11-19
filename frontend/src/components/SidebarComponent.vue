@@ -23,20 +23,26 @@
             </div>
           </a-menu-item>
         </div>
+        <a-menu-item key="1">
+          <MenuOutlined />
+          <span>Dashboard</span>
+        </a-menu-item>
         <a-menu-item key="view-job">
           <router-link :to="{ name: 'view-job' }">
             <HomeOutlined />
-            <span>Dashboard</span>
+            <span>Job Mananagement</span>
           </router-link>
-        </a-menu-item>
-        <a-menu-item key="1">
-          <MenuOutlined />
-          <span>Job Mananagement</span>
         </a-menu-item>
         <a-menu-item key="addLocation">
           <router-link :to="{ name: 'addLocation' }">
             <EnvironmentOutlined />
             <span>Location Management</span>
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="addSkill">
+          <router-link :to="{ name: 'addSkill' }">
+            <HomeOutlined />
+            <span>Skill Mananagement</span>
           </router-link>
         </a-menu-item>
         <a-menu-item key="4">

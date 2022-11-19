@@ -37,7 +37,7 @@
                         </template>
 
                         <ul
-                          v-infinite-scroll="load"
+                          ::v-infinite-scroll="load"
                           class="infinite-list"
                           style="overflow: auto"
                         >
@@ -119,7 +119,7 @@
                         </template>
 
                         <ul
-                          v-infinite-scroll="load"
+                          ::v-infinite-scroll="load"
                           class="infinite-list"
                           style="overflow: auto"
                         >
@@ -202,7 +202,7 @@
                         </template>
 
                         <ul
-                          v-infinite-scroll="load"
+                          ::v-infinite-scroll="load"
                           class="infinite-list"
                           style="overflow: auto"
                         >
@@ -293,7 +293,7 @@
                         </template>
 
                         <ul
-                          v-infinite-scroll="load"
+                          :v-infinite-scroll="load"
                           class="infinite-list"
                           style="overflow: auto"
                         >

@@ -1,78 +1,47 @@
 <template>
-  <div class="user-show">
-    <div class="container">
-      <div class="my-profile">
-        <div class="my-profile-wrapper">
-          <div class="my-account-info-box">
-            <div class="nav">
-              <a-tabs>
-                <a-tab-pane class="nav-item" key="1" tab="Profile">
-                  <div class="tab-content-label">
-                    <h2 class="cv-missing-text">YOU CV IS MISSING</h2>
-                    <p class="cv-missing__description">
-                      Upload CV to apply for jobs faster and get attractive
-                      invitation from emloyers
-                    </p>
-                  </div>
-                  <div class="tab-content-container">
-                    <div class="cv-missing__wrapper">
-                      <a-card hoverable style="width: 300px">
-                        <template #cover>
-                          <div class="upload-file__logo">
-                            <img alt="example" src="../assets/logo.png" />
-                          </div>
-                        </template>
-                        <a-card-meta
-                          title="Card title"
-                          description="This is the description"
-                        >
-                        </a-card-meta>
-                      </a-card>
-                    </div>
-                  </div>
-                </a-tab-pane>
-                <a-tab-pane class="nav-item" key="2" tab="Account" force-render
-                  >Content of Tab Pane 2</a-tab-pane
-                >
-              </a-tabs>
-            </div>
+  <div class="tab-content-label">
+    <h2 class="cv-missing-text">YOU CV IS MISSING</h2>
+    <p class="cv-missing__description">
+      Upload CV to apply for jobs faster and get attractive invitation from
+      emloyers
+    </p>
+  </div>
+  <div class="tab-content-container">
+    <div class="cv-missing__wrapper">
+      <a-card hoverable style="width: 300px">
+        <template #cover>
+          <div class="upload-file__logo">
+            <CloudUploadOutlined />
           </div>
+        </template>
+        <div class="cv-missing__content">
+          <p class="cv-missing__title">Upload CV</p>
         </div>
-      </div>
+      </a-card>
+      <a-card hoverable style="width: 300px">
+        <template #cover>
+          <div class="upload-file__logo">
+            <ProfileOutlined />
+          </div>
+        </template>
+        <div class="cv-missing__content">
+          <p class="cv-missing__title">Create Profile</p>
+        </div>
+      </a-card>
     </div>
   </div>
 </template>
+
+<script setup>
+import { CloudUploadOutlined, ProfileOutlined } from "@ant-design/icons-vue";
+</script>
+
 <script>
 export default {
   name: "EmptyProfile",
 };
 </script>
 <style>
-.container {
-  background-color: #e9e9e9;
-  position: relative;
-}
-.my-profile {
-  margin: 30px auto;
-  max-width: 1350px;
-  min-height: 700px;
-  height: calc(100vh - 360px);
-  background-color: transparent;
-  border: none;
-}
-
-.my-profile .my-profile-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 10px;
-  background-color: #e9e9e9;
-  height: 100%;
-}
-.my-profile .my-account-info-box {
-  height: 100%;
-  overflow: hidden;
-  background-color: white;
-}
 .nav .ant-tabs-nav-wrap {
   height: 60px;
 }
@@ -114,10 +83,31 @@ export default {
   display: flex !important;
   position: relative !important;
   width: 100% !important;
-  justify-content: center !important;
   align-items: center !important;
-  border: 1px solid #dee2e6;
-  padding: 15px 15px;
   min-height: 258px;
+}
+
+.nav .cv-missing__wrapper .ant-card.ant-card-bordered.ant-card-hoverable {
+  margin: 3px;
+  text-align: center !important;
+}
+.upload-file__logo svg {
+  font-size: 140px;
+  color: #034650;
+}
+.nav .ant-card-cover > * {
+  padding-top: 1rem !important;
+}
+.nav .cv-missing__title {
+  color: rgb(72, 69, 69) !important;
+  font-size: 20px;
+  font-weight: 550 !important;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  height: 40px;
+}
+.nav .ant-tabs-content-holder {
+  overflow-y: scroll;
+  height: 650px;
 }
 </style>
