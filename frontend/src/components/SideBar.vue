@@ -15,20 +15,36 @@
 
    
   </div>
-    
+  <el-menu-item index="0">
+      <el-icon><location /></el-icon>
+      <span style="color: rgb(191, 203, 217)">Dashboard</span>
+    </el-menu-item>
+
     <el-menu-item index="1">
       <el-icon><location /></el-icon>
-      <span style="color: rgb(191, 203, 217)">Job Management </span>
+      <span style="color: rgb(191, 203, 217)">Job Board</span>
     </el-menu-item>
 
     <el-menu-item index="2">
       <el-icon><location /></el-icon>
+      <span style="color: rgb(191, 203, 217)">Job Management</span>
+    </el-menu-item>
+
+
+    <el-menu-item index="10">
+      <el-icon><setting /></el-icon>
+      <span style="color: rgb(191, 203, 217)">Skill Management</span>
+    </el-menu-item>
+
+    <el-menu-item index="11">
+      <el-icon><setting /></el-icon>
       <span style="color: rgb(191, 203, 217)">Location Management</span>
     </el-menu-item>
 
+
     <el-menu-item index="3">
       <el-icon><Sunny /></el-icon>
-      <span style="color: rgb(191, 203, 217)">Skill Management</span>
+      <span style="color: rgb(191, 203, 217)">Interview Calendar</span>
     </el-menu-item>
 
     <el-menu-item index="4">
@@ -43,7 +59,7 @@
 
     <el-menu-item index="6">
       <el-icon><Calendar/></el-icon>
-      <span style="color: rgb(191, 203, 217)">Calendar Interview</span>
+      <span style="color: rgb(191, 203, 217)">Information</span>
     </el-menu-item>
 
     <el-menu-item index="7">
@@ -51,38 +67,13 @@
       <span style="color: rgb(191, 203, 217)">Setting</span>
     </el-menu-item>
 
-    
     <el-menu-item index="8">
-      <el-icon><User /></el-icon>
-      <span style="color: rgb(191, 203, 217)">Candidate Management</span>
-    </el-menu-item>
-
-    <el-menu-item index="9">
-      <el-icon><Calendar/></el-icon>
-      <span style="color: rgb(191, 203, 217)">Calendar Interview</span>
-    </el-menu-item>
-
-    <el-menu-item index="10">
       <el-icon><setting /></el-icon>
-      <span style="color: rgb(191, 203, 217)">Setting</span>
+      <span style="color: rgb(191, 203, 217)">User View</span>
     </el-menu-item>
 
     
-    <el-menu-item index="11">
-      <el-icon><User /></el-icon>
-      <span style="color: rgb(191, 203, 217)">Candidate Management</span>
-    </el-menu-item>
-
-    <el-menu-item index="12">
-      <el-icon><Calendar/></el-icon>
-      <span style="color: rgb(191, 203, 217)">Calendar Interview</span>
-    </el-menu-item>
-
-    <el-menu-item index="13">
-      <el-icon><setting /></el-icon>
-      <span style="color: rgb(191, 203, 217)">Setting</span>
-    </el-menu-item>
-
+    
    
  
   </el-menu>
