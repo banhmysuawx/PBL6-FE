@@ -5,20 +5,23 @@ export const useMenu = defineStore("menuId", {
     selectedKeys: [],
     openKeys: [],
     collapsed: false,
+    size: "",
   }),
 
   actions: {
     onSelectedKeys(data) {
       this.selectedKeys = data;
-      console.log(this.selectedKeys);
     },
 
     onOpenKeys(data) {
       this.openKeys = data;
-      console.log(this.openKeys);
     },
     onChangeCollapsed() {
       this.collapsed = !this.collapsed;
+    },
+    onChangeSize() {
+      this.size = this.collapsed ? "124px" : "284px";
+      console.log(this.size);
     },
   },
 });

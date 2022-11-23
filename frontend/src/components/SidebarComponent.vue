@@ -109,6 +109,9 @@ export default defineComponent({
 }
 .layout-sider {
   width: 260px;
+  position: fixed;
+  top: 64px;
+  z-index: 2;
 }
 
 .layout-sider aside.ant-layout-sider.ant-layout-sider-dark {
