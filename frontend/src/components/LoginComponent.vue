@@ -31,10 +31,10 @@
                   ></Input>
                 </FormItem>
                 <FormItem name="password">
-                  <Input
+                  <InputPassword
                     v-model:value="model.password"
                     placeholder="Password"
-                  ></Input>
+                  ></InputPassword>
                 </FormItem>
                 <FormItem>
                   <a href="#" name="forgot-password-text">Forgot Password</a>
@@ -58,7 +58,15 @@
 </template>
 
 <script setup>
-import { Row, Col, Form, FormItem, Input, Button } from "ant-design-vue";
+import {
+  Row,
+  Col,
+  Form,
+  FormItem,
+  Input,
+  Button,
+  InputPassword,
+} from "ant-design-vue";
 </script>
 
 <script>
@@ -112,7 +120,8 @@ export default {
       await axios
         .post("https://api.quangdinh.me/auth/login", this.model)
         .then((response) => {
-          return response.data.tokens.access;
+          const accessToken = response.data.tokens.access;
+          this.$router.push({ name: "home" });
         })
         .catch((error) => {
           console.log(error);

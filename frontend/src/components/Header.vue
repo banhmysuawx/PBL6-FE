@@ -27,7 +27,6 @@
       </a-menu>
     </a-layout-header>
   </div>
-  
 </template>
 
 <script>
@@ -54,6 +53,7 @@ export default defineComponent({
   data() {
     return {
       collapsed: false,
+      size: "",
     };
   },
   setup() {
@@ -67,7 +67,9 @@ export default defineComponent({
     onChangeCollapsed() {
       const store = useMenu();
       store.onChangeCollapsed();
+      store.onChangeSize();
       this.collapsed = store.collapsed;
+      this.size = store.size;
     },
   },
 });
@@ -85,6 +87,11 @@ export default defineComponent({
 }
 .flex-grow {
   flex-grow: 1;
+}
+.header-component header.ant-layout-header.header {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
 }
 .header-component .ant-layout-header {
   background: #007082;

@@ -1,29 +1,32 @@
 <template>
   <div class="home">
-    <div class="user-show">
-      <div class="container">
-        <div class="my-profile">
-          <div class="my-profile-wrapper">
-            <div class="my-account-info-box">
-              <div class="nav">
-                <a-tabs>
-                  <a-tab-pane class="nav-item" key="1" tab="Profile">
-                    <empty-profile />
-                  </a-tab-pane>
-                  <a-tab-pane
-                    class="nav-item"
-                    key="2"
-                    tab="Account"
-                    force-render
-                    ><account-component
-                  /></a-tab-pane>
-                </a-tabs>
+    <Header />
+    <a-layout-content>
+      <div class="user-show">
+        <div class="container">
+          <div class="my-profile">
+            <div class="my-profile-wrapper">
+              <div class="my-account-info-box">
+                <div class="nav">
+                  <a-tabs>
+                    <a-tab-pane class="nav-item" key="1" tab="Profile">
+                      <empty-profile />
+                    </a-tab-pane>
+                    <a-tab-pane
+                      class="nav-item"
+                      key="2"
+                      tab="Account"
+                      force-render
+                      ><account-component
+                    /></a-tab-pane>
+                  </a-tabs>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </a-layout-content>
   </div>
 </template>
 
@@ -31,12 +34,14 @@
 import EmptyProfile from "../../components/EmptyProfile.vue";
 import AddProfile from "../../components/AddProfile.vue";
 import AccountComponent from "../../components/AccountComponent.vue";
+import Header from "../../layouts/header.vue";
 export default {
   name: "ProfileView",
   components: {
     EmptyProfile,
     AddProfile,
     AccountComponent,
+    Header,
   },
 };
 </script>
@@ -65,5 +70,9 @@ export default {
   height: 100%;
   overflow: hidden;
   background-color: white;
+}
+.home main.ant-layout-content {
+  position: relative;
+  top: 64px;
 }
 </style>
