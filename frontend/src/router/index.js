@@ -5,6 +5,7 @@ import LoginView from "../views/LoginView.vue";
 import ProfileView from "../views/Profile/ProfileView.vue";
 import admin from "./admin.js";
 import AppliedJob from "../views/AppliedJob.vue";
+import JobView from "../views/JobView.vue";
 const routes = [
   {
     path: "/",
@@ -31,6 +32,11 @@ const routes = [
     path: "/applied-jobs",
     name: "appliedJob",
     component: AppliedJob,
+  },
+  {
+    path: "/job-view",
+    name: "jobview",
+    component: JobView,
   },
 ];
 
