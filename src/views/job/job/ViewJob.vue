@@ -4,9 +4,7 @@
       <SideBar/>
       <el-container> 
               <el-header style="height:50px;"><HeaderCompanyView/></el-header>
-               <div style="height:30px; text-align:left; transform: translateY(30%);">
-                   <span style="margin-left:20px; "><b>Home - Job</b></span>
-              </div>
+             
           <el-container>
                    <el-main style="display: flex;flex-direction: column;">
                     <el-row>

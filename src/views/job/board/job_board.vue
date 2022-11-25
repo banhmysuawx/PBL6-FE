@@ -188,8 +188,8 @@
                         <el-avatar :size="50" :src="circleUrl" />
                       </div>
       </div>
-      <div>{{applicant_choice.seeker_name}}</div>
-      <div>CV: {{applicant_choice.cv}}</div>
+      <div>{{applicant_choice.candidate_name}}</div>
+      <a :href="applicant_choice.cv">CV: {{applicant_choice.cv}}</a>
      </div>
 
      <div style="margin:20px 0px">
@@ -286,7 +286,7 @@
     width="30%"
     :before-close="handleClose"
   >
-    <span>Do you mark fail candidate? </span>
+    <span>Do you mark pass candidate? </span>
     <template #footer>
         <el-button @click="confirmFail = false">Cancel</el-button>
         <el-button type="primary" @click="ChangePass()">
@@ -407,6 +407,8 @@
 
         async showDetailCandidate(applicant){
           this.applicant_choice = applicant
+          console.log("applicant choice")
+          console.log(this.applicant_choice)
           await axios
             .get(`/seekers/profile-education?seeker_id=${applicant.seeker_id}`)
               .then(response =>{
@@ -452,6 +454,7 @@
           .get(`/applicants/company/get_applicant?id_job=${this.id_job_current}`)
           .then(response=>{
             this.applicants = response.data
+            this.applicants_search = this.applicants
             this.confirmFail = false
             this.drawerDetailCandidate=false
             toast({
@@ -486,6 +489,7 @@
           .get(`/applicants/company/get_applicant?id_job=${this.id_job_current}`)
           .then(response=>{
             this.applicants = response.data
+            this.applicants_search = this.applicants
             this.confirmPass = false
             this.drawerDetailCandidate=false
             toast({
