@@ -1,7 +1,8 @@
 <template>
     <div>
-      <el-button type="primary">Log In</el-button>
-      <el-button type="default">Sign Up</el-button>
+      <!-- <el-button type="primary">Log In</el-button>
+      <el-button type="default">Sign Up</el-button> -->
+      <span style="font-size:20px">Product VN Company</span>
     </div>
     
   </template>

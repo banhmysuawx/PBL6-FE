@@ -188,8 +188,8 @@
                         <el-avatar :size="50" :src="circleUrl" />
                       </div>
       </div>
-      <div>{{applicant_choice.seeker_name}}</div>
-      <div>CV: {{applicant_choice.cv}}</div>
+      <div>{{applicant_choice.candidate_name}}</div>
+      <a :href="applicant_choice.cv">CV: {{applicant_choice.cv}}</a>
      </div>
 
      <div style="margin:20px 0px">
@@ -407,6 +407,8 @@
 
         async showDetailCandidate(applicant){
           this.applicant_choice = applicant
+          console.log("applicant choice")
+          console.log(this.applicant_choice)
           await axios
             .get(`/seekers/profile-education?seeker_id=${applicant.seeker_id}`)
               .then(response =>{
