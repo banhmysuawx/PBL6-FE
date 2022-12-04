@@ -146,17 +146,32 @@
                   </el-col>
                   <el-col :span="7" class="el-col-sub-item">
                     <div style="text-decoration:underline;"><b>Interview</b></div>
-                    <span v-if="applicant.status_interview_date != null">
-                    <div class="el-col-item">Time Interview: {{applicant.status_interview_date}}</div>
-                    <div class="el-col-item">Link gg meet: </div>
                    
-                    <el-row>
-                      <el-col :span="8"></el-col>
-                      <el-col :span="8"><el-progress :text-inside="true" :stroke-width="20" :percentage="0" /></el-col>
-                      <el-col :span="8"></el-col>
-                    </el-row>
+                    <span v-if="applicant.status == 'set_schedule'">
+                      Status: Send Interview Schedule
+                      <el-button type="primary" style="margin-left: 16px" @click="SetSchedule(applicant)">
+                        Set Schedule
+                      </el-button>
                     </span>
+
+                    <span v-if="applicant.status == 'interview_pending'">
+                      Status: Interview Pending
+                      <el-button type="primary" style="margin-left: 16px" @click="ShowSchedule(applicant)">
+                        Show Schedule
+                      </el-button>
+                    </span>
+
+                    <span v-if="applicant.status == 'schedule_interview'">
+                      Status: Schedule Interview
+                      Official day interview : "26-12-2022"
+                    </span>
+
+                    <span v-if="applicant.status == 'cancel_interview'">
+                      Status: Cancel Interview
+                    </span>
+
                   </el-col>
+
                   <el-col :span="3" style="background: white;margin:0px 2px;">
                     <div style="text-decoration:underline;"><el-icon v-if="applicant.status == 'complete' || applicant.status == 'incomplete'" color="green" size="20px"><Select /></el-icon><b>Result</b></div>
                     <el-result
@@ -293,16 +308,139 @@
           OK
         </el-button>
     </template>
-  </el-dialog>
+    </el-dialog>
+
+    <!--Drawer for set schedule-->
+    <el-drawer v-model="isSetSchedule" title="Schedule To Interview" size="40%">
+     <div style="float:right; margin-bottom: 10px;">
+      <el-button type="danger" @click="UpdateApplicantInterview()" v-if="(applicant_choice.status=='interview_pending')">Update</el-button>
+      <el-button type="primary" @click="CreateApplicantInterview()" v-else>Save</el-button>
+    </div>
+      <el-row>
+        <el-col :span="8"> 
+          <div class="demo-basic--circle" >
+            <div class="block" style="margin-top:25px">
+                <el-avatar :size="75" :src="circleUrl" />
+            </div>
+          </div>
+          <div>Ngo Nguyen Hoang Dung</div>
+        </el-col>
+        <el-col :span="16">
+          <el-row></el-row>
+          <el-row></el-row>
+          <span class="demonstration">Set Schedule: </span>
+          <el-select v-model="applicant_interview.value_choice_set_schedule" class="m-2" placeholder="Select" size="large" @change="ChangeChoice()">
+            <el-option
+              v-for="item in choice_set_schedule"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+          <div class="demo-date-picker">
+          <div class="block">
+            <span class="demonstration">Limited Day:</span>
+            <el-date-picker
+              v-model="applicant_interview.end_set_schedule_interview"
+              type="date"
+              placeholder="Pick a day"
+              size="default"
+              value-format="YYYY-MM-DD"
+              style="cursor: pointer;"
+            />
+          </div>
+        </div>
+        </el-col>
+      </el-row>
+    
+
+    <div>
+      <div style="padding: 10px;">
+        <el-button @click="showPeriodSchedule()">Watch period availabel period</el-button>
+        <el-button type="primary" @click="isMyCalendar=true">My Calendar</el-button>
+      </div>
+
+      <el-row></el-row>
+      <el-row></el-row>
+      <span v-for="item,index in list_period_to_schedule" :key="index">
+      <el-row v-if="(index % 2)==0">
+        <el-col :span="12">
+          <el-card class="box-card" style="width: 270px;">
+            <template #header>
+              <div class="card-header">
+                <span>{{list_period_to_schedule[index].day}}</span>
+              </div>
+            </template>
+            <div v-for="period,index1 in list_period_to_schedule[index].available" :key="index1" class="text item">
+              <span v-if="(index1 % 2)==0">
+              <el-row v-if="applicant_interview.value_choice_set_schedule=='manual'">
+                <el-col :span="12">
+                  <el-checkbox v-model="check_period_to_schedule[index][index1]" border  size="small"
+                  @change="ChoicePeriod(index,index1)" >
+                    {{list_period_to_schedule[index].available[index1].start}} - {{list_period_to_schedule[index].available[index1].end}}
+                  </el-checkbox>
+                </el-col>
+                <el-col :span="12" v-if="((index1+1) < list_period_to_schedule[index].available.length)">
+                  <el-checkbox  size="small" v-model="check_period_to_schedule[index][index1+1]" border 
+                  @change="ChoicePeriod(index,index1+1)" >
+                    {{list_period_to_schedule[index].available[index1+1].start}} - {{list_period_to_schedule[index].available[index1+1].end}}
+                  </el-checkbox></el-col>
+              </el-row>
+              <el-row v-else>
+                <el-col :span="12"><el-checkbox-button>{{list_period_to_schedule[index].available[index1].start}} - {{list_period_to_schedule[index].available[index1].end}}</el-checkbox-button></el-col>
+                <el-col :span="12" v-if="((index1+1) < list_period_to_schedule[index].available.length)"><el-checkbox-button>{{list_period_to_schedule[index].available[index1+1].start}} - {{list_period_to_schedule[index].available[index1+1].end}}</el-checkbox-button></el-col>
+              </el-row>
+              </span>
+            </div>             
+          </el-card>
+        </el-col>
+
+        <el-col :span="12" v-if="((index+1) < list_period_to_schedule.length)">
+          <el-card class="box-card" style="width: 270px;">
+            <template #header>
+              <div class="card-header">
+                <span>{{list_period_to_schedule[index+1].day}}</span>
+              </div>
+            </template>
+            <div v-for="(period,index2) in list_period_to_schedule[index+1].available" :key="index2" class="text item">
+              <span v-if="(index2 % 2)==0">
+              <el-row v-if="applicant_interview.value_choice_set_schedule=='manual'">
+                <el-col :span="12">
+                  <el-checkbox  size="small" v-model="check_period_to_schedule[index+1][index2]" border 
+                  @change="ChoicePeriod(index+1,index2)">
+                    {{list_period_to_schedule[index+1].available[index2].start}} - {{list_period_to_schedule[index+1].available[index2].end}}
+                  </el-checkbox>
+                </el-col>
+                <el-col :span="12" v-if="((index2+1) < list_period_to_schedule[index+1].available.length)">
+                  <el-checkbox  size="small" v-model="check_period_to_schedule[index+1][index2+1]" 
+                  @change="ChoicePeriod(index+1,index2+1)" border >
+                    {{list_period_to_schedule[index+1].available[index2+1].start}} - {{list_period_to_schedule[index+1].available[index2+1].end}}
+                  </el-checkbox>
+                </el-col>
+              </el-row>
+              <el-row v-else>
+                <el-col :span="12"><el-checkbox-button>{{list_period_to_schedule[index+1].available[index2].start}} - {{list_period_to_schedule[index+1].available[index2].end}}</el-checkbox-button></el-col>
+                <el-col :span="12" v-if="((index2+1) < list_period_to_schedule[index+1].available.length)"><el-checkbox-button>{{list_period_to_schedule[index+1].available[index2+1].start}} - {{list_period_to_schedule[index+1].available[index2+1].end}}</el-checkbox-button></el-col>
+              </el-row>
+            </span>
+            </div>        
+          </el-card>
+        </el-col>
+      </el-row>
+      </span>
+
+     </div>
+  </el-drawer>
   </div>
   </template>
-  
   <script>
 
   import SideBar from "@/components/SideBar.vue"
   import HeaderCompanyView from "@/components/HeaderCompany.vue"
   import axios from 'axios'
-  
+  import '@fullcalendar/core/vdom' 
+  import { toast } from 'bulma-toast'
+
   export default {
       name : "JobBoard",
       data(){
@@ -331,11 +469,24 @@
             result_test : 0,
             limit_result_test : 1,
             result :1
-          }
+          },
+          isSetSchedule : false,
+          isMyCalendar : false,
+          choice_set_schedule : ["automate","manual"],
+          applicant_interview: {
+            id : 0,
+            value_choice_set_schedule : '',
+            end_set_schedule_interview : '',
+          },
+          list_period_to_schedule : [],
+          check_period_to_schedule : [],
+          period_to_schedule_choices : [],
+         
          
         }
       },
       async mounted(){
+        
         const id = this.$store.state.company.id
 
         await axios
@@ -369,9 +520,22 @@
 
       components:{
         SideBar,
-        HeaderCompanyView
+        HeaderCompanyView,
       },
+
       methods:{
+        initialData(){
+          this.applicant_interview = {
+            value_choice_set_schedule : '',
+            end_set_schedule_interview : '',
+          },
+          this.list_period_to_schedule = []
+          this.check_period_to_schedule = []
+          this.period_to_schedule_choices = []
+          console.log("aloooo")
+          console.log(this.applicant_interview)
+        },
+
         blurLocation(){
           console.log("hello")
         },
@@ -505,6 +669,189 @@
             console.log(err)
           })
           
+        },
+
+        showPeriodSchedule(){
+          console.log(this.applicant_interview)
+          axios
+          .get(`/applicants/company/applicant-interview/get_time?id_applicant=${this.applicant_choice.id}&limited_day=${this.applicant_interview.end_set_schedule_interview}&choice=${this.applicant_interview.value_choice_set_schedule}`)
+          .then(response=>{
+            this.list_period_to_schedule = response.data
+
+            for (var i =0;i<this.list_period_to_schedule.length;i++){
+              var check = []
+              for (var k = 0;k<this.list_period_to_schedule[i].available.length;k++){
+                check[k] = 0
+              }
+              this.check_period_to_schedule[i] = check
+            }
+           
+          })
+          .catch(err=>{
+            console.log(err)
+          })
+        },
+
+        SetSchedule(applicant){
+          this.initialData();
+          this.isSetSchedule = true
+          this.applicant_choice = applicant
+        },
+
+        async CreateApplicantInterview(){
+          var data={}
+          if (this.applicant_interview.value_choice_set_schedule=="automate"){
+            data = {
+            applicant : this.applicant_choice.id,
+            choice_set_schedule_interview : this.applicant_interview.value_choice_set_schedule,
+            end_set_schedule_interview : this.applicant_interview.end_set_schedule_interview
+          }
+          } else {
+            data = {
+            applicant : this.applicant_choice.id,
+            choice_set_schedule_interview : this.applicant_interview.value_choice_set_schedule,
+            end_set_schedule_interview : this.applicant_interview.end_set_schedule_interview,
+            period_time_choice : this.period_to_schedule_choices
+          }
+          }
+          await axios
+          .post("/applicants/applicant-interview",data)
+          .then(response =>{
+            console.log(response.data)
+            toast({
+                      message : 'Create Interview Schedule Success',
+                      type :'is-success',
+                      dismissible : true,
+                      pauseOnHover :true,
+                      duration :2000,
+                      position :'bottom-right'
+                  })
+          this.isSetSchedule=false
+          })
+          .catch(err =>{
+            console.log(err)
+          })
+        },
+
+        ChoicePeriod(index_parent,index_child){
+          console.log("choices")
+          if (this.check_period_to_schedule[index_parent][index_child]){
+              const item = {
+                "day" : this.list_period_to_schedule[index_parent].day,
+                "start_time": this.list_period_to_schedule[index_parent].available[index_child].start,
+                "end_time": this.list_period_to_schedule[index_parent].available[index_child].end
+              }
+              this.period_to_schedule_choices.push(item)
+          } 
+          else 
+          {
+              var index_find = -1
+              for (var index =0;index<this.period_to_schedule_choices.length;index++){
+                if (this.list_period_to_schedule[index_parent].day==this.period_to_schedule_choices[index].day &&
+                this.list_period_to_schedule[index_parent].available[index_child].start == this.period_to_schedule_choices[index].start_time &&
+                this.list_period_to_schedule[index_parent].available[index_child].end == this.period_to_schedule_choices[index].end_time ){
+                  index_find = index;
+                  break;
+                }
+              }
+              if (index_find!=-1){
+                this.period_to_schedule_choices.splice(index_find,1)
+              }
+          }
+        },
+
+        async ShowSchedule(applicant){
+          this.initialData();
+          this.applicant_choice = applicant
+          await axios
+          .get(`/applicants/company/applicant-interview/get_applicant_interview_by_applicant?id_applicant=${applicant.id}`)
+          .then(response =>{
+            this.applicant_interview.value_choice_set_schedule = response.data.choice_set_schedule_interview
+            this.applicant_interview.end_set_schedule_interview = response.data.end_set_schedule_interview
+            this.applicant_interview.id = response.data.id
+
+          })
+          .catch(err=>{
+            console.log(err)
+          })
+          
+          if (this.applicant_interview.value_choice_set_schedule=="automate"){
+             await  axios
+                .get(`/applicants/company/applicant-interview/get_time?id_applicant=${this.applicant_choice.id}&limited_day=${this.applicant_interview.end_set_schedule_interview}&choice=${this.applicant_interview.value_choice_set_schedule}`)
+                .then(response=>{
+                  this.list_period_to_schedule = response.data
+                  this.isSetSchedule = true
+                })
+                .catch(err=>{
+                  console.log(err)
+                })
+            } else if (this.applicant_interview.value_choice_set_schedule=="manual"){
+              await axios
+              .get(`/applicants/company/period-interview/get_period_by_interview_manual?id_applicant_interview=${this.applicant_interview.id}`)
+              .then(response =>{
+                this.list_period_to_schedule = response.data
+                for (var i =0;i<this.list_period_to_schedule.length;i++){
+                  var check = []
+                  for (var k = 0;k<this.list_period_to_schedule[i].available.length;k++){
+                    check[k] = true
+                  }
+                  this.check_period_to_schedule[i] = check
+                }
+                this.isSetSchedule = true
+              })
+              .catch(err=>{
+                  console.log(err)
+              })
+            }
+
+        },
+
+        async UpdateApplicantInterview(){
+          var data={}
+          if (this.applicant_interview.value_choice_set_schedule=="automate"){
+            data = {
+            choice_set_schedule_interview : this.applicant_interview.value_choice_set_schedule,
+            end_set_schedule_interview : this.applicant_interview.end_set_schedule_interview
+          }
+          } else {
+            data = {
+            choice_set_schedule_interview : this.applicant_interview.value_choice_set_schedule,
+            end_set_schedule_interview : this.applicant_interview.end_set_schedule_interview,
+            period_time_choice : this.period_to_schedule_choices
+          }
+          }
+
+          await axios
+          .patch(`/applicants/applicant-interview/${this.applicant_interview.id}`,data)
+          .then(response =>{
+            console.log("update nhe")
+            console.log(response.data)
+            toast({
+                      message : 'Update Interview Schedule Success',
+                      type :'is-success',
+                      dismissible : true,
+                      pauseOnHover :true,
+                      duration :2000,
+                      position :'bottom-right'
+                  })
+          this.isSetSchedule=false
+          })
+          .catch(err =>{
+            console.log(err)
+          })
+        },
+        ChangeChoice(){
+          console.log("change choice")
+          console.log(this.applicant_interview.value_choice_set_schedule)
+          if (this.list_period_to_schedule.length > 0 && this.applicant_interview.value_choice_set_schedule=='manual'){
+            for (var i =0;i<this.list_period_to_schedule.length;i++){
+                  var check = []
+                  for (var k = 0;k<this.list_period_to_schedule[i].available.length;k++){
+                    check[k] = false
+                  }
+                  this.check_period_to_schedule[i] = check
+                }
+          }
         }
       }
   }

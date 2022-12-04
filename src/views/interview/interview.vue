@@ -25,19 +25,22 @@
   import FullCalendar from '@fullcalendar/vue3'
   import dayGridPlugin from '@fullcalendar/daygrid'
   import interactionPlugin from '@fullcalendar/interaction'
+  import { Calendar } from '@fullcalendar/core';
+  import timeGridPlugin from '@fullcalendar/timegrid';
   
   export default {
       name : "Interview",
       data(){
         return{
           calendarOptions: {
-            plugins: [ dayGridPlugin, interactionPlugin ],
-            initialView: 'dayGridMonth',
+            plugins: [ timeGridPlugin ],
+            initialView: 'timeGridWeek',
             dateClick: this.handleDateClick,
-            events: [
-              { title: 'event 1', date: '2019-04-01' },
-              { title: 'event 2', date: '2019-04-02' }
-            ]
+            // events: [
+            //   { title: 'event 1', start: '2022-11-30 15:00:00+07', end:'2022-11-30 16:30:00+07',allDay: 'true' },
+            //   { title: 'event 10', date: '2022-11-15' },
+            //   { title: 'event 2', date: '2022-11-20' }
+            // ]
           }
         }
       },
