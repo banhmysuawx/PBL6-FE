@@ -186,6 +186,7 @@
                     </el-result>
                   </el-col>
               </el-row>
+             
             </el-main>   
           </el-container>    
      </el-container>
@@ -481,8 +482,6 @@
           list_period_to_schedule : [],
           check_period_to_schedule : [],
           period_to_schedule_choices : [],
-         
-         
         }
       },
       async mounted(){
@@ -504,7 +503,7 @@
         }
         const id_company = this.$store.state.company.id
         await axios
-          .get(`/applicants/company/get_all_applicants?company_id=${id_company}`)
+          .get(`/applicants/company/get_all_applicants?company_id=${id_company}&page=1`)
           .then(response=>{
             this.applicants = response.data
             this.applicants_search = this.applicants
@@ -524,6 +523,8 @@
       },
 
       methods:{
+      
+
         initialData(){
           this.applicant_interview = {
             value_choice_set_schedule : '',

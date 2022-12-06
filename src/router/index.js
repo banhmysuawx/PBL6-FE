@@ -6,7 +6,7 @@ import JobBoard from "../views/job/board/job_board.vue"
 import Candidate from "../views/candidate/candidate.vue"
 import Interview from "../views/interview/interview.vue"
 import ViewJob from "../views/job/job/ViewJob.vue"
-
+import AddLocation from "../views/job/location/AddLocation.vue"
 import ProfileView from "../views/Profile/ProfileView.vue";
 import AppliedJob from "../views/AppliedJob.vue";
 const routes = [
@@ -40,6 +40,11 @@ const routes = [
     path: "/company/job",
     name: "company-job",
     component: ViewJob,
+  },
+  {
+    path: "/company/location",
+    name: "company-location",
+    component: AddLocation,
   },
   {
     path: "/candidate",
