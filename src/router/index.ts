@@ -2,8 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import LoginView from "../views/LoginView.vue";
+import JobBoard from "../views/job/board/job_board.vue";
+import Candidate from "../views/candidate/candidate.vue";
+import Interview from "../views/interview/interview.vue";
+import ViewJob from "../views/job/job/ViewJob.vue";
+import AddLocation from "../views/job/location/AddLocation.vue";
 import ProfileView from "../views/Profile/ProfileView.vue";
-import admin from "./admin";
 import AppliedJob from "../views/AppliedJob.vue";
 import JobView from "../views/JobView.vue";
 import TestView from "../views/test/TestView.vue";
@@ -20,7 +24,7 @@ const routes = [
     name: "profile",
     component: ProfileView,
   },
-  ...admin,
+
   {
     path: "/login",
     name: "login",
@@ -31,6 +35,32 @@ const routes = [
     name: "register",
     component: RegisterView,
   },
+  {
+    path: "/job_board",
+    name: "JobBoard",
+    component: JobBoard,
+  },
+  {
+    path: "/company/job",
+    name: "company-job",
+    component: ViewJob,
+  },
+  {
+    path: "/company/location",
+    name: "company-location",
+    component: AddLocation,
+  },
+  {
+    path: "/candidate",
+    name: "Candidate",
+    component: Candidate,
+  },
+  {
+    path: "/interview",
+    name: "Interview",
+    component: Interview,
+  },
+
   {
     path: "/applied-jobs",
     name: "appliedJob",

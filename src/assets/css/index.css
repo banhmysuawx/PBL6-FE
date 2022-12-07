@@ -1,41 +1,51 @@
 .layout-container-demo .el-header {
-    display: flex;
-    position: relative;
-    background-color: white;
-    color: var(--el-text-color-primary);
-    justify-content: flex-end;
-    font-size: 25px;
-    margin-bottom: 2px;
-    margin-left: 2px;
-    align-items: center;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-  }
-  .layout-container-demo .el-aside {
-    color: var(--el-text-color-primary);
-    background: rgb(240,240,240);
-    width: 300px;
-    height: 100%;
-    margin-right: 2px;
-    margin-left: px;
-    
-  }
-  
-  .layout-container-demo .el-menu {
-    background: rgb(48, 65, 86);
-    background-clip: border-box;
-    height: 100%;
-  }
-  .layout-container-demo .el-main {
-    padding: 0;
-    background:#f0f2f5;
-  
-  }
-  .layout-container-demo .toolbar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    right: 20px;
-  }
-  
-  
+  display: flex;
+  position: relative;
+  background-color: white;
+  color: var(--el-text-color-primary);
+  justify-content: flex-end;
+  font-size: 25px;
+  margin-bottom: 2px;
+  margin-left: 2px;
+  align-items: center;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.layout-container-demo .el-aside {
+  color: var(--el-text-color-primary);
+  background: rgb(240, 240, 240);
+  width: 320px;
+  margin-right: 2px;
+  margin-left: px;
+  min-height: 1000px
+}
+
+.layout-container-demo .el-menu {
+  background: rgb(48, 65, 86);
+  background-clip: border-box;
+  height: 100%;
+}
+
+.layout-container-demo .el-main {
+  padding: 0;
+  background: #f0f2f5;
+  min-height: 1000px;
+
+}
+
+.layout-container-demo .toolbar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  right: 20px;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+.layout-container-demo {
+  min-width: 100%;
+}
