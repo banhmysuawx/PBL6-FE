@@ -5,7 +5,7 @@
       <Form class="frm">
         <FormItem name="email">
           <label for="email" class="account-detail__label">Email</label>
-          <Input placeholder="Enter your email"></Input>
+          <Input placeholder="Enter your email" readonly></Input>
         </FormItem>
         <FormItem name="date">
           <label for="date" class="account-detail__label">Birthday</label>
@@ -47,18 +47,24 @@
     </div>
     <div class="change-password">
       <h2 class="account-detail__text">CHANGE PASSWORD</h2>
-      <Form class="frm">
+      <Form class="frm" ref="form" @submit.prevent="changePassword">
         <FormItem name="old_password">
           <label for="old_password" class="account-detail__label"
             >Your Password</label
           >
-          <InputPassword placeholder="Enter your Password"></InputPassword>
+          <InputPassword
+            v-model:value="old_password"
+            placeholder="Enter your Password"
+          ></InputPassword>
         </FormItem>
         <FormItem name="new_password">
           <label for="new_password" class="account-detail__label"
             >New Password</label
           >
-          <InputPassword placeholder="Enter your new password"></InputPassword>
+          <InputPassword
+            v-model:value="new_password"
+            placeholder="Enter your new password"
+          ></InputPassword>
         </FormItem>
         <FormItem>
           <div class="frm_btns">
@@ -87,8 +93,15 @@ import {
   Input,
   InputPassword,
 } from "ant-design-vue";
+import axios from "axios";
 export default defineComponent({
   name: "AccountComponent",
+  data() {
+    return {
+      old_password: "",
+      new_password: "",
+    };
+  },
   components: {
     Form,
     FormItem,
@@ -98,11 +111,25 @@ export default defineComponent({
     Input,
     InputPassword,
   },
-  setup() {
-    return {
-      labelCol: { span: 11 },
-      wrapperCol: { span: 14 },
-    };
+  methods: {
+    async changePassword() {
+      console.log(localStorage.getItem("accessToken"));
+      await axios
+        .patch(
+          "https://api.quangdinh.me/auth/change-password",
+          {
+            old_password: this.old_password,
+            new_password: this.new_password,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            },
+          }
+        )
+        .then((response) => this.$message.success("success"))
+        .catch((err) => this.$message.error(err));
+    },
   },
 });
 </script>

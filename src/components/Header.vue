@@ -31,7 +31,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import { useMenu } from "../store/use-menu.js";
+import { useMenu } from "../store/use-menu";
 
 import {
   MenuFoldOutlined,

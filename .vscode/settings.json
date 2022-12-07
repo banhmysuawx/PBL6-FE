@@ -1,5 +1,6 @@
 {
   "editor.formatOnSave": true,
   "eslint.workingDirectories": [{ "mode": "auto" }],
-  "vetur.validation.template": false
+  "vetur.validation.template": false,
+  "javascript.validate.enable": false
 }

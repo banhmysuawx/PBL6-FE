@@ -121,6 +121,8 @@ export default {
         .post("https://api.quangdinh.me/auth/login", this.model)
         .then((response) => {
           const accessToken = response.data.tokens.access;
+          localStorage.setItem("accessToken", accessToken);
+          console.log(response.data);
           this.$router.push({ name: "home" });
         })
         .catch((error) => {

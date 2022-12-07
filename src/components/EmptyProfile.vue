@@ -1,33 +1,35 @@
 <template>
-  <div class="tab-content-label">
-    <h2 class="cv-missing-text">YOU CV IS MISSING</h2>
-    <p class="cv-missing__description">
-      Upload CV to apply for jobs faster and get attractive invitation from
-      emloyers
-    </p>
-  </div>
-  <div class="tab-content-container">
-    <div class="cv-missing__wrapper">
-      <a-card hoverable style="width: 300px">
-        <template #cover>
-          <div class="upload-file__logo">
-            <CloudUploadOutlined />
+  <div class="empty-component">
+    <div class="tab-content-label">
+      <h2 class="cv-missing-text">YOU CV IS MISSING</h2>
+      <p class="cv-missing__description">
+        Upload CV to apply for jobs faster and get attractive invitation from
+        emloyers
+      </p>
+    </div>
+    <div class="tab-content-container">
+      <div class="cv-missing__wrapper">
+        <a-card hoverable style="width: 300px">
+          <template #cover>
+            <div class="upload-file__logo">
+              <CloudUploadOutlined />
+            </div>
+          </template>
+          <div class="cv-missing__content">
+            <p class="cv-missing__title">Upload CV</p>
           </div>
-        </template>
-        <div class="cv-missing__content">
-          <p class="cv-missing__title">Upload CV</p>
-        </div>
-      </a-card>
-      <a-card hoverable style="width: 300px">
-        <template #cover>
-          <div class="upload-file__logo">
-            <ProfileOutlined />
+        </a-card>
+        <a-card hoverable style="width: 300px">
+          <template #cover>
+            <div class="upload-file__logo">
+              <ProfileOutlined />
+            </div>
+          </template>
+          <div class="cv-missing__content">
+            <p class="cv-missing__title">Create Profile</p>
           </div>
-        </template>
-        <div class="cv-missing__content">
-          <p class="cv-missing__title">Create Profile</p>
-        </div>
-      </a-card>
+        </a-card>
+      </div>
     </div>
   </div>
 </template>
@@ -42,44 +44,44 @@ export default {
 };
 </script>
 <style>
-.nav .ant-tabs-nav-wrap {
+.ant-tabs-nav-wrap {
   height: 60px;
 }
-.nav .ant-tabs-tab-btn {
+.ant-tabs-tab-btn {
   width: 160px;
 }
-.nav .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: #007082;
 }
-.nav .ant-tabs-tab.ant-tabs-tab-active {
+.ant-tabs-tab.ant-tabs-tab-active {
   color: #5c5a5b;
 }
-.nav .ant-tabs-ink-bar {
+.ant-tabs-ink-bar {
   background: #007082;
   border-bottom: 3px solid #007082;
 }
-.nav .ant-tabs-tab {
+.ant-tabs-tab {
   font-size: 18px !important;
   font-weight: bolder;
   color: #5c5a5b;
 }
-.nav .ant-tabs-content {
+.ant-tabs-content {
   margin: 0 25px 25px;
   text-align: left;
 }
-.nav .cv-missing-text {
+.empty-component .cv-missing-text {
   font-weight: 550;
   margin: 12px 0 5px;
 }
-.nav .cv-missing__description {
+.empty-component .cv-missing__description {
   font-size: 16px;
 }
-.nav .cv-missing-container {
+.empty-component .cv-missing-container {
   display: flex !important;
   gap: 0.5rem !important;
   justify-content: space-between !important;
 }
-.nav .cv-missing__wrapper {
+.empty-component .cv-missing__wrapper {
   display: flex !important;
   position: relative !important;
   width: 100% !important;
@@ -87,18 +89,20 @@ export default {
   min-height: 258px;
 }
 
-.nav .cv-missing__wrapper .ant-card.ant-card-bordered.ant-card-hoverable {
+.empty-component
+  .cv-missing__wrapper
+  .ant-card.ant-card-bordered.ant-card-hoverable {
   margin: 3px;
   text-align: center !important;
 }
-.upload-file__logo svg {
+.empty-component .upload-file__logo svg {
   font-size: 140px;
   color: #034650;
 }
-.nav .ant-card-cover > * {
+.ant-card-cover > * {
   padding-top: 1rem !important;
 }
-.nav .cv-missing__title {
+.cv-missing__title {
   color: rgb(72, 69, 69) !important;
   font-size: 20px;
   font-weight: 550 !important;
@@ -106,7 +110,7 @@ export default {
   -webkit-line-clamp: 2;
   height: 40px;
 }
-.nav .ant-tabs-content-holder {
+.empty-component .ant-tabs-content-holder {
   overflow-y: scroll;
   height: 650px;
 }

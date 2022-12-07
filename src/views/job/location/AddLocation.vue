@@ -223,9 +223,14 @@
 
 <script>
 import SideBar from "@/components/SideBar.vue";
+<<<<<<< HEAD
+import HeaderView from "@/components/Header.vue";
+import { useMenu } from "../../../store/use-menu";
+=======
 import HeaderCompanyView from "@/components/HeaderCompany.vue"
 import axios from 'axios'
 import { toast } from 'bulma-toast'
+>>>>>>> 134287bffc6e13350b5d714cce1148874e717ea4
 
 export default {
   name: "AddLocation",
