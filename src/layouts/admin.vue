@@ -20,7 +20,7 @@
 import Header from "../components/Header.vue";
 import { defineComponent } from "vue";
 import SidebarComponent from "../components/SidebarComponent.vue";
-import { useMenu } from "../store/use-menu.js";
+import { useMenu } from "../store/use-menu";
 export default defineComponent({
   data() {
     const { size } = useMenu();

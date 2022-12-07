@@ -1,24 +1,29 @@
 <template>
   <div class="home">
-    <Header />
-    <a-layout-content>
-      <div class="applied-job-container">
-        <div class="title">Applied Jobs</div>
-        <AppliedJobComponent />
-      </div>
-    </a-layout-content>
+    <a-layout>
+      <Header />
+      <a-layout-content>
+        <div class="applied-job-container">
+          <div class="title">Applied Jobs</div>
+          <AppliedJobComponent />
+        </div>
+      </a-layout-content>
+      <Footer />
+    </a-layout>
   </div>
 </template>
 <script>
 import AppliedJobComponent from "../components/AppliedJobComponent.vue";
 import EmptyApplied from "../components/EmptyApplied.vue";
 import Header from "../layouts/header.vue";
+import Footer from "../layouts/footer.vue";
 export default {
   name: "AppliedJob",
   components: {
     AppliedJobComponent,
     EmptyApplied,
     Header,
+    Footer,
   },
 };
 </script>
@@ -27,6 +32,8 @@ export default {
 .home main.ant-layout-content {
   position: relative;
   top: 64px;
+  background-color: #f9f8f8;
+  padding-bottom: 20px;
 }
 .applied-job-container {
   background: white;
@@ -36,6 +43,8 @@ export default {
   min-height: 700px;
   margin: auto;
   margin-top: 20px;
+  overflow-y: scroll;
+  height: 600px;
 }
 .applied-job-container .title {
   font-size: 27px;

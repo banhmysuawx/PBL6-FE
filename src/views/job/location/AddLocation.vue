@@ -149,7 +149,7 @@
 <script>
 import SideBar from "@/components/SideBar.vue";
 import HeaderView from "@/components/Header.vue";
-import { useMenu } from "../../../store/use-menu.js";
+import { useMenu } from "../../../store/use-menu";
 
 export default {
   name: "AddLocation",

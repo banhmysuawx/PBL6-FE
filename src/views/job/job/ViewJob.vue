@@ -542,7 +542,7 @@
 </template>
 
 <script>
-import { useMenu } from "../../../store/use-menu.js";
+import { useMenu } from "../../../store/use-menu";
 export default {
   name: "ViewJob",
   setup() {

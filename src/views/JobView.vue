@@ -1,29 +1,128 @@
 <template>
   <div class="home">
-    <Header />
-    <a-layout-content>
-      <div class="list-job">
-        <div class="container">
-          <div class="list-job-content">
-            <div class="list-job-wrapper">
-              <div class="list-job-info-box"></div>
-              <div class="job-detail-box"></div>
+    <a-layout>
+      <Header />
+      <a-layout-content>
+        <div class="list-job">
+          <div class="container">
+            <div class="filter-container">
+              <div class="filter">
+                <a-dropdown>
+                  <template #overlay>
+                    <a-menu>
+                      <a-menu-item key="1">
+                        <UserOutlined />
+                        1st menu item
+                      </a-menu-item>
+                    </a-menu>
+                  </template>
+                  <a-button>
+                    Job Level
+                    <CaretDownFilled />
+                  </a-button>
+                </a-dropdown>
+              </div>
+              <div class="filter">
+                <a-dropdown>
+                  <template #overlay>
+                    <a-menu>
+                      <a-menu-item key="1">
+                        <UserOutlined />
+                        1st menu item
+                      </a-menu-item>
+                    </a-menu>
+                  </template>
+                  <a-button>
+                    Salary Range
+                    <CaretDownFilled />
+                  </a-button>
+                </a-dropdown>
+              </div>
+              <div class="filter">
+                <a-dropdown>
+                  <template #overlay>
+                    <a-menu>
+                      <a-menu-item key="1">
+                        <UserOutlined />
+                        1st menu item
+                      </a-menu-item>
+                    </a-menu>
+                  </template>
+                  <a-button>
+                    Address
+                    <CaretDownFilled />
+                  </a-button>
+                </a-dropdown>
+              </div>
+            </div>
+            <div class="list-job-content">
+              <div class="list-job-wrapper">
+                <div class="list-job-info-box">
+                  <div class="total-job">
+                    <h1>{{ total }} Việc làm phù hợp</h1>
+                  </div>
+                  <div class="list-job" v-for="job in listJobs">
+                    <Job v-bind:job="job" @click="onChange(job.id)" />
+                  </div>
+                </div>
+                <div class="job-detail-box">
+                  <div class="job-detail-box__content">
+                    <JobDetail v-bind:id="currentJob" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </a-layout-content>
+      </a-layout-content>
+      <Footer />
+    </a-layout>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
-import JobComponent from "../components/JobComponent.vue";
 import Header from "../layouts/header.vue";
+import PageHeader from "../components/PageHeader.vue";
+import Footer from "../layouts/footer.vue";
+import axios from "axios";
+import Job from "../components/job-view/Job.vue";
+import JobDetail from "../components/job-detail/JobDetail.vue";
+import { CaretDownFilled } from "@ant-design/icons-vue";
 export default defineComponent({
   name: "JobView",
+  data() {
+    return {
+      listJobs: [],
+      total: 0,
+      currentJob: 1,
+    };
+  },
+  mounted() {
+    this.getListJobs();
+  },
   components: {
-    JobComponent,
     Header,
+    PageHeader,
+    Footer,
+    Job,
+    JobDetail,
+    CaretDownFilled,
+  },
+  methods: {
+    async getListJobs() {
+      await axios
+        .get("https://api.quangdinh.me/jobs/jobs")
+        .then((response) => {
+          const data = response.data;
+          this.listJobs = data.results;
+          this.total = data.count;
+          this.currentJob = this.listJobs[0]["id"];
+        })
+        .catch((error) => console.log(error));
+    },
+    onChange(id: number) {
+      this.currentJob = id;
+    },
   },
 });
 </script>
@@ -31,10 +130,12 @@ export default defineComponent({
 .home main.ant-layout-content {
   position: relative;
   top: 64px;
+  background-color: #f9f8f8;
 }
 .container {
-  background-color: #e9e9e9;
+  background: #f9f8f8;
   position: relative;
+  padding-bottom: 5px;
 }
 .list-job-content {
   margin: 30px auto;
@@ -47,7 +148,7 @@ export default defineComponent({
 
 .list-job-content .list-job-wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 0.9fr 1fr;
   grid-gap: 10px;
   background-color: #e9e9e9;
   height: 100%;
@@ -57,5 +158,29 @@ export default defineComponent({
   height: 100%;
   overflow: hidden;
   background-color: white;
+}
+.list-job-content .list-job-info-box {
+  overflow-y: scroll;
+}
+
+.list-job-content .job-detail-box__content {
+  margin: 20px;
+}
+
+.filter-container {
+  display: flex;
+  max-width: 1350px !important;
+  margin: 30px auto;
+}
+.filter {
+  padding-right: 30px;
+}
+.filter button.ant-btn.ant-dropdown-trigger {
+  font-size: 16px;
+  height: 38px;
+  padding: 6px 15px;
+}
+.filter span.anticon.anticon-caret-down {
+  margin-left: 40px;
 }
 </style>

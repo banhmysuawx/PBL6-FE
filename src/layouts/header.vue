@@ -10,32 +10,44 @@
         <a-menu mode="horizontal" :style="{ lineHeight: '64px' }">
           <a-sub-menu key="sub1">
             <template #title>All Jobs</template>
-            <a-sub-menu
-              key="all-jobs"
-              title="Job by Skill"
-              v-for="skill in skills"
-            >
-              <a-menu-item v-bind:key="skill.name">{{
-                skill.name
-              }}</a-menu-item>
+            <a-sub-menu key="all-jobs" title="Job by Skill">
+              <router-link
+                v-for="skill in skills"
+                :to="{ name: 'jobview', params: { name: skill.name } }"
+              >
+                <a-menu-item v-bind:key="skill.name">{{
+                  skill.name
+                }}</a-menu-item>
+              </router-link>
             </a-sub-menu>
             <a-sub-menu key="sub3-4" title="Job by Category">
-              <a-menu-item
+              <router-link
                 v-for="category in categories"
-                v-bind:key="category.name"
-                >{{ category.name }}</a-menu-item
+                :to="{ name: 'jobview', params: { name: category.name } }"
               >
+                <a-menu-item v-bind:key="category.name">
+                  {{ category.name }}
+                </a-menu-item>
+              </router-link>
             </a-sub-menu>
             <a-sub-menu key="sub5-6" title="Job by Company">
-              <a-menu-item
+              <router-link
                 v-for="company in companies"
-                v-bind:key="company.company_name"
-                >{{ company.company_name }}</a-menu-item
+                :to="{
+                  name: 'jobview',
+                  params: { name: company.company_name },
+                }"
               >
+                <a-menu-item v-bind:key="company.company_name">
+                  {{ company.company_name }}
+                </a-menu-item>
+              </router-link>
             </a-sub-menu>
           </a-sub-menu>
-          <a-menu-item key="2">
-            <span>Company</span>
+          <a-menu-item key="list-company">
+            <router-link :to="{ name: 'list-company' }">
+              <span>Company</span>
+            </router-link>
           </a-menu-item>
           <a-menu-item key="appliedJob">
             <router-link :to="{ name: 'appliedJob' }">
@@ -87,6 +99,7 @@ export default defineComponent({
       skills: [],
       categories: [],
       companies: [],
+      routeSkill: [],
     };
   },
   components: {

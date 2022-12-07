@@ -9,7 +9,6 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
-import "@ant-design/icons";
 import axios from "axios";
 import VueAxios from "vue-axios";
 

@@ -1,4 +1,4 @@
-const admin = [
+export const admin = [
   {
     path: "/admin",
     component: () => import("../layouts/admin.vue"),

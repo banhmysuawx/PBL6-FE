@@ -1,32 +1,35 @@
 <template>
   <div class="home">
-    <Header />
-    <a-layout-content>
-      <div class="user-show">
-        <div class="container">
-          <div class="my-profile">
-            <div class="my-profile-wrapper">
-              <div class="my-account-info-box">
-                <div class="nav">
-                  <a-tabs>
-                    <a-tab-pane class="nav-item" key="1" tab="Profile">
-                      <empty-profile />
-                    </a-tab-pane>
-                    <a-tab-pane
-                      class="nav-item"
-                      key="2"
-                      tab="Account"
-                      force-render
-                      ><account-component
-                    /></a-tab-pane>
-                  </a-tabs>
+    <a-layout>
+      <Header />
+      <a-layout-content>
+        <div class="user-show">
+          <div class="container">
+            <div class="my-profile">
+              <div class="my-profile-wrapper">
+                <div class="my-account-info-box">
+                  <div class="nav">
+                    <a-tabs>
+                      <a-tab-pane class="nav-item" key="1" tab="Profile">
+                        <empty-profile />
+                      </a-tab-pane>
+                      <a-tab-pane
+                        class="nav-item"
+                        key="2"
+                        tab="Account"
+                        force-render
+                        ><account-component
+                      /></a-tab-pane>
+                    </a-tabs>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </a-layout-content>
+      </a-layout-content>
+      <Footer />
+    </a-layout>
   </div>
 </template>
 
@@ -35,6 +38,7 @@ import EmptyProfile from "../../components/EmptyProfile.vue";
 import AddProfile from "../../components/AddProfile.vue";
 import AccountComponent from "../../components/AccountComponent.vue";
 import Header from "../../layouts/header.vue";
+import Footer from "../../layouts/footer.vue";
 export default {
   name: "ProfileView",
   components: {
@@ -42,12 +46,13 @@ export default {
     AddProfile,
     AccountComponent,
     Header,
+    Footer,
   },
 };
 </script>
 <style scoped>
 .container {
-  background-color: #e9e9e9;
+  background-color: #f9f8f8;
   position: relative;
 }
 .my-profile {
@@ -74,5 +79,8 @@ export default {
 .home main.ant-layout-content {
   position: relative;
   top: 64px;
+}
+.my-account-info-box .ant-tabs-content {
+  display: flex;
 }
 </style>

@@ -70,7 +70,7 @@
 <script>
 import { defineComponent } from "vue";
 import { storeToRefs } from "pinia";
-import { useMenu } from "../store/use-menu.js";
+import { useMenu } from "../store/use-menu";
 
 import {
   UserOutlined,
