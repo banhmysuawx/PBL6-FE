@@ -83,7 +83,7 @@
                             <div class="top-review">
                               <div
                                 class="top-review__item"
-                                v-for="review in company_detail.reviews"
+                                v-for="review in listComments.slice(0, 3)"
                               >
                                 <!-- <h3>Môi trường làm việc tốt cho Fresher</h3> -->
                                 <div class="author">
@@ -131,7 +131,7 @@
                       <div class="company-detail-box">
                         <div class="company-description">
                           <h2>
-                            {{ company_detail.reviews.length }} Reviews about
+                            {{ company_detail.reviews?.length }} Reviews about
                             {{ company_detail.company_name }}
                           </h2>
                           <div class="rating">
@@ -147,10 +147,33 @@
                         </div>
                         <div class="job-opportunities">
                           <div class="review-box__content__review">
+                            <div class="write-review">
+                              <div class="author">
+                                <a-avatar
+                                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                                />
+                              </div>
+                              <a-form class="form-write-review">
+                                <a-rate v-model:value="comment.rating" />
+                                <a-form-item name="email">
+                                  <a-textarea
+                                    placeholder="Write your comment..."
+                                    auto-size
+                                    v-model:value="comment.comment"
+                                  />
+                                  <a-button
+                                    class="send-icon"
+                                    @click="createComment"
+                                  >
+                                    <span><SendOutlined /></span>
+                                  </a-button>
+                                </a-form-item>
+                              </a-form>
+                            </div>
                             <div class="top-review">
                               <div
                                 class="top-review__item"
-                                v-for="review in company_detail.reviews"
+                                v-for="review in listComments"
                               >
                                 <!-- <h3>Môi trường làm việc tốt cho Fresher</h3> -->
                                 <div class="author">
@@ -186,7 +209,6 @@
                         <div class="review-box__content">
                           <div class="review-box__content__review">
                             <h2>Write your review</h2>
-
                             <div class="top-review__action">
                               <a-button class="actions-btn"
                                 >Write review</a-button
@@ -213,14 +235,27 @@ import Header from "../layouts/header.vue";
 import Footer from "../layouts/footer.vue";
 import Job from "../components/job-view/Job.vue";
 import axios from "axios";
-import { PhoneFilled, MailFilled, WifiOutlined } from "@ant-design/icons-vue";
+import { Comment } from "../utils";
+import { user } from "../store/user";
+import {
+  PhoneFilled,
+  MailFilled,
+  WifiOutlined,
+  SendOutlined,
+} from "@ant-design/icons-vue";
 export default defineComponent({
   name: "CompanyDetail",
   data() {
+    const id: Number = Number(this.$route.params.id);
+    const userId = user().userId;
+    const comment: Comment = { user: userId, company: id };
+    const listComments: Comment[] = [];
     return {
-      id: this.$route.params.id,
+      id,
       listJobs: [],
       company_detail: {},
+      comment,
+      listComments,
     };
   },
   components: {
@@ -230,6 +265,7 @@ export default defineComponent({
     WifiOutlined,
     PhoneFilled,
     MailFilled,
+    SendOutlined,
   },
   mounted() {
     this.getJobByCompany();
@@ -251,6 +287,26 @@ export default defineComponent({
         .get("https://api.quangdinh.me/companies/companies/" + this.id)
         .then((response) => {
           this.company_detail = response.data;
+          response.data.reviews?.map((item: any) => {
+            const comment: Comment = {
+              rating: item["rating"],
+              comment: item["comment"],
+              author: item["author"],
+              created_at: item["author"],
+              company: item["company"]["id"],
+              user: item["user"]["id"],
+            };
+            this.listComments.push(comment);
+          });
+        })
+        .catch((error) => console.log(error));
+    },
+    async createComment() {
+      await axios
+        .post("https://api.quangdinh.me/reviews/reviews/create", this.comment)
+        .then((response) => {
+          const newComment: Comment = response.data;
+          this.listComments.push(newComment);
         })
         .catch((error) => console.log(error));
     },
@@ -457,18 +513,47 @@ export default defineComponent({
 .job-opportunities .review-box__content__review {
   padding: 20px 60px;
 }
-.top-review__item .author {
+.author {
   display: flex;
   color: #007082;
 }
-.top-review__item .author p {
+.author p {
   padding-left: 10px;
 }
-.top-review__item .created-at {
+.created-at {
   font-size: 13px;
   color: #888686;
 }
-.top-review__item .author-info p {
+.author-info p {
   margin: 0;
+}
+.write-review {
+  display: flex;
+}
+.form-write-review {
+  padding-left: 10px;
+  width: 100%;
+}
+.form-write-review textarea.ant-input {
+  width: 100% !important;
+  min-height: 40px;
+  font-size: 15px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  margin-top: 10px;
+}
+.send-icon {
+  position: absolute;
+  z-index: 0;
+  right: 10px;
+  bottom: 10px;
+  color: #d2d2d2;
+  padding: 0;
+  height: fit-content;
+  width: fit-content;
+  border: none;
+}
+.send-icon span.anticon {
+  padding: 0;
 }
 </style>

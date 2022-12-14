@@ -59,10 +59,10 @@
               <div class="list-job-wrapper">
                 <div class="list-job-info-box">
                   <div class="total-job">
-                    <h1>{{ total }} Việc làm phù hợp</h1>
+                    <h1>{{ total }} Jobs for developers</h1>
                   </div>
                   <div class="list-job" v-for="job in listJobs">
-                    <Job v-bind:job="job" @click="onChange(job.id)" />
+                    <Job v-bind:job="job.job" @click="onChange(job.job.id)" />
                   </div>
                 </div>
                 <div class="job-detail-box">
@@ -111,12 +111,12 @@ export default defineComponent({
   methods: {
     async getListJobs() {
       await axios
-        .get("https://api.quangdinh.me/jobs/jobs")
+        .get("https://api.quangdinh.me/jobs/user/get_jobs")
         .then((response) => {
           const data = response.data;
-          this.listJobs = data.results;
-          this.total = data.count;
-          this.currentJob = this.listJobs[0]["id"];
+          this.listJobs = data;
+          this.total = data.length;
+          this.currentJob = this.listJobs[0]["job"]["id"];
         })
         .catch((error) => console.log(error));
     },
@@ -182,5 +182,16 @@ export default defineComponent({
 }
 .filter span.anticon.anticon-caret-down {
   margin-left: 40px;
+}
+.total-job {
+  padding: 15px 0;
+  padding-bottom: 0;
+  padding-left: 2rem;
+  text-align: left;
+}
+.total-job h1 {
+  font-weight: 550;
+  font-size: 35px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 </style>

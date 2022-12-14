@@ -79,6 +79,7 @@ export default defineComponent({
 }
 .container {
   background: #f9f8f8;
+  max-width: 100% !important;
 }
 .top-companies {
   background: white;

@@ -1,7 +1,6 @@
 <template>
   <div class="applied-process-container" v-for="(job, index) in listAppliedJob">
     <div class="applied-job">
-      <!-- <router-link :to="{ name: 'addLocation' }"> -->
       <p class="company__title">
         {{ listDetailJob[index].name }}
       </p>
@@ -9,7 +8,17 @@
         <div id="test-status">
           <ul class="test-status">
             <li class="test-status-item active">Apply CV</li>
-            <li class="test-status-item">Do Test</li>
+            <router-link
+              :to="{
+                name: 'test',
+                params: {
+                  company: listDetailJob[index].name,
+                  id: listDetailJob[index].id_test,
+                },
+              }"
+            >
+              <li class="test-status-item">Do Test</li>
+            </router-link>
             <li class="test-status-item">Interview</li>
             <li class="test-status-item">Result</li>
           </ul>
@@ -57,9 +66,12 @@
       </a-card>
       <div class="schedule">
         <div class="test">
-          <ScheduleFilled /> Test Schedule: 15h30, 26th Nov 2022
+          <ScheduleFilled /> Test Schedule {{ date_limit.date_limit_do_test }}
         </div>
-        <div class="test"><ScheduleFilled /> Interview Schedule</div>
+        <div class="test">
+          <ScheduleFilled /> Interview Schedule
+          {{ date_limit.date_limit_interview }}
+        </div>
       </div>
     </div>
     <!-- </router-link> -->
@@ -70,6 +82,7 @@
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { defineComponent } from "vue";
 import axios from "axios";
+import { user } from "../store/user";
 import {
   BellFilled,
   DollarOutlined,
@@ -88,6 +101,13 @@ export default defineComponent({
     return {
       listAppliedJob: [],
       listDetailJob,
+      date_limit: { date_limit_do_test: "", date_limit_interview: "" },
+    };
+  },
+  setup() {
+    const userId = user().userId;
+    return {
+      userId,
     };
   },
   mounted() {
@@ -97,7 +117,7 @@ export default defineComponent({
     async getListAppliedJob() {
       await axios
         .get("https://api.quangdinh.me/applicants/candidate/get_applicant", {
-          params: { id_candidate: 8 },
+          params: { id_candidate: this.userId },
         })
         .then(async (response) => {
           this.listAppliedJob = response.data;
@@ -114,6 +134,13 @@ export default defineComponent({
       const data = await axios
         .get("https://api.quangdinh.me/jobs/jobs/" + id)
         .then((response) => {
+          const updatedAt = new Date(response.data.updated_at);
+          const limit_do_test = response.data.limited_day_do_test;
+          const date_limit_do_test = new Date(
+            updatedAt.setDate(updatedAt.getDate() + limit_do_test)
+          );
+          this.date_limit.date_limit_do_test =
+            date_limit_do_test.toLocaleString();
           return response.data;
         });
       return data;
@@ -280,6 +307,7 @@ span.anticon {
 }
 .tag {
   display: flex;
+  background-color: white !important;
 }
 .tag p {
   margin: 2px;

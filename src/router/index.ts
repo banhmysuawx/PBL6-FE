@@ -13,6 +13,8 @@ import JobView from "../views/JobView.vue";
 import TestView from "../views/test/TestView.vue";
 import ListCompany from "../views/ListCompany.vue";
 import CompanyDetail from "../views/CompanyDetail.vue";
+import admin from "./admin";
+import FavoriteJob from "../views/FavoriteJob.vue";
 const routes = [
   {
     path: "/",
@@ -67,12 +69,17 @@ const routes = [
     component: AppliedJob,
   },
   {
+    path: "/favorite-jobs",
+    name: "favoriteJob",
+    component: FavoriteJob,
+  },
+  {
     path: "/jobs/:name",
     name: "jobview",
     component: JobView,
   },
   {
-    path: "/test",
+    path: "/test/:company/:id",
     name: "test",
     component: TestView,
   },
@@ -91,6 +98,7 @@ const routes = [
     name: "job-detail",
     component: CompanyDetail,
   },
+  ...admin,
 ];
 
 const router = createRouter({

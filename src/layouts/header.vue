@@ -49,11 +49,16 @@
               <span>Company</span>
             </router-link>
           </a-menu-item>
-          <a-menu-item key="appliedJob">
+          <a-sub-menu key="sub-history">
+            <template #title>History</template>
+
             <router-link :to="{ name: 'appliedJob' }">
-              <span> History </span>
+              <a-menu-item key="appliedJob">Applied Job</a-menu-item>
             </router-link>
-          </a-menu-item>
+            <router-link :to="{ name: 'favoriteJob' }">
+              <a-menu-item key="favoriteJob">Favorite Job</a-menu-item>
+            </router-link>
+          </a-sub-menu>
         </a-menu>
       </div>
       <div class="header-right">

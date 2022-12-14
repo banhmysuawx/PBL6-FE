@@ -1,24 +1,43 @@
 <template>
   <div class="job-name">
-    {{ jobDetail.id }} IT Project (Sharepoint Project And Helpdesk Project) -
-    Fulltime Remote
-    <div class="company">KMS</div>
+    {{ jobDetail.name }}
+    <div class="company">{{ jobDetail.company?.company_name }}</div>
     <div class="apply-btn">
-      <a-button>Apply Now</a-button>
+      <a-button @click="showModal" :style="{ background: color }"
+        >Apply Now</a-button
+      >
+      <a-modal v-model:visible="visible" title="Apply Form" @ok="submitApply">
+        <a-form class="apply-form">
+          <FormItem name="info">
+            <Input placeholder="More Information" v-model:value="info"></Input>
+          </FormItem>
+          <FormItem name="password">
+            <input type="file" @change="uploadFile($event)" />
+          </FormItem>
+        </a-form>
+      </a-modal>
+      <div class="favorite">
+        <p @click="createFavorite" :style="{ color: isFavorite }">❤</p>
+      </div>
     </div>
   </div>
   <div class="job-detail-box__description">
     <div class="tag">
-      <p>.NET</p>
-      <p>Java</p>
+      <p v-for="skill in jobDetail.skills">{{ skill.name }}</p>
     </div>
     <div class="salary">
       <DollarOutlined />
-      <p>You will love it</p>
+      <p>{{ jobDetail.salary }}</p>
     </div>
     <div class="info">
       <WifiOutlined />
-      <p>Hoa Chau, Hoa Vang, Da Nang</p>
+      <p>
+        {{
+          jobDetail.locations
+            ?.map((item: { location_name: string }) => item.location_name)
+            .join(", ")
+        }}
+      </p>
     </div>
     <div class="info">
       <PhoneOutlined />
@@ -32,57 +51,24 @@
     <div class="job-description">
       <h2>Job Description</h2>
       <ul>
-        <li>We build blockchain games and publishing platform.</li>
-        <li>We believe the blockchain should be invisible in our games.</li>
-        <li>
-          We use simple game mechanics that all players can enjoy, whether or
-          not they consider themselves to be blockchain pros.
-        </li>
-      </ul>
-    </div>
-    <div class="skill-and-experience">
-      <h2>Your Skills and experience</h2>
-      <ul>
-        <li>
-          At least 2 years of experience in game implementation using Blockchain
-          Development technology;
-        </li>
-        <li>
-          Experience on Unity Editor platform is preferred; 1 - 3 years of
-          experience in Ethereum, EOS, Solidity…
-        </li>
-        <li>Understanding contract schedules such as ERC20, ERC721, ERC1155</li>
-      </ul>
-    </div>
-    <div class="benefit">
-      <h2>Your Benefits</h2>
-      <ul>
-        <li>Salary up to $2100</li>
-        <li>Monthly payroll fulfillment on the 30th;</li>
-        <li>40 flexible working hours per week from Monday to Friday</li>
-        <li>
-          Annual raise: 10% or dependent on annual performance evaluation (APE);
-        </li>
-        <li>
-          Incentives: Parking, lunch, token, monthly networking dinner' &
-          annually company's retreats;
-        </li>
-        <li>Chance to gain blockchain game art design experience;</li>
-        <li>Lunch allowance</li>
+        <li>{{ jobDetail.description }}</li>
       </ul>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { Input, InputPassword, FormItem } from "ant-design-vue";
+import { defineComponent, ref } from "vue";
 import {
   DollarOutlined,
   WifiOutlined,
   PhoneOutlined,
   ContactsOutlined,
+  UploadOutlined,
 } from "@ant-design/icons-vue";
 import axios from "axios";
 import { Job } from "../../utils";
+import { user } from "../../store/user";
 export default defineComponent({
   name: "JobDetail",
   components: {
@@ -90,38 +76,100 @@ export default defineComponent({
     WifiOutlined,
     PhoneOutlined,
     ContactsOutlined,
+    UploadOutlined,
+    InputPassword,
+    Input,
+    FormItem,
   },
   data() {
+    const userId = user().userId;
     return {
       jobDetail: {},
       name: Number,
+      visible: false,
+      info: "",
+      file: "",
+      color: "#007082",
+      isFavorite: "#d8d8d8",
+      favoriteId: null,
+      userId,
     };
   },
+
   props: {
     id: Number,
+  },
+  watch: {
+    id() {
+      this.getJobDetail();
+    },
   },
   mounted() {
     this.getJobDetail();
   },
   methods: {
+    showModal() {
+      this.visible = true;
+    },
+    uploadFile(event: any) {
+      this.file = event.target.files[0];
+      console.log(this.file);
+    },
     async getJobDetail() {
       console.log(this.id);
       await axios
-        .get("https://api.quangdinh.me/jobs/jobs/" + this.id)
+        .get("https://api.quangdinh.me/jobs/user/" + this.id + "/job")
         .then((response) => {
-          this.jobDetail = response.data;
+          this.jobDetail = response.data.job;
           console.log(response.data);
         })
         .catch((error) => console.log(error));
     },
-  },
-  watch: {
-    id() {
-      this.$emit("change", this.id);
+    async submitApply() {
+      const form = {
+        job: this.id,
+        candidate: this.userId,
+        cv: this.file,
+        information_added: this.info,
+      };
+      await axios
+        .post("https://api.quangdinh.me/applicants/applicant", form, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          this.visible = false;
+          this.color = "#e9e9e9";
+        })
+        .catch((error) => console.log(error));
+    },
+    async createFavorite() {
+      const input = {
+        user: this.userId,
+        job: this.id,
+      };
+      await axios
+        .post("https://api.quangdinh.me/favorites/favorites/create", input)
+        .then((response) => {
+          this.isFavorite = "red";
+        })
+        .catch((error) => console.log(error));
     },
   },
 });
 </script>
 <style scoped>
 @import "./index.css";
+.favorite p {
+  color: #d8d8d8;
+  padding: 0 10px;
+  font-size: 40px;
+}
+.favorite p:hover {
+  color: red;
+}
+.apply-btn {
+  display: flex;
+}
 </style>

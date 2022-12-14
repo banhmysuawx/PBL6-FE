@@ -33,8 +33,8 @@
             <span>Job Mananagement</span>
           </router-link>
         </a-menu-item>
-        <a-menu-item key="addLocation">
-          <router-link :to="{ name: 'addLocation' }">
+        <a-menu-item key="company-location">
+          <router-link :to="{ name: 'company-location' }">
             <EnvironmentOutlined />
             <span>Location Management</span>
           </router-link>

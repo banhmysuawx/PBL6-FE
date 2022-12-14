@@ -21,8 +21,8 @@
             <li class="benefit-text">Đài thọ 100% chí phí học tập cho CBNV</li>
           </ul>
           <div class="tag">
-            <p v-for="skill in job.skills">{{ skill }}</p>
-            <p>{{ job.category_name }}</p>
+            <p v-for="skill in job.skills">{{ skill.name }}</p>
+            <p v-if="job.category_name">{{ job.category_name }}</p>
           </div>
         </div>
         <div class="city-and-date">
