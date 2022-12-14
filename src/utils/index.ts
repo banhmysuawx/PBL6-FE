@@ -30,3 +30,15 @@ export const status = {
   8: "complete",
   9: "incomplete",
 };
+export interface Comment {
+  rating?: Number;
+  comment?: string;
+  company: Number;
+  user: Number;
+  created_at?: Date;
+  author?: string;
+}
+export const formatDate = (date: Date | string) => {
+  console.log(date);
+  return `${date}`.replace(/\.\d+/, "");
+};

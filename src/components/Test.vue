@@ -12,6 +12,7 @@
                 <a-statistic-countdown
                   :value="deadline"
                   style="margin-right: 50px"
+                  @finish="onSubmit"
                 />
               </div>
             </div>
@@ -28,23 +29,13 @@
                   Câu {{ index + 1 }}: {{ question.content }}
                 </p>
                 <div class="answer-container">
-                  <RadioGroup v-model:value="result[index].answer">
+                  <RadioGroup v-model:value="result[index].answers[0]">
                     <Radio
                       class="answer-item"
                       v-for="answer in question.answers"
                       v-bind:value="answer.id"
                       >{{ answer.content }}</Radio
                     >
-                    <!-- <Radio class="answer-item"
-                      >Tính đóng gói, tính kế thừa, tính đa hình, tính đặc biệt
-                      hoá</Radio
-                    >
-                    <Radio class="answer-item"
-                      >Tính đóng gói, tính kế thừa</Radio
-                    >
-                    <Radio class="answer-item"
-                      >tính kế thừa, tính đa hình</Radio
-                    > -->
                   </RadioGroup>
                 </div>
               </div>
@@ -73,6 +64,8 @@ import { defineComponent } from "vue";
 import { RadioGroup, Radio } from "ant-design-vue";
 import { CheckCircleFilled } from "@ant-design/icons-vue";
 import axios from "axios";
+import { formatDate } from "../utils";
+import { user } from "../store/user";
 export default defineComponent({
   name: "Test",
   components: {
@@ -85,7 +78,8 @@ export default defineComponent({
       data: [],
       deadline: Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30,
       result: [],
-      time_start: new Date(),
+      time_start: new Date().toISOString(),
+      id: this.$route.params.id,
     };
   },
   mounted() {
@@ -94,25 +88,34 @@ export default defineComponent({
   methods: {
     async getTest() {
       await axios
-        .get("https://api-exam.quangdinh.me/api/v1/test/1")
+        .get("https://api-exam.quangdinh.me/api/v1/test/" + this.id)
         .then((response) => {
           const data = response.data[0];
           this.data = data;
-          console.log(data);
           const result = data.questions.map((item: any) => {
-            return { id: item.id, answer: 0 };
+            return { id: item.id, answers: [0] };
           });
           this.result = result;
         })
         .catch((error) => console.log(error));
     },
     async onSubmit() {
+      const userId = user().userId;
       const data = {
+        user_id: userId,
         questions: this.result,
-        time_start: this.time_start,
-        time_end: new Date(),
+        time_done: formatDate(new Date().toISOString()),
+        time_start: formatDate(this.time_start),
       };
-      console.log(data);
+      await axios
+        .post(
+          "https://api-exam.quangdinh.me/api/v1/test/" + this.id + "/doing",
+          data
+        )
+        .then((response) => {
+          this.$router.push({ name: "appliedJob" });
+        })
+        .catch((error) => console.log(error));
     },
   },
 });

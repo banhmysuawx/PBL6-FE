@@ -68,6 +68,8 @@ span.anticon {
 }
 .tag {
   display: flex;
+  background-color: white !important;
+  padding-top: 5px;
 }
 .tag p {
   margin: 2px;

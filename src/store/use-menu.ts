@@ -15,6 +15,7 @@ export const useMenu = defineStore("menuId", {
 
     onOpenKeys(data: any) {
       this.openKeys = data;
+      console.log(this.openKeys);
     },
     onChangeCollapsed() {
       this.collapsed = !this.collapsed;

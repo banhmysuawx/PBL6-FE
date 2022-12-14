@@ -3,14 +3,14 @@
     <template #cover>
       <div class="company__logo">
         <div class="logo">
-          <router-link
+          <!-- <router-link
             :to="{
               name: 'company-detail',
               params: { name: company.company_name, id: company.id },
             }"
-          >
-            <img v-bind:alt="company.company_name" v-bind:src="company.image" />
-          </router-link>
+          > -->
+          <img v-bind:alt="company.company_name" v-bind:src="company.image" />
+          <!-- </router-link> -->
         </div>
         <div class="company__content">
           <router-link

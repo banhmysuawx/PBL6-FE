@@ -1,9 +1,7 @@
 <template>
   <div class="search-header">
     <div class="search-form">
-      <h1 class="slogan">
-        {{ totalCompany }} Việc làm IT cho Developer "Chất"
-      </h1>
+      <h1 class="slogan">{{ totalCompany }} Jobs for "Cool" Developers</h1>
       <form action="" class="search-form-content">
         <div class="search-form__keyword">
           <input
