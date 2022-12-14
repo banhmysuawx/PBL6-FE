@@ -1,0 +1,83 @@
+.main-container .el-card {
+    width: 100%;
+}
+
+.title {
+    font-size: 18px;
+    margin-left: 20px;
+}
+
+.el-collapse-item {
+    margin-bottom: 30px;
+}
+
+
+.el-row {
+    margin-bottom: 20px;
+}
+
+.job-category {
+    margin-bottom: 20px;
+
+    .job-item {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+}
+
+
+
+.button-add-job {
+    text-align: right;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text {
+    font-size: 14px;
+}
+
+.item {
+    margin-bottom: 18px;
+}
+
+.box-card {
+    width: 530px;
+}
+
+.location-item {
+    margin-left: 30px;
+    text-align: left;
+}
+
+.dialog-footer {
+    margin-left: 400px;
+}
+
+.infinite-list {
+    height: 200px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.infinite-list .infinite-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    color: var(--el-color-primary);
+    height: 70px;
+    background-color: #f0f2f5;
+}
+
+.infinite-list .infinite-list-item+.list-item {
+    margin-top: 10px;
+}

@@ -1,0 +1,107 @@
+.ant-card {
+  border-radius: 4px;
+  box-shadow: 2px 2px 12px rgb(33 47 63 / 10%);
+}
+.top-company__logo {
+  height: 160px;
+}
+.ant-card-cover .top-company__logo img {
+  display: block;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 140px;
+  max-height: 140px;
+  width: auto;
+  height: auto;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  line-height: 170px;
+}
+.ant-rate {
+  font-size: 16px !important;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+.top-company__content {
+  font-family: "Roboto", sans-serif;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  line-height: 20px;
+  margin-top: 10px;
+}
+.top-company__description {
+  color: rgb(127, 124, 124) !important;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  height: 40px;
+}
+.top-company__title,
+.company__title {
+  color: rgb(72, 69, 69) !important;
+  font-size: 18px;
+  font-weight: 550 !important;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  height: 40px;
+}
+.space {
+  height: 40px;
+}
+
+.company__logo {
+  display: flex !important;
+  min-height: 150px;
+}
+.ant-card-cover .logo {
+  height: 130px;
+  width: 130px;
+}
+.ant-card-cover .company__logo img {
+  display: block;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 130px;
+  max-height: 130px;
+  width: auto;
+  height: auto;
+  margin: auto;
+  padding: 10px;
+}
+.company-logo ul.ant-rate.ant-rate-disabled {
+  margin-top: 0;
+}
+.company__content {
+  font-family: "Roboto", sans-serif;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  line-height: 20px;
+  margin-top: 20px;
+  margin-right: 20px;
+  margin-left: 10px;
+  text-align: left;
+}
+.company__description {
+  color: rgb(127, 124, 124) !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  display: -webkit-box !important;
+  height: 60px;
+  text-align: left;
+  margin: 10px auto;
+  width: 90% !important;
+}
+p.company__title,
+p.company-address {
+  margin-bottom: 10px;
+}
+p.company-address {
+  color: #888686;
+  font-size: 13px;
+}
