@@ -36,6 +36,14 @@
                     placeholder="Password"
                   ></InputPassword>
                 </FormItem>
+                <div class="notification" v-if="errors.length">
+                  <a-alert
+                    v-for="error in errors"
+                    :key="error"
+                    v-bind:message="error"
+                    type="error"
+                  />
+                </div>
                 <FormItem>
                   <a href="#" name="forgot-password-text">Forgot Password</a>
                 </FormItem>
@@ -75,10 +83,7 @@ export default {
   name: "LoginComponent",
   data() {
     return {
-      validCredentials: {
-        email: "lightscope",
-        password: "lightscope",
-      },
+      errors: [],
       model: {
         email: "",
         password: "",
@@ -104,7 +109,7 @@ export default {
           },
           {
             min: 0,
-            message: "Password length should be at least 8",
+            message: "Password length should be at least 5",
             trigger: blur,
           },
         ],
@@ -113,12 +118,16 @@ export default {
   },
   methods: {
     async login() {
-      let valid = await this.$refs.form;
-      if (!valid) {
-        return;
-      }
+      this.errors = [];
+      const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if (this.model.email.length <= 5)
+        return this.errors.push("Email format is incorrect");
+      if (this.model.password.length <= 5)
+        return this.errors.push("Password format is incorrect");
+      if (!this.model.email.match(mailformat))
+        return this.errors.push("Email is invalid");
       await axios
-        .post("https://api.quangdinh.me/auth/login", this.model)
+        .post("auth/login", this.model)
         .then((response) => {
           const accessToken = response.data.tokens.access;
           localStorage.setItem("accessToken", accessToken);
@@ -126,15 +135,17 @@ export default {
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${accessToken}`;
+          this.getInfo();
           this.$router.push({ name: "home" });
         })
         .catch((error) => {
           console.log(error);
           this.$message.error("Username or password is incorrect");
         });
-
+    },
+    async getInfo() {
       await axios
-        .get("https://api.quangdinh.me/auth/me")
+        .get("auth/me")
         .then((response) => {
           const user = {
             id: response.data.id,
@@ -154,4 +165,12 @@ export default {
 
 <style scoped>
 @import "../assets/css/login.css";
+.main-auth .notification {
+  width: fit-content;
+  text-align: center;
+  margin: auto;
+}
+.notification .ant-alert.ant-alert-error.ant-alert-no-icon {
+  border-radius: 7px;
+}
 </style>

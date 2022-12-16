@@ -249,26 +249,26 @@ export default defineComponent({
   methods: {
     async getProfile() {
       await axios
-        .get("https://api.quangdinh.me/seekers/candidate-profile/get_profile", {
+        .get("seekers/candidate-profile/get_profile", {
           params: { id_candidate: 8 },
         })
         .then((response) => console.log(response.data));
     },
     async createEducation() {
       await axios
-        .post("https://api.quangdinh.me/seekers/educations", this.education)
+        .post("seekers/educations", this.education)
         .then((response) => this.listEducations.push(this.education))
         .catch((error) => error);
     },
     async createExperience() {
       await axios
-        .post("https://api.quangdinh.me/seekers/experiences", this.experience)
+        .post("seekers/experiences", this.experience)
         .then((response) => this.listExperiences.push(this.experience))
         .catch((error) => error);
     },
     async createSkill() {
       await axios
-        .post("https://api.quangdinh.me/seekers/skills", this.skill)
+        .post("seekers/skills", this.skill)
         .then((response) => this.listSkills.push(this.skill))
         .catch((error) => error);
     },

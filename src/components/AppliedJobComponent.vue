@@ -8,24 +8,43 @@
         <div id="test-status">
           <ul class="test-status">
             <li class="test-status-item active">Apply CV</li>
-            <router-link
-              :to="{
-                name: 'test',
-                params: {
-                  company: listDetailJob[index].name,
-                  id: listDetailJob[index].id_test,
-                },
+            <li
+              class="test-status-item test"
+              :style="{
+                '--bg-color': listProcess[index].status_do_test,
+              }"
+              @click="
+                doTest(
+                  listDetailJob[index].id_test,
+                  listDetailJob[index].name,
+                  job.status,
+                  job.id
+                )
+              "
+            >
+              Do Test
+            </li>
+            <li
+              class="test-status-item interview"
+              :style="{
+                '--bg-color-interview': listProcess[index].status_do_interview,
               }"
             >
-              <li class="test-status-item">Do Test</li>
-            </router-link>
-            <li class="test-status-item">Interview</li>
-            <li class="test-status-item">Result</li>
+              Interview
+            </li>
+            <li
+              class="test-status-item result"
+              :style="{
+                '--bg-color-result': listProcess[index].status_result,
+              }"
+            >
+              Result
+            </li>
           </ul>
         </div>
-        <div class="notification">
-          <BellFilled />you have not taken the test
-        </div>
+        <!-- <div class="notification"> -->
+        <!-- <BellFilled />you have not taken the test -->
+        <!-- </div> -->
       </div>
       <a-card>
         <template #cover style="border: 1px solid #e9e9e9">
@@ -52,14 +71,10 @@
             </div>
           </div>
           <div class="city-and-date">
-            <div class="new"><p>New</p></div>
             <div class="address">
               <p v-for="location in listDetailJob[index].locations_name">
                 {{ location }}
               </p>
-            </div>
-            <div class="date">
-              {{ listDetailJob[index].limited_day_do_test }}d
             </div>
           </div>
         </div>
@@ -99,10 +114,12 @@ export default defineComponent({
   data() {
     const userId = localStorage.getItem("id");
     const listDetailJob = [];
+    const listProcess: Process[] = [];
     return {
       userId,
       listAppliedJob: [],
       listDetailJob,
+      listProcess,
       date_limit: { date_limit_do_test: "", date_limit_interview: "" },
     };
   },
@@ -110,47 +127,83 @@ export default defineComponent({
     this.getListAppliedJob();
   },
   methods: {
-    setStatus(status1, status2, status3) {
+    setStatus(status) {
       const process: Process = {
-        status_do_test: status1,
-        status_do_interview: status2,
-        status_result: status1,
+        status_do_test: "#e9e9e9",
+        status_do_interview: "#e9e9e9",
+        status_result: "#e9e9e9",
       };
-      if (status2 != null) process.status_do_test = "2";
-      if (status3 != null) {
-        process.status_do_interview = "2";
-        process.status_do_test = "2";
+      switch (status) {
+        case "apply":
+          process.status_do_test = "#f4e25e";
+          break;
+        case "test":
+        case "set_schedule":
+        case "interview_pending":
+        case "schedule_interview":
+        case "cancel_interview":
+          process.status_do_test = "#007082";
+          process.status_do_interview = "#f4e25e";
+          break;
+        case "interview_complete":
+          process.status_do_interview = "#007082";
+          process.status_result = "#f4e25e";
+          break;
+        case "complete":
+          process.status_do_interview = "#007082";
+          process.status_result = "#007082";
+          break;
+        case "incomplete":
+          process.status_do_interview = "#007082";
+          process.status_result = "rgb(235, 129, 129)";
+          break;
       }
+      return process;
+    },
+    async doTest(
+      id_test: Number,
+      company: String,
+      status: String,
+      job: Number
+    ) {
+      if (status == "apply")
+        this.$router.push({
+          name: "test",
+          params: {
+            company: company,
+            id: id_test,
+          },
+          data: { job },
+        });
     },
     async getListAppliedJob() {
       await axios
-        .get("https://api.quangdinh.me/applicants/candidate/get_applicant", {
+        .get("applicants/candidate/get_applicant", {
           params: { id_candidate: this.userId },
         })
         .then(async (response) => {
           this.listAppliedJob = response.data;
-          const detailPromise = this.listAppliedJob.map((item) =>
-            this.getJobDetail(item["job"])
-          );
+          const detailPromise = this.listAppliedJob.map((item) => {
+            this.listProcess.push(this.setStatus(item["status"]));
+            return this.getJobDetail(item["job"]);
+          });
           this.listDetailJob = await Promise.all(detailPromise);
           console.log(this.listAppliedJob);
           console.log(this.listDetailJob);
         })
         .catch((error) => console.log(error));
     },
-    async getJobDetail(id) {
-      const data = await axios
-        .get("https://api.quangdinh.me/jobs/jobs/" + id)
-        .then((response) => {
-          const updatedAt = new Date(response.data.updated_at);
-          const limit_do_test = response.data.limited_day_do_test;
-          const date_limit_do_test = new Date(
-            updatedAt.setDate(updatedAt.getDate() + limit_do_test)
-          );
-          this.date_limit.date_limit_do_test =
-            date_limit_do_test.toLocaleString();
-          return response.data;
-        });
+    async getJobDetail(id: Number) {
+      const data = await axios.get("jobs/jobs/" + id).then((response) => {
+        const updatedAt = new Date(response.data.updated_at);
+        const limit_do_test = response.data.limited_day_do_test;
+        const date_limit_do_test = new Date(
+          updatedAt.setDate(updatedAt.getDate() + limit_do_test)
+        );
+        this.date_limit.date_limit_do_test =
+          date_limit_do_test.toLocaleString();
+        return response.data;
+      });
       return data;
     },
   },
@@ -236,6 +289,24 @@ li.test-status-item {
 }
 li.test-status-item:after {
   border-left: 15px solid #d1d0d0;
+}
+li.test-status-item.test {
+  background: var(--bg-color);
+}
+li.test-status-item.test::after {
+  border-left: 15px solid var(--bg-color);
+}
+li.test-status-item.interview {
+  background: var(--bg-color-interview);
+}
+li.test-status-item.interview::after {
+  border-left: 15px solid var(--bg-color-interview);
+}
+li.test-status-item.result {
+  background: var(--bg-color-result);
+}
+li.test-status-item.result::after {
+  border-left: 15px solid var(--bg-color-result);
 }
 .notification {
   padding: 3px 4px;

@@ -74,7 +74,7 @@ export default defineComponent({
   methods: {
     async getListCompany() {
       await axios
-        .get("https://api.quangdinh.me/companies/companies")
+        .get("companies/companies")
         .then((response) => {
           this.listCompanies = response.data.results;
         })

@@ -49,7 +49,7 @@ export default defineComponent({
   methods: {
     async getTopCompanies() {
       await axios
-        .get("https://api.quangdinh.me/companies/companies/top_company")
+        .get("companies/companies/top_company")
         .then((response) => {
           this.topCompanies = response.data;
           console.log(this.$store.state.id);
@@ -60,7 +60,7 @@ export default defineComponent({
     },
     async getTotalJob() {
       await axios
-        .get("https://api.quangdinh.me/jobs/jobs/sum_jobs")
+        .get("jobs/jobs/sum_jobs")
         .then((response) => {
           this.totalCompany = response.data.count;
         })

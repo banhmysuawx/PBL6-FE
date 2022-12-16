@@ -115,7 +115,7 @@ export default defineComponent({
   methods: {
     async getListJobs() {
       await axios
-        .get("https://api.quangdinh.me/jobs/user/get_jobs")
+        .get("jobs/user/get_jobs")
         .then((response) => {
           const data = response.data;
           this.listJobs = data;

@@ -86,7 +86,7 @@ export default {
     DollarOutlined,
   },
   data() {
-    const userId = this.$store.state.user.id;
+    const userId = localStorage.getItem("id");
     return {
       listJobs: [],
       isFavorite: "red",
@@ -99,7 +99,7 @@ export default {
   methods: {
     async getListJobs() {
       await axios
-        .get("https://api.quangdinh.me/favorites/favorites/" + this.userId)
+        .get("favorites/favorites/" + this.userId)
         .then((response) => {
           const data = response.data;
           this.listJobs = data;
@@ -109,7 +109,7 @@ export default {
     },
     async deleteFavoriteJob(id, index) {
       await axios
-        .delete("https://api.quangdinh.me/favorites/favorites/delete/" + id)
+        .delete("favorites/favorites/delete/" + id)
         .then((response) => {
           this.listJobs.splice(index, 1);
         })
