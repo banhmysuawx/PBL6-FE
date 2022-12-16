@@ -1,3 +1,4 @@
+export const userId = 8;
 export interface Company {
   id: Number;
   category_name: string;
@@ -42,3 +43,32 @@ export const formatDate = (date: Date | string) => {
   console.log(date);
   return `${date}`.replace(/\.\d+/, "");
 };
+export interface Education {
+  certificate_degree_name: string;
+  major: string;
+  university_name?: string;
+  starting_date?: string;
+  completion_date?: string;
+  gpa?: number;
+  seeker: number;
+}
+export interface Experience {
+  is_current_job?: boolean;
+  job_title: string;
+  company_name?: string;
+  job_location?: string;
+  description?: string;
+  start_date?: string;
+  end_date?: string;
+  seeker: Number;
+}
+export interface Skill {
+  skill_name: string;
+  skill_level: string;
+  seeker: Number;
+}
+export interface Process {
+  status_do_test: string;
+  status_do_interview: string;
+  status_result: string;
+}

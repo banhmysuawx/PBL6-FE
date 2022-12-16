@@ -236,7 +236,6 @@ import Footer from "../layouts/footer.vue";
 import Job from "../components/job-view/Job.vue";
 import axios from "axios";
 import { Comment } from "../utils";
-import { user } from "../store/user";
 import {
   PhoneFilled,
   MailFilled,
@@ -247,7 +246,7 @@ export default defineComponent({
   name: "CompanyDetail",
   data() {
     const id: Number = Number(this.$route.params.id);
-    const userId = user().userId;
+    const userId = Number(localStorage.getItem("id"));
     const comment: Comment = { user: userId, company: id };
     const listComments: Comment[] = [];
     return {

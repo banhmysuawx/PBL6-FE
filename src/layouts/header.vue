@@ -49,7 +49,7 @@
               <span>Company</span>
             </router-link>
           </a-menu-item>
-          <a-sub-menu key="sub-history">
+          <a-sub-menu key="sub-history" v-if="userId">
             <template #title>History</template>
 
             <router-link :to="{ name: 'appliedJob' }">
@@ -59,6 +59,11 @@
               <a-menu-item key="favoriteJob">Favorite Job</a-menu-item>
             </router-link>
           </a-sub-menu>
+          <a-menu-item key="JobBoard" v-if="role != 'seeker'">
+            <router-link :to="{ name: 'JobBoard' }">
+              <span>Sign to Company</span>
+            </router-link>
+          </a-menu-item>
         </a-menu>
       </div>
       <div class="header-right">
@@ -105,6 +110,8 @@ export default defineComponent({
       categories: [],
       companies: [],
       routeSkill: [],
+      userId: this.$store.state.user.id,
+      role: this.$store.state.user.role,
     };
   },
   components: {
@@ -154,6 +161,7 @@ export default defineComponent({
   flex-grow: 1;
 }
 .header-component header.ant-layout-header.header {
+  justify-content: space-between;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -187,9 +195,6 @@ export default defineComponent({
   color: white;
   font-weight: 400;
   margin-left: 1.4rem;
-}
-.header-right {
-  margin-left: 35%;
 }
 .header-right .name {
   padding-right: 10px;

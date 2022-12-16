@@ -47,7 +47,8 @@
   font-size: 14px;
 }
 .job-component .content-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
 }
 .job-component .star {
   margin: auto 5px;
@@ -114,4 +115,12 @@ span.anticon {
 .city-and-date .date {
   text-align: right;
   color: #888686;
+}
+.job-component .favorite p {
+  color: #d8d8d8;
+  padding: 0 10px;
+  font-size: 30px;
+}
+.favorite p:hover {
+  color: red;
 }

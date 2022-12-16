@@ -3,7 +3,10 @@
     <a-card hoverable>
       <template #cover style="border: 1px solid #e9e9e9">
         <div class="job__logo">
-          <img alt="example" src="../../assets/logo2.png" />
+          <img
+            alt="example"
+            v-bind:src="`https://api.quangdinh.me` + job.company.image"
+          />
         </div>
       </template>
       <div class="content-container">
@@ -26,7 +29,9 @@
           </div>
         </div>
         <div class="city-and-date">
-          <div class="new"><p>New</p></div>
+          <!-- <div class="favorite">
+            <p :style="{ color: isFavorite }">❤</p>
+          </div> -->
           <div class="address">
             <p v-for="location in job.locations">
               {{ location.location_name }}
@@ -51,6 +56,7 @@ export default defineComponent({
     job: {
       type: Object as PropType<Job>,
     },
+    isFavorite: String,
   },
 });
 </script>

@@ -6,8 +6,61 @@
         <div class="applied-job-container">
           <div class="title">Favorite Jobs</div>
           <div class="favorite-jos">
-            <div class="list-job" v-for="job in listJobs">
-              <Job v-bind:job="job.job" />
+            <div class="list-job" v-for="(job, index) in listJobs">
+              <div class="job-component">
+                <a-card hoverable>
+                  <template #cover style="border: 1px solid #e9e9e9">
+                    <div class="job__logo">
+                      <img
+                        alt="example"
+                        v-bind:src="
+                          `https://api.quangdinh.me` + job.job.company.image
+                        "
+                      />
+                    </div>
+                  </template>
+                  <div class="content-container">
+                    <div class="job__content">
+                      <p class="job__title">
+                        {{ job.job.name }}
+                      </p>
+                      <div class="salary">
+                        <DollarOutlined />
+                        <p>{{ job.job.salary }}$</p>
+                      </div>
+                      <ul class="benefit">
+                        <li class="benefit-text">Hình thức làm việc hybird</li>
+                        <li class="benefit-text">Bảo hiểm 100% lương</li>
+                        <li class="benefit-text">
+                          Đài thọ 100% chí phí học tập cho CBNV
+                        </li>
+                      </ul>
+                      <div class="tag">
+                        <p v-for="skill in job.job.skills">{{ skill.name }}</p>
+                        <p v-if="job.job.category_name">
+                          {{ job.job.category_name }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="city-and-date">
+                      <div class="favorite">
+                        <p
+                          :style="{ color: isFavorite }"
+                          @click="deleteFavoriteJob(job.id, index)"
+                        >
+                          ❤
+                        </p>
+                      </div>
+                      <div class="address">
+                        <p v-for="location in job.job.locations">
+                          {{ location.location_name }}
+                        </p>
+                      </div>
+                      <div class="date">1d</div>
+                    </div>
+                  </div>
+                </a-card>
+              </div>
             </div>
           </div>
         </div>
@@ -22,6 +75,7 @@ import Header from "../layouts/header.vue";
 import Footer from "../layouts/footer.vue";
 import Job from "../components/job-view/Job.vue";
 import axios from "axios";
+import { DollarOutlined } from "@ant-design/icons-vue";
 export default {
   name: "FavoriteJob",
   components: {
@@ -29,10 +83,14 @@ export default {
     Header,
     Footer,
     Job,
+    DollarOutlined,
   },
   data() {
+    const userId = this.$store.state.user.id;
     return {
       listJobs: [],
+      isFavorite: "red",
+      userId,
     };
   },
   mounted() {
@@ -41,11 +99,19 @@ export default {
   methods: {
     async getListJobs() {
       await axios
-        .get("https://api.quangdinh.me/favorites/favorites/" + 8)
+        .get("https://api.quangdinh.me/favorites/favorites/" + this.userId)
         .then((response) => {
           const data = response.data;
           this.listJobs = data;
-          console.log(this.listJobs);
+          console.log(this.userId);
+        })
+        .catch((error) => console.log(error));
+    },
+    async deleteFavoriteJob(id, index) {
+      await axios
+        .delete("https://api.quangdinh.me/favorites/favorites/delete/" + id)
+        .then((response) => {
+          this.listJobs.splice(index, 1);
         })
         .catch((error) => console.log(error));
     },

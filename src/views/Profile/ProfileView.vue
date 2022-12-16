@@ -11,7 +11,7 @@
                   <div class="nav">
                     <a-tabs>
                       <a-tab-pane class="nav-item" key="1" tab="Profile">
-                        <empty-profile />
+                        <profile-component />
                       </a-tab-pane>
                       <a-tab-pane
                         class="nav-item"
@@ -39,6 +39,7 @@ import AddProfile from "../../components/AddProfile.vue";
 import AccountComponent from "../../components/AccountComponent.vue";
 import Header from "../../layouts/header.vue";
 import Footer from "../../layouts/footer.vue";
+import ProfileComponent from "../../components/profile/ProfileComponent.vue";
 export default {
   name: "ProfileView",
   components: {
@@ -47,6 +48,7 @@ export default {
     AccountComponent,
     Header,
     Footer,
+    ProfileComponent,
   },
 };
 </script>

@@ -65,7 +65,6 @@ import { RadioGroup, Radio } from "ant-design-vue";
 import { CheckCircleFilled } from "@ant-design/icons-vue";
 import axios from "axios";
 import { formatDate } from "../utils";
-import { user } from "../store/user";
 export default defineComponent({
   name: "Test",
   components: {
@@ -100,7 +99,7 @@ export default defineComponent({
         .catch((error) => console.log(error));
     },
     async onSubmit() {
-      const userId = user().userId;
+      const userId = localStorage.getItem("id");
       const data = {
         user_id: userId,
         questions: this.result,

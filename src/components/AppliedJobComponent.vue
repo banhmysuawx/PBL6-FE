@@ -82,7 +82,7 @@
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { defineComponent } from "vue";
 import axios from "axios";
-import { user } from "../store/user";
+import { Process } from "../utils";
 import {
   BellFilled,
   DollarOutlined,
@@ -97,23 +97,31 @@ export default defineComponent({
     ScheduleFilled,
   },
   data() {
-    const listDetailJob: any[] = [];
+    const userId = localStorage.getItem("id");
+    const listDetailJob = [];
     return {
+      userId,
       listAppliedJob: [],
       listDetailJob,
       date_limit: { date_limit_do_test: "", date_limit_interview: "" },
-    };
-  },
-  setup() {
-    const userId = user().userId;
-    return {
-      userId,
     };
   },
   mounted() {
     this.getListAppliedJob();
   },
   methods: {
+    setStatus(status1, status2, status3) {
+      const process: Process = {
+        status_do_test: status1,
+        status_do_interview: status2,
+        status_result: status1,
+      };
+      if (status2 != null) process.status_do_test = "2";
+      if (status3 != null) {
+        process.status_do_interview = "2";
+        process.status_do_test = "2";
+      }
+    },
     async getListAppliedJob() {
       await axios
         .get("https://api.quangdinh.me/applicants/candidate/get_applicant", {
@@ -130,7 +138,7 @@ export default defineComponent({
         })
         .catch((error) => console.log(error));
     },
-    async getJobDetail(id: Number) {
+    async getJobDetail(id) {
       const data = await axios
         .get("https://api.quangdinh.me/jobs/jobs/" + id)
         .then((response) => {

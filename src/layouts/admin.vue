@@ -95,7 +95,7 @@
     </a-layout>
   </a-layout>
 </template>
-<script>
+<script lang="ts">
 import Header from "../components/Header.vue";
 import { storeToRefs } from "pinia";
 import { useMenu } from "../store/use-menu";
