@@ -474,7 +474,6 @@ export default {
     SideBar,
     HeaderCompanyView,
   },
-
   async mounted() {
     const id = this.$store.state.company.id;
     await axios
@@ -495,7 +494,6 @@ export default {
       .catch((err) => {
         return err;
       });
-
     await axios
       .get(`/jobs/company/get_location?company_id=${id}`)
       .then((response) => {
@@ -504,7 +502,6 @@ export default {
       .catch((err) => {
         return err;
       });
-
     this.createCheckLocationInitial();
     await axios
       .get(`/jobs/company/get_skills?company_id=${id}`)
@@ -514,7 +511,6 @@ export default {
       .catch((err) => {
         return err;
       });
-
     this.createCheckSkillInitial();
   },
   methods: {
@@ -544,7 +540,7 @@ export default {
               dismissible: true,
               pauseOnHover: true,
               duration: 2000,
-              position: "bottom-right",
+              position: "top-right",
             });
         })
         .catch((err) => {
@@ -553,7 +549,6 @@ export default {
       this.dialogVisible1 = false;
       this.category_name = "";
       const id = this.$store.state.company.id;
-
       await axios
         .get(`/jobs/company/get_category_and_job?company_id=${id}`)
         .then((response) => {
@@ -577,7 +572,6 @@ export default {
           .catch((err) => {
             console.log("error");
           });
-
         this.dialogDelete = false;
         this.category_delete = {};
         toast({
@@ -586,7 +580,7 @@ export default {
           dismissible: true,
           pauseOnHover: true,
           duration: 2000,
-          position: "bottom-right",
+          position: "top-right",
         });
       }
     },
@@ -681,7 +675,7 @@ export default {
             dismissible: true,
             pauseOnHover: true,
             duration: 2000,
-            position: "bottom-right",
+            position: "top-right",
           });
           this.dialogVisible2 = false;
         })
@@ -704,7 +698,7 @@ export default {
           dismissible: true,
           pauseOnHover: true,
           duration: 2000,
-          position: "bottom-right",
+          position: "top-right",
         });
       });
     },
@@ -726,7 +720,7 @@ export default {
             dismissible: true,
             pauseOnHover: true,
             duration: 2000,
-            position: "bottom-right",
+            position: "top-right",
           });
         })
         .catch((err) => {
