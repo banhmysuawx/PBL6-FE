@@ -15,85 +15,59 @@
 
  
 </div>
-<el-menu-item index="0">
+<el-menu-item index="0" @click="Dashboard()">
     <el-icon><location /></el-icon>
     <span style="color: rgb(191, 203, 217)">Dashboard</span>
   </el-menu-item>
 
-  <el-menu-item index="1">
-    <router-link
-                class="my-2 btn btn-block text-left"
-                to="/job_board"
-    >
+  <el-menu-item index="1" @click="Jobboard()">
     <el-icon><location /></el-icon>
     <span style="color: rgb(191, 203, 217)">Job Board</span>
-  </router-link>
-
   </el-menu-item>
 
-  <el-menu-item index="2">
+  <el-menu-item index="2"  @click="JobManagement()">
     <el-icon><location /></el-icon>
-    <router-link
-                class="my-2 btn btn-block text-left"
-                to="/company/job"
-    >
     <span style="color: rgb(191, 203, 217)">Job Management</span>
-  </router-link>
   </el-menu-item>
 
 
-  <el-menu-item index="10">
+  <el-menu-item index="10"  @click="SkillManagement()">
     <el-icon><setting /></el-icon>
     <span style="color: rgb(191, 203, 217)">Skill Management</span>
   </el-menu-item>
 
-  <el-menu-item index="11">
+  <el-menu-item index="11"  @click="LocationManagement()">
     <el-icon><setting /></el-icon>
-    <router-link
-                class="my-2 btn btn-block text-left"
-                to="/company/location"
-    >
     <span style="color: rgb(191, 203, 217)">Location Management</span>
-  </router-link>
   </el-menu-item>
 
 
-  <el-menu-item index="3">
+  <el-menu-item index="3"  @click="InterviewCalendar()">
     <el-icon><Sunny /></el-icon>
-    <router-link
-                class="my-2 btn btn-block text-left"
-                to="/interview"
-    >
     <span style="color: rgb(191, 203, 217)">Interview Calendar</span>
-  </router-link>
   </el-menu-item>
 
-  <el-menu-item index="4">
+  <el-menu-item index="4"  @click="TestManagement()">
     <el-icon><Document /></el-icon>
     <span style="color: rgb(191, 203, 217)"><span class="content-menu-item">Test Management</span></span>
   </el-menu-item>
 
-  <el-menu-item index="5">
+  <el-menu-item index="5"  @click="CandidateManagement()">
     <el-icon><User /></el-icon>
-    <router-link
-                class="my-2 btn btn-block text-left"
-                to="/candidate"
-    >
     <span style="color: rgb(191, 203, 217)">Candidate Management</span>
-  </router-link>
   </el-menu-item>
 
-  <el-menu-item index="6">
+  <el-menu-item index="6"  @click="Information()">
     <el-icon><Calendar/></el-icon>
     <span style="color: rgb(191, 203, 217)">Information</span>
   </el-menu-item>
 
-  <el-menu-item index="7">
+  <el-menu-item index="7"  @click="Setting()">
     <el-icon><setting /></el-icon>
     <span style="color: rgb(191, 203, 217)">Setting</span>
   </el-menu-item>
 
-  <el-menu-item index="8">
+  <el-menu-item index="8"  @click="UserView()">
     <el-icon><setting /></el-icon>
     <span style="color: rgb(191, 203, 217)">User View</span>
   </el-menu-item>
@@ -115,7 +89,26 @@ export default {
   methods:{
     changeCollapse(){
       this.isCollapse = !this.isCollapse;
-    }
+    },
+    Dashboard(){
+      this.$router.push({ name: "company-dashboard" });
+    },
+    Jobboard(){
+      this.$router.push({ name: "JobBoard" });
+    },
+    JobManagement(){
+      this.$router.push({ name: "company-job" });
+    },
+    LocationManagement(){
+      this.$router.push({ name: "company-location" });
+    },
+    InterviewCalendar(){
+      this.$router.push({ name: "Interview" });
+    },
+    CandidateManagement(){
+      this.$router.push({ name: "Candidate" });
+    },
+    
   }
   
 }
@@ -126,5 +119,6 @@ export default {
 width: 280px;
 height: 1000px;
 position: relative;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2)
 }
 </style>
