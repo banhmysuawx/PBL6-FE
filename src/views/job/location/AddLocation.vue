@@ -320,38 +320,38 @@ export default {
         });
 
       await axios
-        .get(`/jobs/company/get_location?company_id=${id}`)
-        .then((response) => {
-          this.list_location = response.data;
-          toast({
-            message: "Create Location successful",
-            type: "is-success",
-            dismissible: true,
-            pauseOnHover: true,
-            duration: 2000,
-            position: "bottom-right",
-          });
-          this.is_create = false;
-          this.create_location.location_name = "";
-          this.create_location.country = "";
-          this.create_location.state = "";
-          this.create_location.city = "";
-          this.create_location.street_address = "";
-          this.create_location.zip = "";
-        })
-        .catch((err) => {
-          console.log(err);
-        }),
-        await axios
-          .get(`/jobs/locations/${this.location_choice.id}`)
-          .then((response) => {
-            this.location = response.data;
-            console.log(this.location);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-    },
+            .get(`/jobs/company/get_location?company_id=${id}`)
+            .then(response =>{
+              this.list_location = response.data
+              toast({
+                      message : 'Create Location successful',
+                      type :'is-success',
+                      dismissible : true,
+                      pauseOnHover :true,
+                      duration :2000,
+                      position :'top-right'
+                  })
+              this.is_create = false
+              this.create_location.location_name =''
+              this.create_location.country =''
+              this.create_location.state =''
+              this.create_location.city =''
+              this.create_location.street_address =''
+              this.create_location.zip =''
+            })
+            .catch(err=>{
+              console.log(err)
+            }),
+            await axios
+              .get(`/jobs/locations/${this.location_choice.id}`)
+              .then(response =>{
+                this.location = response.data
+                console.log(this.location)
+              })
+              .catch(err=>{
+              console.log(err)
+            })
+            }
   },
 };
 </script>

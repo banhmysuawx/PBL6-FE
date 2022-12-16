@@ -28,6 +28,7 @@
     "vuex": "^4.0.0"
   },
   "devDependencies": {
+    "@types/node": "^18.11.15",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-typescript": "~5.0.0",
