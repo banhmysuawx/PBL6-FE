@@ -36,7 +36,7 @@
     </template>
   </a-table>
 </template>
-<script>
+<script lang="ts">
 export default {
   name: "TableUser",
   setup() {

@@ -16,7 +16,7 @@
     </a-layout>
   </a-layout>
 </template>
-<script>
+<script lang="ts">
 import Header from "../components/Header.vue";
 import { defineComponent } from "vue";
 import SidebarComponent from "../components/SidebarComponent.vue";

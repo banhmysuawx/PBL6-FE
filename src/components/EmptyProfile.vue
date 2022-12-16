@@ -34,11 +34,11 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { CloudUploadOutlined, ProfileOutlined } from "@ant-design/icons-vue";
 </script>
 
-<script>
+<script lang="ts">
 export default {
   name: "EmptyProfile",
 };

@@ -52,7 +52,7 @@ export default defineComponent({
         .get("https://api.quangdinh.me/companies/companies/top_company")
         .then((response) => {
           this.topCompanies = response.data;
-          console.log(this.topCompanies);
+          console.log(this.$store.state.id);
         })
         .catch((error) => {
           console.log(error);

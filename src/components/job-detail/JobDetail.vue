@@ -32,11 +32,7 @@
     <div class="info">
       <WifiOutlined />
       <p>
-        {{
-          jobDetail.locations
-            ?.map((item: { location_name: string }) => item.location_name)
-            .join(", ")
-        }}
+        {{ jobDetail.locations?.map((item) => item.location_name).join(", ") }}
       </p>
     </div>
     <div class="info">
@@ -56,9 +52,9 @@
     </div>
   </div>
 </template>
-<script lang="ts">
+<script>
 import { Input, InputPassword, FormItem } from "ant-design-vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import {
   DollarOutlined,
   WifiOutlined,
@@ -67,8 +63,6 @@ import {
   UploadOutlined,
 } from "@ant-design/icons-vue";
 import axios from "axios";
-import { Job } from "../../utils";
-import { user } from "../../store/user";
 export default defineComponent({
   name: "JobDetail",
   components: {
@@ -82,7 +76,7 @@ export default defineComponent({
     FormItem,
   },
   data() {
-    const userId = user().userId;
+    const userId = this.$store.state.user.id;
     return {
       jobDetail: {},
       name: Number,
@@ -109,9 +103,11 @@ export default defineComponent({
   },
   methods: {
     showModal() {
+      console.log(localStorage.getItem("id"));
+      if (!localStorage.getItem("id")) this.$router.push({ name: "login" });
       this.visible = true;
     },
-    uploadFile(event: any) {
+    uploadFile(event) {
       this.file = event.target.files[0];
       console.log(this.file);
     },

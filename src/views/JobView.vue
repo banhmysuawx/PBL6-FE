@@ -62,7 +62,11 @@
                     <h1>{{ total }} Jobs for developers</h1>
                   </div>
                   <div class="list-job" v-for="job in listJobs">
-                    <Job v-bind:job="job.job" @click="onChange(job.job.id)" />
+                    <Job
+                      v-bind:job="job.job"
+                      v-bind:isFavorite="`red`"
+                      @click="onChange(job.job.id)"
+                    />
                   </div>
                 </div>
                 <div class="job-detail-box">

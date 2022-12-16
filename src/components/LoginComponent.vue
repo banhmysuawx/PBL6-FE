@@ -57,7 +57,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {
   Row,
   Col,
@@ -69,7 +69,7 @@ import {
 } from "ant-design-vue";
 </script>
 
-<script>
+<script lang="ts">
 import axios from "axios";
 export default {
   name: "LoginComponent",
@@ -122,13 +122,31 @@ export default {
         .then((response) => {
           const accessToken = response.data.tokens.access;
           localStorage.setItem("accessToken", accessToken);
-          console.log(response.data);
+          this.$store.commit("setAccessToken", accessToken);
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${accessToken}`;
           this.$router.push({ name: "home" });
         })
         .catch((error) => {
           console.log(error);
           this.$message.error("Username or password is incorrect");
         });
+
+      await axios
+        .get("https://api.quangdinh.me/auth/me")
+        .then((response) => {
+          const user = {
+            id: response.data.id,
+            username: response.data.username,
+            role: response.data.role,
+          };
+          this.$store.commit("setUser", user);
+          localStorage.setItem("id", user.id);
+          localStorage.setItem("username", user.username);
+          localStorage.setItem("role", user.role);
+        })
+        .catch((error) => error);
     },
   },
 };
