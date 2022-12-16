@@ -301,6 +301,7 @@ export default defineComponent({
         .catch((error) => console.log(error));
     },
     async createComment() {
+      if (!this.userId) this.$router.push({ name: "login" });
       await axios
         .post("reviews/reviews/create", this.comment)
         .then((response) => {
