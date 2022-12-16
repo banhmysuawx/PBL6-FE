@@ -116,7 +116,7 @@ export default defineComponent({
       console.log(localStorage.getItem("accessToken"));
       await axios
         .patch(
-          "https://api.quangdinh.me/auth/change-password",
+          "auth/change-password",
           {
             old_password: this.old_password,
             new_password: this.new_password,

@@ -1,19 +1,23 @@
 <template>
-    <div>
-      <!-- <el-button type="primary">Log In</el-button>
+  <div>
+    <!-- <el-button type="primary">Log In</el-button>
       <el-button type="default">Sign Up</el-button> -->
-      <span style="font-size:20px">Product VN Company</span>
-    </div>
-    
-  </template>
-  
-  <script>
-  export default {
-      name : "HeaderCompanyView",
-  }
-  </script>
-  <style>
-  .flex-grow {
-    flex-grow: 1;
-  }
-  </style>
+    <router-link :to="{ name: 'home' }">
+      <span style="font-size: 20px">User side</span>
+      <!-- <router-link :to="{ name: 'JobBoard' }">
+      <span style="font-size: 20px">Sign to Company</span> -->
+    </router-link>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "HeaderCompanyView",
+  components: {},
+};
+</script>
+<style>
+.flex-grow {
+  flex-grow: 1;
+}
+</style>

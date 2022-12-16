@@ -156,7 +156,7 @@ export default {
         return;
       }
       await axios
-        .post("https://api.quangdinh.me/auth/register", this.model)
+        .post("auth/register", this.model)
         .then((response) => {
           const data = response.data;
           console.log(data);

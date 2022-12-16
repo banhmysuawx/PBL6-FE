@@ -877,25 +877,24 @@ export default {
         .catch((err) => {});
       await axios
         .get(`/applicants/company/get_applicant?id_job=${this.id_job_current}`)
-        .then(response=>{
-            this.applicants = response.data
-            this.applicants_search = this.applicants
-            this.confirmFail = false
-            this.drawerDetailCandidate=false
-            toast({
-                      message : 'Mark Fail successful',
-                      type :'is-success',
-                      dismissible : true,
-                      pauseOnHover :true,
-                      duration :2000,
-                      position :'top-right'
-                  })
-          })
-          .catch(err =>{
-            console.log(err)
-          })
-          
-        },
+        .then((response) => {
+          this.applicants = response.data;
+          this.applicants_search = this.applicants;
+          this.confirmFail = false;
+          this.drawerDetailCandidate = false;
+          toast({
+            message: "Mark Fail successful",
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: "top-right",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
 
     async ChangePass() {
       const form = {
@@ -907,25 +906,24 @@ export default {
         .catch((err) => {});
       await axios
         .get(`/applicants/company/get_applicant?id_job=${this.id_job_current}`)
-        .then(response=>{
-            this.applicants = response.data
-            this.applicants_search = this.applicants
-            this.confirmPass = false
-            this.drawerDetailCandidate=false
-            toast({
-                      message : 'Mark Pass successful',
-                      type :'is-success',
-                      dismissible : true,
-                      pauseOnHover :true,
-                      duration :2000,
-                      position :'top-right'
-                  })
-          })
-          .catch(err =>{
-            console.log(err)
-          })
-          
-        },
+        .then((response) => {
+          this.applicants = response.data;
+          this.applicants_search = this.applicants;
+          this.confirmPass = false;
+          this.drawerDetailCandidate = false;
+          toast({
+            message: "Mark Pass successful",
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: "top-right",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
 
     showPeriodSchedule() {
       console.log(this.applicant_interview);
@@ -959,40 +957,44 @@ export default {
       this.applicant_choice = applicant;
     },
 
-        async CreateApplicantInterview(){
-          var data={}
-          if (this.applicant_interview.value_choice_set_schedule=="automate"){
-            data = {
-            applicant : this.applicant_choice.id,
-            choice_set_schedule_interview : this.applicant_interview.value_choice_set_schedule,
-            end_set_schedule_interview : this.applicant_interview.end_set_schedule_interview
-          }
-          } else {
-            data = {
-            applicant : this.applicant_choice.id,
-            choice_set_schedule_interview : this.applicant_interview.value_choice_set_schedule,
-            end_set_schedule_interview : this.applicant_interview.end_set_schedule_interview,
-            period_time_choice : this.period_to_schedule_choices
-          }
-          }
-          await axios
-          .post("/applicants/applicant-interview",data)
-          .then(response =>{
-            console.log(response.data)
-            toast({
-                      message : 'Create Interview Schedule Success',
-                      type :'is-success',
-                      dismissible : true,
-                      pauseOnHover :true,
-                      duration :2000,
-                      position :'top-right'
-                  })
-          this.isSetSchedule=false
-          })
-          .catch(err =>{
-            console.log(err)
-          })
-        },
+    async CreateApplicantInterview() {
+      var data = {};
+      if (this.applicant_interview.value_choice_set_schedule == "automate") {
+        data = {
+          applicant: this.applicant_choice.id,
+          choice_set_schedule_interview:
+            this.applicant_interview.value_choice_set_schedule,
+          end_set_schedule_interview:
+            this.applicant_interview.end_set_schedule_interview,
+        };
+      } else {
+        data = {
+          applicant: this.applicant_choice.id,
+          choice_set_schedule_interview:
+            this.applicant_interview.value_choice_set_schedule,
+          end_set_schedule_interview:
+            this.applicant_interview.end_set_schedule_interview,
+          period_time_choice: this.period_to_schedule_choices,
+        };
+      }
+      await axios
+        .post("/applicants/applicant-interview", data)
+        .then((response) => {
+          console.log(response.data);
+          toast({
+            message: "Create Interview Schedule Success",
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: "top-right",
+          });
+          this.isSetSchedule = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
 
     ChoicePeriod(index_parent, index_child) {
       console.log("choices");
@@ -1109,44 +1111,53 @@ export default {
         };
       }
 
-          await axios
-          .patch(`/applicants/applicant-interview/${this.applicant_interview.id}`,data)
-          .then(response =>{
-            console.log("update nhe")
-            console.log(response.data)
-            toast({
-                      message : 'Update Interview Schedule Success',
-                      type :'is-success',
-                      dismissible : true,
-                      pauseOnHover :true,
-                      duration :2000,
-                      position :'top-right'
-                  })
-          this.isSetSchedule=false
-          })
-          .catch(err =>{
-            console.log(err)
-          })
-        },
-        ChangeChoice(){
-          console.log("change choice")
-          console.log(this.applicant_interview.value_choice_set_schedule)
-          if (this.list_period_to_schedule.length > 0 && this.applicant_interview.value_choice_set_schedule=='manual'){
-            for (var i =0;i<this.list_period_to_schedule.length;i++){
-                  var check = []
-                  for (var k = 0;k<this.list_period_to_schedule[i].available.length;k++){
-                    check[k] = false
-                  }
-                  this.check_period_to_schedule[i] = check
-                }
+      await axios
+        .patch(
+          `/applicants/applicant-interview/${this.applicant_interview.id}`,
+          data
+        )
+        .then((response) => {
+          console.log("update nhe");
+          console.log(response.data);
+          toast({
+            message: "Update Interview Schedule Success",
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: "top-right",
+          });
+          this.isSetSchedule = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    ChangeChoice() {
+      console.log("change choice");
+      console.log(this.applicant_interview.value_choice_set_schedule);
+      if (
+        this.list_period_to_schedule.length > 0 &&
+        this.applicant_interview.value_choice_set_schedule == "manual"
+      ) {
+        for (var i = 0; i < this.list_period_to_schedule.length; i++) {
+          var check = [];
+          for (
+            var k = 0;
+            k < this.list_period_to_schedule[i].available.length;
+            k++
+          ) {
+            check[k] = false;
           }
+          this.check_period_to_schedule[i] = check;
         }
-      },
-  };
-  </script>
-  
-  <style lang="scss">
-  @import  "../../../assets/css/index.css";
-  @import "./index.scss"
+      }
+    },
+  },
+};
+</script>
 
-  </style>
+<style lang="scss">
+@import "../../../assets/css/index.css";
+@import "./index.scss";
+</style>

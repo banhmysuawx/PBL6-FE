@@ -273,7 +273,7 @@ export default defineComponent({
   methods: {
     async getJobByCompany() {
       await axios
-        .get("https://api.quangdinh.me/jobs/company/get_jobs", {
+        .get("jobs/company/get_jobs", {
           params: { company_id: this.id },
         })
         .then((response) => {
@@ -283,7 +283,7 @@ export default defineComponent({
     },
     async getCompanyDetails() {
       await axios
-        .get("https://api.quangdinh.me/companies/companies/" + this.id)
+        .get("companies/companies/" + this.id)
         .then((response) => {
           this.company_detail = response.data;
           response.data.reviews?.map((item: any) => {
@@ -302,7 +302,7 @@ export default defineComponent({
     },
     async createComment() {
       await axios
-        .post("https://api.quangdinh.me/reviews/reviews/create", this.comment)
+        .post("reviews/reviews/create", this.comment)
         .then((response) => {
           const newComment: Comment = response.data;
           this.listComments.push(newComment);

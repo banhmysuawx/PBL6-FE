@@ -59,7 +59,8 @@
               <a-menu-item key="favoriteJob">Favorite Job</a-menu-item>
             </router-link>
           </a-sub-menu>
-          <a-menu-item key="JobBoard" v-if="role != 'seeker'">
+
+          <a-menu-item key="JobBoard" v-if="role && role != 'seeker'">
             <router-link :to="{ name: 'JobBoard' }">
               <span>Sign to Company</span>
             </router-link>
@@ -74,7 +75,7 @@
           <a-menu-item key="1">
             <BellFilled />
           </a-menu-item>
-          <a-sub-menu key="sub1-2" title="Tuyet Nguyen">
+          <a-sub-menu key="sub1-2" v-bind:title="username">
             <template #icon>
               <a-avatar size="{{50}}">
                 <template #icon><UserOutlined /></template>
@@ -86,7 +87,10 @@
               </router-link>
             </a-menu-item>
             <a-menu-item key="2">Favorite Job</a-menu-item>
-            <a-menu-item key="3">Logout</a-menu-item>
+            <a-menu-item key="3" v-if="userId" @click="logout"
+              >Logout</a-menu-item
+            >
+            <a-menu-item key="4" v-else @click="login">Login</a-menu-item>
           </a-sub-menu>
         </a-menu>
       </div>
@@ -105,13 +109,15 @@ import axios from "axios";
 export default defineComponent({
   name: "Header",
   data() {
+    console.log(localStorage.getItem("id"));
     return {
       skills: [],
       categories: [],
       companies: [],
       routeSkill: [],
-      userId: this.$store.state.user.id,
-      role: this.$store.state.user.role,
+      userId: localStorage.getItem("id"),
+      role: localStorage.getItem("role"),
+      username: localStorage.getItem("username"),
     };
   },
   components: {
@@ -125,22 +131,29 @@ export default defineComponent({
   },
   methods: {
     async getInfoJob() {
-      const categoryPromise = axios
-        .get("https://api.quangdinh.me/jobs/categories")
-        .then((response) => {
-          this.categories = response.data.results;
-        });
-      const skillPromise = axios
-        .get("https://api.quangdinh.me/jobs/skills")
-        .then((response) => {
-          this.skills = response.data.results;
-        });
+      const categoryPromise = axios.get("jobs/categories").then((response) => {
+        this.categories = response.data.results;
+      });
+      const skillPromise = axios.get("jobs/skills").then((response) => {
+        this.skills = response.data.results;
+      });
       const companyPromise = axios
-        .get("https://api.quangdinh.me/companies/companies")
+        .get("companies/companies")
         .then((response) => {
           this.companies = response.data.results;
         });
       await Promise.all([skillPromise, categoryPromise, companyPromise]);
+    },
+    async logout() {
+      axios.defaults.headers.common["Authorization"] = "";
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("id");
+      localStorage.removeItem("role");
+      localStorage.removeItem("username");
+      this.$router.push("/login");
+    },
+    async login() {
+      this.$router.push("/login");
     },
   },
 });

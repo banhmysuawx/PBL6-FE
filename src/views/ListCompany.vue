@@ -66,7 +66,7 @@ export default defineComponent({
   methods: {
     async getListCompany() {
       await axios
-        .get("https://api.quangdinh.me/companies/companies")
+        .get("companies/companies")
         .then((response) => {
           const listCompany = response.data.results;
           this.listCompany = listCompany;

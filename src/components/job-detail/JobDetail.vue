@@ -76,7 +76,7 @@ export default defineComponent({
     FormItem,
   },
   data() {
-    const userId = this.$store.state.user.id;
+    const userId = localStorage.getItem("id");
     return {
       jobDetail: {},
       name: Number,
@@ -103,7 +103,6 @@ export default defineComponent({
   },
   methods: {
     showModal() {
-      console.log(localStorage.getItem("id"));
       if (!localStorage.getItem("id")) this.$router.push({ name: "login" });
       this.visible = true;
     },
@@ -114,7 +113,7 @@ export default defineComponent({
     async getJobDetail() {
       console.log(this.id);
       await axios
-        .get("https://api.quangdinh.me/jobs/user/" + this.id + "/job")
+        .get("jobs/user/" + this.id + "/job")
         .then((response) => {
           this.jobDetail = response.data.job;
           console.log(response.data);
@@ -129,7 +128,7 @@ export default defineComponent({
         information_added: this.info,
       };
       await axios
-        .post("https://api.quangdinh.me/applicants/applicant", form, {
+        .post("applicants/applicant", form, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -146,7 +145,7 @@ export default defineComponent({
         job: this.id,
       };
       await axios
-        .post("https://api.quangdinh.me/favorites/favorites/create", input)
+        .post("favorites/favorites/create", input)
         .then((response) => {
           this.isFavorite = "red";
         })

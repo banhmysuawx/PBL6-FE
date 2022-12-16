@@ -72,6 +72,9 @@ export default defineComponent({
     Radio,
     CheckCircleFilled,
   },
+  props: {
+    job: Number,
+  },
   data() {
     return {
       data: [],
@@ -116,6 +119,7 @@ export default defineComponent({
         })
         .catch((error) => console.log(error));
     },
+    async changeStatus(result: Number) {},
   },
 });
 </script>
