@@ -128,14 +128,14 @@ export default {
         return this.errors.push("Email is invalid");
       await axios
         .post("auth/login", this.model)
-        .then((response) => {
+        .then(async (response) => {
           const accessToken = response.data.tokens.access;
           localStorage.setItem("accessToken", accessToken);
           this.$store.commit("setAccessToken", accessToken);
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${accessToken}`;
-          this.getInfo();
+          await this.getInfo();
           this.$router.push({ name: "home" });
         })
         .catch((error) => {
