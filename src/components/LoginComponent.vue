@@ -1,10 +1,7 @@
 <template>
   <div class="main-auth">
     <div class="login-right">
-      <img
-        src="https://media.talentprise.com/blog/wp-content/uploads/2022/03/07183843/Job-Seeker4.svg"
-        alt=""
-      />
+      <img src="../assets/Job-Seeker4.svg" alt="" />
     </div>
     <!-- <hr class="veritcal" /> -->
     <div class="login-left">
