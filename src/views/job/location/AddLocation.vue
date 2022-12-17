@@ -263,7 +263,7 @@ export default {
     SideBar,
     HeaderCompanyView,
   },
-  mounted() {
+  created() {
     const id = this.$store.state.company.id;
     axios
       .get(`/jobs/company/get_location?company_id=${id}`)

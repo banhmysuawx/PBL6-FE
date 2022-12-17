@@ -39,7 +39,7 @@ export default {
     HeaderCompanyView,
     FullCalendar,
   },
-  mounted() {
+  created() {
     const id = this.$store.state.company.id;
     axios
       .get(`/applicants/company/applicant-interview/get_event?id_company=${id}`)
