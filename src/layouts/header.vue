@@ -109,7 +109,7 @@ import axios from "axios";
 export default defineComponent({
   name: "Header",
   data() {
-    console.log(localStorage.getItem("id"));
+    console.log(localStorage.getItem("role"));
     return {
       skills: [],
       categories: [],

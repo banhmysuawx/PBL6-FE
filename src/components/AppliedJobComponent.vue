@@ -84,10 +84,27 @@
           <ScheduleFilled /> Test Schedule {{ date_limit.date_limit_do_test }}
         </div>
         <div class="test">
-          <ScheduleFilled /> Interview Schedule
+          <ScheduleFilled @click="showModal" /> Interview Schedule
           {{ date_limit.date_limit_interview }}
         </div>
       </div>
+      <a-modal
+        v-model:visible="visible"
+        title="Time Interview"
+        @ok="handleOk"
+        style="width: fit-content !important"
+      >
+        <div class="date-component">
+          <div class="title">{{ day }}</div>
+        </div>
+        <a-checkbox-group>
+          <a-row>
+            <!-- <a-col :span="8" v-for="item in available"> -->
+            <!-- <a-checkbox v-bind:value="item.start">{{ item }}</a-checkbox> -->
+            <!-- </a-col> -->
+          </a-row>
+        </a-checkbox-group>
+      </a-modal>
     </div>
     <!-- </router-link> -->
   </div>
@@ -95,9 +112,9 @@
 
 <script lang="ts">
 import { DeleteOutlined } from "@ant-design/icons-vue";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import axios from "axios";
-import { Process } from "../utils";
+import { Process, userId } from "../utils";
 import {
   BellFilled,
   DollarOutlined,
@@ -118,8 +135,12 @@ export default defineComponent({
     return {
       userId,
       listAppliedJob: [],
+      available: [],
       listDetailJob,
       listProcess,
+      listTime: [],
+      visible: false,
+      day: "20/12/2022",
       date_limit: { date_limit_do_test: "", date_limit_interview: "" },
     };
   },
@@ -127,6 +148,16 @@ export default defineComponent({
     this.getListAppliedJob();
   },
   methods: {
+    showModal() {
+      // this.getTimeInterview();
+      // this.available();
+      this.visible = true;
+    },
+
+    handleOk(e: MouseEvent) {
+      console.log(e);
+      this.visible = false;
+    },
     setStatus(status) {
       const process: Process = {
         status_do_test: "#e9e9e9",
@@ -135,9 +166,9 @@ export default defineComponent({
       };
       switch (status) {
         case "apply":
+        case "test":
           process.status_do_test = "#f4e25e";
           break;
-        case "test":
         case "set_schedule":
         case "interview_pending":
         case "schedule_interview":
@@ -160,13 +191,18 @@ export default defineComponent({
       }
       return process;
     },
+    available() {
+      for (let i = 1; i <= 23; i++) {
+        this.available.push(`${i}:00 : ${i + 1}:00`);
+      }
+    },
     async doTest(
       id_test: Number,
       company: String,
       status: String,
       job: Number
     ) {
-      if (status == "apply")
+      if (status == "apply" || status == "test")
         this.$router.push({
           name: "test",
           params: {
@@ -205,6 +241,18 @@ export default defineComponent({
         return response.data;
       });
       return data;
+    },
+    async getTimeInterview() {
+      axios
+        .get(
+          "https://api.quangdinh.me/applicants/candidate/get_times_interview",
+          { params: { id_candidate: 30 } }
+        )
+        .then((response) => {
+          this.listTime = response.data;
+          console.log(this.listTime);
+        })
+        .catch((error) => error);
     },
   },
 });
