@@ -15,6 +15,9 @@ import ListCompany from "../views/ListCompany.vue";
 import CompanyDetail from "../views/CompanyDetail.vue";
 import admin from "./admin";
 import FavoriteJob from "../views/FavoriteJob.vue";
+import ShowQuizz from "../views/quizz/ShowQuizz.vue"
+import CreateQuizz from "../views/quizz/CreateQuizz.vue"
+
 const routes = [
   {
     path: "/",
@@ -46,6 +49,16 @@ const routes = [
     path: "/company/job",
     name: "company-job",
     component: ViewJob,
+  },
+  {
+    path: "/company/quizz",
+    name: "company-quizz",
+    component: ShowQuizz,
+  },
+  {
+    path: "/company/create-quizz",
+    name: "create-quizz",
+    component: CreateQuizz,
   },
   {
     path: "/company/location",
