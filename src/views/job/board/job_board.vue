@@ -745,7 +745,7 @@ export default {
       period_to_schedule_choices: [],
     };
   },
-  async mounted() {
+  async created() {
     const id = this.$store.state.company.id;
 
     await axios
