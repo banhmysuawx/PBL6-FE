@@ -28,6 +28,7 @@ import Header from "../layouts/header.vue";
 import Footer from "../layouts/footer.vue";
 import TopCompany from "../components/company/TopCompany.vue";
 import PageHeader from "../components/PageHeader.vue";
+import { openNotification } from "../utils";
 export default defineComponent({
   name: "HomeView",
   components: {
@@ -52,7 +53,7 @@ export default defineComponent({
         .get("companies/companies/top_company")
         .then((response) => {
           this.topCompanies = response.data;
-          console.log(this.$store.state.id);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);

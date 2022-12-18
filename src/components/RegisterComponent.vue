@@ -159,7 +159,7 @@ export default {
         .post("auth/register", this.model)
         .then((response) => {
           const data = response.data;
-          console.log(data);
+          this.$route.push({ name: "login" });
         })
         .catch((error) => {
           console.log(error);

@@ -70,7 +70,6 @@ export default defineComponent({
         .then((response) => {
           const listCompany = response.data.results;
           this.listCompany = listCompany;
-          console.log(listCompany.image);
         })
         .catch((error) => {
           console.log(error);

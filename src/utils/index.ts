@@ -1,4 +1,5 @@
 export const userId = 8;
+import { notification } from "ant-design-vue";
 export interface Company {
   id: Number;
   category_name: string;
@@ -21,15 +22,15 @@ export interface Job {
   locations_name: string[];
 }
 export const status = {
-  1: "apply",
-  2: "test",
-  3: "set_schedule",
-  4: "interview_pending",
-  5: "schedule_interview",
-  6: "cancel_interview",
-  7: "interview_complete",
-  8: "complete",
-  9: "incomplete",
+  apply: "waiting for a reply from company",
+  test: "Please do test",
+  set_schedule: "Set schedule",
+  interview_pending: "waiting for the scheduling interview from company",
+  schedule_interview: "Please schedule interview",
+  cancel_interview: "Cancel interview",
+  interview_complete: "Interview complete",
+  complete: "Pass",
+  incomplete: "Fail",
 };
 export interface Comment {
   rating?: Number;
@@ -68,7 +69,21 @@ export interface Skill {
   seeker: Number;
 }
 export interface Process {
+  status_do_apply: string;
   status_do_test: string;
   status_do_interview: string;
   status_result: string;
 }
+export const formatTime = (date: string) => {
+  return new Date(date).toLocaleDateString("sv-SE");
+};
+export const openNotification = (message: string) => {
+  notification.open({
+    message: "API error",
+    description: message,
+    style: {
+      width: "600px",
+      marginLeft: `${335 - 600}px`,
+    },
+  });
+};

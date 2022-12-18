@@ -2,11 +2,12 @@
   <div class="list-job">
     <div class="container">
       <div class="list-job-content">
-        <div class="list-job-wrapper">
+        <empty-applied v-if="data.length == 0" />
+        <div class="list-job-wrapper" v-else>
           <div class="list-job-info-box">
             <div class="test-title">
               <h1>{{ data.name }}</h1>
-              <p class="company-name">Company: Paradox</p>
+              <!-- <p class="company-name">Company: Paradox</p> -->
               <p class="time-limit">Time limit: {{ data.time_limit }}</p>
               <div class="countdown">
                 <a-statistic-countdown
@@ -64,16 +65,15 @@ import { defineComponent } from "vue";
 import { RadioGroup, Radio } from "ant-design-vue";
 import { CheckCircleFilled } from "@ant-design/icons-vue";
 import axios from "axios";
-import { formatDate } from "../utils";
+import { formatDate, openNotification } from "../utils";
+import EmptyApplied from "./EmptyApplied.vue";
 export default defineComponent({
   name: "Test",
   components: {
     RadioGroup,
     Radio,
     CheckCircleFilled,
-  },
-  props: {
-    job: Number,
+    EmptyApplied,
   },
   data() {
     return {
@@ -82,6 +82,8 @@ export default defineComponent({
       result: [],
       time_start: new Date().toISOString(),
       id: this.$route.params.id,
+      userId: Number(localStorage.getItem("id")),
+      job: this.$route.query.job,
     };
   },
   mounted() {
@@ -90,7 +92,7 @@ export default defineComponent({
   methods: {
     async getTest() {
       await axios
-        .get("https://api-exam.quangdinh.me/api/v1/test/" + this.id)
+        .get("https://api-exam.quangdinh.me/api/v1/test/" + 1)
         .then((response) => {
           const data = response.data[0];
           this.data = data;
@@ -102,6 +104,7 @@ export default defineComponent({
         .catch((error) => console.log(error));
     },
     async onSubmit() {
+      const token = axios.defaults.headers.common["Authorization"];
       const userId = localStorage.getItem("id");
       const data = {
         user_id: userId,
@@ -110,16 +113,27 @@ export default defineComponent({
         time_start: formatDate(this.time_start),
       };
       await axios
-        .post(
-          "https://api-exam.quangdinh.me/api/v1/test/" + this.id + "/doing",
-          data
-        )
+        .post("https://api-exam.quangdinh.me/api/v1/test/" + 1 + "/doing", data)
         .then((response) => {
+          const result = response.data.data?.result;
+          if (result) this.doneTest(result);
           this.$router.push({ name: "appliedJob" });
         })
         .catch((error) => console.log(error));
+      // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     },
-    async changeStatus(result: Number) {},
+    async doneTest(result: Number) {
+      const input = {
+        job: this.job,
+        user: this.userId,
+        result,
+      };
+      console.log(input);
+      await axios
+        .patch("applicants/candidate/done_test", input)
+        .then((response) => console.log(response.data.msg))
+        .catch((error) => console.log(error));
+    },
   },
 });
 </script>

@@ -110,6 +110,7 @@ export default {
   -webkit-line-clamp: 2;
   height: 40px;
 }
+.nav .ant-tabs-content-holder,
 .empty-component .ant-tabs-content-holder {
   overflow-y: scroll;
   height: 650px;

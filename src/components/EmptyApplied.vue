@@ -1,13 +1,13 @@
 <template>
   <div class="empty-applied-job">
     <img src="../assets/cart_empty_icon.png" alt="" />
-    <div class="empty-applied__text">You have 0 applied job</div>
-    <div class="empty-applied_description">
+    <div class="empty-applied__text">Empty</div>
+    <!-- <div class="empty-applied_description">
       <p>You have not applied for any jobs yet!</p>
     </div>
     <div class="empty-applied__button">
       <a-button class="btnLogin">Applied Now</a-button>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
