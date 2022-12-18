@@ -42,7 +42,9 @@
                   />
                 </div>
                 <FormItem>
-                  <a href="#" name="forgot-password-text">Forgot Password</a>
+                  <a href="/register" name="forgot-password-text"
+                    >Register now</a
+                  >
                 </FormItem>
                 <FormItem>
                   <div class="frm_btns">

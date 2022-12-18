@@ -7,57 +7,76 @@
           <a><PlusCircleOutlined @click="showModal" /></a>
         </div>
       </div>
-      <div class="profile-item__content">
+      <div class="profile-item__content" v-for="education in listEducations">
         <div class="content-title">
           <div class="content-title-bar">
-            Ce + major
+            {{ education.certificate_degree_name }} - {{ education.major }}
             <div class="content-title-bar__icon">
               <a><EditOutlined @click="showModal" /></a>
               <a><DeleteOutlined /></a>
             </div>
           </div>
-          <p>1/1/2020 - 1/7/2020</p>
-          <p>DUT</p>
-          <p>GPA</p>
+          <p>{{ education.starting_date }} - {{ education.completion_date }}</p>
+          <p v-if="education.university_name">
+            {{ education.university_name }}
+          </p>
+          <p v-if="education.gpa">GPA: {{ education.gpa }}</p>
         </div>
       </div>
       <a-modal
         v-model:visible="visible"
         title="Add Education"
-        @ok="handleOk"
+        @ok="createEducation"
         style="width: fit-content !important"
       >
-        <a-form class="profile-item__form">
+        <a-form class="profile-item__form" :model="education">
           <FormItem name="major" label="Major">
-            <Input id="major" placeholder="Your major name"></Input>
+            <Input
+              id="major"
+              placeholder="Your major name"
+              v-model:value="education.major"
+            ></Input>
           </FormItem>
           <FormItem name="certificate" label="Certificate Degree Name">
             <Input
               id="certificate"
               placeholder="Certificate Degree Name"
+              v-model:value="education.certificate_degree_name"
             ></Input>
           </FormItem>
           <FormItem name="university" label="University Name">
-            <Input id="university" placeholder="University Name"></Input>
+            <Input
+              id="university"
+              placeholder="University Name"
+              v-model:value="education.university_name"
+            ></Input>
           </FormItem>
           <FormItem name="start" label="Starting Date">
-            <DatePicker
+            <a-date-picker
               style="width: 280px; height: 40px; border: 1px s"
               show-time
               type="date"
               placeholder="Starting Date"
+              v-model:value="education.starting_date"
+              format="YYYY-MM-DD"
             />
           </FormItem>
           <FormItem name="complete" label="Completion Date">
-            <DatePicker
+            <a-date-picker
               style="width: 280px; height: 40px; border: 1px s"
               show-time
               type="date"
               placeholder="Completion Date"
+              v-model:value="education.completion_date"
+              format="YYYY-MM-DD"
             />
           </FormItem>
           <FormItem name="gpa" label="GPA">
-            <Input id="gpa" placeholder="GPA"></Input>
+            <Input
+              id="gpa"
+              placeholder="GPA"
+              v-model:value="education.gpa"
+            ></Input>
           </FormItem>
         </a-form>
       </a-modal>
@@ -69,38 +88,56 @@
           <a><PlusCircleOutlined @click="showModal2" /></a>
         </div>
       </div>
-      <div class="profile-item__content">
+      <div class="profile-item__content" v-for="experience in listExperiences">
         <div class="content-title">
           <div class="content-title-bar">
-            Ce + major
+            {{ experience.job_title }}
             <div class="content-title-bar__icon">
               <a><EditOutlined @click="showModal2" /></a>
               <a><DeleteOutlined /></a>
             </div>
           </div>
-          <p>1/1/2020 - 1/7/2020</p>
-          <p>DUT</p>
-          <p>GPA</p>
+          <p>{{ experience.start_date }} - {{ experience.end_date }}</p>
+          <span v-if="experience.company">{{ experience.company }} - </span>
+          <span v-if="experience.job_location">{{
+            experience.job_location
+          }}</span>
         </div>
       </div>
       <a-modal
         v-model:visible="visible2"
         title="Add Experience"
-        @ok="handleOk2"
+        @ok="createExperience"
         style="width: fit-content !important"
       >
-        <a-form class="profile-item__form">
+        <a-form class="profile-item__form" :model="experience">
           <FormItem name="title" label="Job Name">
-            <Input id="title" placeholder="Job Name"></Input>
+            <Input
+              id="title"
+              placeholder="Job Name"
+              v-model:value="experience.job_title"
+            ></Input>
           </FormItem>
           <FormItem name="company" label="Company Name">
-            <Input id="company" placeholder="Company Name"></Input>
+            <Input
+              id="company"
+              placeholder="Company Name"
+              v-model:value="experience.company_name"
+            ></Input>
           </FormItem>
           <FormItem name="location" label="Job Location">
-            <Input id="location" placeholder="Job Location"></Input>
+            <Input
+              id="location"
+              placeholder="Job Location"
+              v-model:value="experience.job_location"
+            ></Input>
           </FormItem>
           <FormItem name="description" label="Description">
-            <Input id="description" placeholder="Description"></Input>
+            <Input
+              id="description"
+              placeholder="Description"
+              v-model:value="experience.description"
+            ></Input>
           </FormItem>
           <FormItem name="start" label="Starting Date">
             <DatePicker
@@ -108,6 +145,8 @@
               show-time
               type="date"
               placeholder="Starting Date"
+              v-model:value="experience.start_date"
+              format="YYYY-MM-DD"
             />
           </FormItem>
           <FormItem name="complete" label="Completion Date">
@@ -116,6 +155,8 @@
               show-time
               type="date"
               placeholder="Completion Date"
+              v-model:value="experience.end_date"
+              format="YYYY-MM-DD"
             />
           </FormItem>
         </a-form>
@@ -128,30 +169,38 @@
           <a><PlusCircleOutlined @click="showModal1" /></a>
         </div>
       </div>
-      <div class="profile-item__content">
+      <div class="profile-item__content" v-for="skill in listSkills">
         <div class="content-title">
           <div class="content-title-bar">
-            Skill
+            {{ skill.skill_name }}
             <div class="content-title-bar__icon">
               <a><EditOutlined @click="showModal2" /></a>
               <a><DeleteOutlined /></a>
             </div>
           </div>
-          <p>Level</p>
+          <p>Level: {{ skill.skill_level }}</p>
         </div>
       </div>
       <a-modal
         v-model:visible="visible1"
         title="Add Experience"
-        @ok="handleOk1"
+        @ok="createSkill"
         style="width: fit-content !important"
       >
-        <a-form class="profile-item__form">
+        <a-form class="profile-item__form" :model="skill">
           <FormItem name="skill-name" label="Skill Name">
-            <Input id="skill-name" placeholder="Skill Name"></Input>
+            <Input
+              id="skill-name"
+              placeholder="Skill Name"
+              v-model:value="skill.skill_name"
+            ></Input>
           </FormItem>
           <FormItem name="skill-level" label="Skill Level">
-            <Input id="skill-level" placeholder="Skill Level"></Input>
+            <Input
+              id="skill-level"
+              placeholder="Skill Level"
+              v-model:value="skill.skill_level"
+            ></Input>
           </FormItem>
         </a-form>
       </a-modal>
@@ -167,8 +216,9 @@ import {
   DeleteOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons-vue";
-import { Education, Experience, Skill } from "../../utils";
+import { Education, Experience, formatTime, Skill } from "../../utils";
 import axios from "axios";
+export { formatTime } from "../../utils";
 export default defineComponent({
   name: "ProfileComponent",
   components: {
@@ -181,16 +231,28 @@ export default defineComponent({
     PlusCircleOutlined,
   },
   data() {
-    const userId = 8;
+    const userId = Number(localStorage.getItem("id"));
     const education: Education = {
       certificate_degree_name: "",
       major: "",
-      seeker: userId,
+      university_name: "",
+      starting_date: "",
+      completion_date: "",
+      gpa: 0,
+      seeker: 0,
     };
     const listEducations: Education[] = [];
-    const experience: Experience = { job_title: "", seeker: userId };
+    const experience: Experience = {
+      job_title: "",
+      company_name: "",
+      job_location: "",
+      description: "",
+      start_date: "",
+      end_date: "",
+      seeker: 0,
+    };
     const listExperiences: Experience[] = [];
-    const skill: Skill = { skill_name: "", skill_level: "", seeker: userId };
+    const skill: Skill = { skill_name: "", skill_level: "", seeker: 0 };
     const listSkills: Skill[] = [];
     return {
       userId,
@@ -200,6 +262,7 @@ export default defineComponent({
       listExperiences,
       skill,
       listSkills,
+      seeker: 0,
     };
   },
   setup() {
@@ -211,66 +274,108 @@ export default defineComponent({
       visible1.value = true;
     };
 
-    const handleOk1 = (e: MouseEvent) => {
-      console.log(e);
-      visible1.value = false;
-    };
     const showModal2 = () => {
       visible2.value = true;
-    };
-
-    const handleOk2 = (e: MouseEvent) => {
-      console.log(e);
-      visible2.value = false;
     };
     const showModal = () => {
       visible.value = true;
     };
-
-    const handleOk = (e: MouseEvent) => {
-      console.log(e);
-      visible.value = false;
-    };
     return {
       visible,
       showModal,
-      handleOk,
       visible1,
       showModal1,
-      handleOk1,
       visible2,
       showModal2,
-      handleOk2,
     };
   },
   mounted() {
-    this.getProfile();
+    // this.getProfile();
+    this.getInfo();
   },
   methods: {
     async getProfile() {
-      await axios
+      let profile = await axios
         .get("seekers/candidate-profile/get_profile", {
-          params: { id_candidate: 8 },
+          params: { id_candidate: this.userId },
         })
-        .then((response) => console.log(response.data));
+        .then((response) => response.data);
+      if (!profile) {
+        const input = {
+          first_name: "Nguyen",
+          last_name: "Tuyet",
+          user: this.userId,
+        };
+        profile = await axios
+          .post("seekers/profile", input)
+          .then((response) => response.data)
+          .catch((error) => error);
+      }
+      this.seeker = profile.id;
     },
     async createEducation() {
+      this.education.seeker = this.seeker;
+      this.education.starting_date = formatTime(this.education.starting_date);
+      this.education.completion_date = formatTime(
+        this.education.completion_date
+      );
       await axios
         .post("seekers/educations", this.education)
         .then((response) => this.listEducations.push(this.education))
         .catch((error) => error);
+      this.visible = false;
     },
+
     async createExperience() {
+      this.experience.seeker = this.seeker;
+      this.experience.start_date = formatTime(this.experience.start_date);
+      this.experience.end_date = formatTime(this.experience.end_date);
       await axios
-        .post("seekers/experiences", this.experience)
+        .post("seekers/expirences", this.experience)
         .then((response) => this.listExperiences.push(this.experience))
         .catch((error) => error);
+      this.visible2 = false;
     },
+
     async createSkill() {
+      this.skill.seeker = this.seeker;
       await axios
         .post("seekers/skills", this.skill)
         .then((response) => this.listSkills.push(this.skill))
         .catch((error) => error);
+      this.visible1 = false;
+    },
+
+    async getInfo() {
+      await axios
+        .get("seekers/candidate-profile/get_profile", {
+          params: { id_candidate: this.userId },
+        })
+        .then((response) => {
+          const data = response.data;
+          this.seeker = data.id;
+        });
+      const infoEducation = axios
+        .get("seekers/profile-education", {
+          params: { seeker_id: this.seeker },
+        })
+        .then((response) => response.data)
+        .catch((error) => error);
+
+      const infoExperience = axios
+        .get("seekers/profile-expirence", {
+          params: { seeker_id: this.seeker },
+        })
+        .then((response) => response.data)
+        .catch((error) => error);
+
+      const infoSkill = axios
+        .get("seekers/profile-skill", { params: { seeker_id: this.seeker } })
+        .then((response) => response.data)
+        .catch((error) => error);
+
+      [this.listEducations, this.listExperiences, this.listSkills] =
+        await Promise.all([infoEducation, infoExperience, infoSkill]);
     },
   },
 });
@@ -284,7 +389,6 @@ export default defineComponent({
 }
 .profile-item {
   margin: 20px 0;
-  border-bottom: 1px solid #e9e9e9;
   width: 90%;
 }
 .profile-item span {
@@ -303,7 +407,8 @@ export default defineComponent({
   font-weight: 550;
   color: #2c3e50;
 }
-.content-title p {
+.content-title p,
+.content-title span {
   margin: 0;
 }
 .content-title-bar {
@@ -322,5 +427,12 @@ export default defineComponent({
 }
 .content-title-bar__icon span.anticon.anticon-delete {
   color: gray;
+}
+.profile-item__content {
+  border: 1px solid #e9e9e9;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 7px;
+  box-shadow: 2px 2px 4px rgb(33 47 63 / 10%);
 }
 </style>

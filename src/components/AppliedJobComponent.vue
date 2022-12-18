@@ -114,7 +114,7 @@
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { defineComponent, ref } from "vue";
 import axios from "axios";
-import { Process, userId } from "../utils";
+import { Process, openNotification } from "../utils";
 import {
   BellFilled,
   DollarOutlined,
@@ -160,6 +160,7 @@ export default defineComponent({
     },
     setStatus(status) {
       const process: Process = {
+        status_do_apply: "#e9e9e9",
         status_do_test: "#e9e9e9",
         status_do_interview: "#e9e9e9",
         status_result: "#e9e9e9",
@@ -230,16 +231,18 @@ export default defineComponent({
         .catch((error) => console.log(error));
     },
     async getJobDetail(id: Number) {
-      const data = await axios.get("jobs/jobs/" + id).then((response) => {
-        const updatedAt = new Date(response.data.updated_at);
-        const limit_do_test = response.data.limited_day_do_test;
-        const date_limit_do_test = new Date(
-          updatedAt.setDate(updatedAt.getDate() + limit_do_test)
-        );
-        this.date_limit.date_limit_do_test =
-          date_limit_do_test.toLocaleString();
-        return response.data;
-      });
+      const data = await axios
+        .get("jobs/user/" + this.id + "/job")
+        .then((response) => {
+          const updatedAt = new Date(response.data.updated_at);
+          const limit_do_test = response.data.limited_day_do_test;
+          const date_limit_do_test = new Date(
+            updatedAt.setDate(updatedAt.getDate() + limit_do_test)
+          );
+          this.date_limit.date_limit_do_test =
+            date_limit_do_test.toLocaleString();
+          return response.data;
+        });
       return data;
     },
     async getTimeInterview() {
@@ -252,7 +255,7 @@ export default defineComponent({
           this.listTime = response.data;
           console.log(this.listTime);
         })
-        .catch((error) => error);
+        .catch((error) => console.log(error));
     },
   },
 });

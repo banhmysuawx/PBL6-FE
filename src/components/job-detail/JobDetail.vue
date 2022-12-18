@@ -63,6 +63,7 @@ import {
   UploadOutlined,
 } from "@ant-design/icons-vue";
 import axios from "axios";
+import { openNotification } from "../../utils";
 export default defineComponent({
   name: "JobDetail",
   components: {

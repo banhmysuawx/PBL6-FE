@@ -278,6 +278,7 @@ export default defineComponent({
         })
         .then((response) => {
           this.listJobs = response.data;
+          console.log(this.listJobs);
         })
         .catch((error) => console.log(error));
     },
