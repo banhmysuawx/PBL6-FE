@@ -5,7 +5,9 @@
       <el-container style="background-color: white">
         <el-header style="height: 50px"><HeaderCompanyView /></el-header>
         <div style="margin: 10px">
-          <FullCalendar :options="calendarOptions" style="margin: 10px" />
+          <FullCalendar :options="calendarOptions" style="margin: 10px" 
+          :selectable="true"
+    />
         </div>
       </el-container>
     </el-container>
@@ -19,13 +21,14 @@ import "@fullcalendar/core/vdom";
 import FullCalendar from "@fullcalendar/vue3";
 import axios from "axios";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from '@fullcalendar/interaction';
 
 export default {
   name: "Interview",
   data() {
     return {
       calendarOptions: {
-        plugins: [timeGridPlugin],
+        plugins: [timeGridPlugin,interactionPlugin],
         initialView: "timeGridWeek",
         dateClick: this.handleDateClick,
         events: [],
@@ -39,7 +42,7 @@ export default {
     HeaderCompanyView,
     FullCalendar,
   },
-  mounted() {
+  created() {
     const id = this.$store.state.company.id;
     axios
       .get(`/applicants/company/applicant-interview/get_event?id_company=${id}`)
@@ -50,6 +53,14 @@ export default {
         console.log(err);
       });
   },
+  methods:{
+
+    handleDateClick(info) {
+      alert(info);
+      console.log(info)
+    },
+ 
+  }
 };
 </script>
 
