@@ -219,6 +219,7 @@ import {
 import { Education, Experience, formatTime, Skill } from "../../utils";
 import axios from "axios";
 export { formatTime } from "../../utils";
+import store from "../../store";
 export default defineComponent({
   name: "ProfileComponent",
   components: {
@@ -231,7 +232,7 @@ export default defineComponent({
     PlusCircleOutlined,
   },
   data() {
-    const userId = Number(localStorage.getItem("id"));
+    const userId = store.state.user.id;
     const education: Education = {
       certificate_degree_name: "",
       major: "",

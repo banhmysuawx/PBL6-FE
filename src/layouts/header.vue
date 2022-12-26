@@ -8,34 +8,27 @@
       </div>
       <div class="header-left">
         <a-menu mode="horizontal" :style="{ lineHeight: '64px' }">
-          <a-sub-menu key="sub1">
+          <a-sub-menu key="all-jobs">
             <template #title>All Jobs</template>
-            <a-sub-menu key="all-jobs" title="Job by Skill">
+            <a-sub-menu key="sub-skill" title="Job by Skill">
               <router-link
                 v-for="skill in skills"
-                :to="{ name: 'jobview', params: { name: skill.name } }"
+                :to="{
+                  name: 'jobview',
+                  query: { skill: skill.name },
+                }"
               >
                 <a-menu-item v-bind:key="skill.name">{{
                   skill.name
                 }}</a-menu-item>
               </router-link>
             </a-sub-menu>
-            <a-sub-menu key="sub3-4" title="Job by Category">
-              <router-link
-                v-for="category in categories"
-                :to="{ name: 'jobview', params: { name: category.name } }"
-              >
-                <a-menu-item v-bind:key="category.name">
-                  {{ category.name }}
-                </a-menu-item>
-              </router-link>
-            </a-sub-menu>
-            <a-sub-menu key="sub5-6" title="Job by Company">
+            <a-sub-menu key="sub-company" title="Job by Company">
               <router-link
                 v-for="company in companies"
                 :to="{
                   name: 'jobview',
-                  params: { name: company.company_name },
+                  query: { company: company.company_name },
                 }"
               >
                 <a-menu-item v-bind:key="company.company_name">
@@ -69,29 +62,19 @@
       </div>
       <div class="header-right">
         <a-menu mode="horizontal" :style="{ lineHeight: '64px' }">
-          <a-menu-item key="0">
-            <MessageFilled />
-          </a-menu-item>
-          <a-menu-item key="1">
-            <BellFilled />
-          </a-menu-item>
-          <a-sub-menu key="sub1-2" v-bind:title="username">
+          <a-sub-menu key="username" v-bind:title="username" v-if="userId">
             <template #icon>
-              <a-avatar size="{{50}}">
-                <template #icon><UserOutlined /></template>
-              </a-avatar>
+              <a-avatar v-bind:src="avatar" />
             </template>
             <a-menu-item key="profile">
               <router-link :to="{ name: 'profile' }">
                 <span> Profile </span>
               </router-link>
             </a-menu-item>
-            <a-menu-item key="2">Favorite Job</a-menu-item>
-            <a-menu-item key="3" v-if="userId" @click="logout"
-              >Logout</a-menu-item
-            >
-            <a-menu-item key="4" v-else @click="login">Login</a-menu-item>
+            <a-menu-item key="favoriteJob">Favorite Job</a-menu-item>
+            <a-menu-item key="logout" @click="logout">Logout</a-menu-item>
           </a-sub-menu>
+          <a-menu-item key="login" v-else @click="login">Login</a-menu-item>
         </a-menu>
       </div>
     </a-layout-header>
@@ -109,15 +92,15 @@ import axios from "axios";
 export default defineComponent({
   name: "Header",
   data() {
-    console.log(localStorage.getItem("role"));
     return {
       skills: [],
       categories: [],
       companies: [],
       routeSkill: [],
-      userId: localStorage.getItem("id"),
-      role: localStorage.getItem("role"),
-      username: localStorage.getItem("username"),
+      userId: this.$store.state.user.id,
+      role: this.$store.state.user.role,
+      username: this.$store.state.user.username,
+      avatar: this.$store.state.user.avatar,
     };
   },
   components: {
@@ -127,6 +110,7 @@ export default defineComponent({
     MessageFilled,
   },
   mounted() {
+    console.log(this.userId);
     this.getInfoJob();
   },
   methods: {
@@ -217,5 +201,9 @@ export default defineComponent({
 }
 .header-component .ant-menu-horizontal > .ant-menu-item a {
   color: white;
+}
+.header-right
+  span.ant-menu-item-icon.ant-avatar.ant-avatar-circle.ant-avatar-image {
+  background: white;
 }
 </style>

@@ -40,12 +40,27 @@
         </div>
       </div>
       <div class="companies-container">
-        <div class="total-companies">Total: {{ total }}</div>
+        <div class="total-companies">Total: 10</div>
         <div class="list-companies">
           <div class="row">
-            <div class="company" v-for="company in listCompanies">
-              <Company v-bind:company="company" v-if="!key" />
-              <TopCompany v-bind:company="company" v-else />
+            <div class="company">
+              <a-card hoverable>
+                <template #cover>
+                  <div class="company__logo">
+                    <div class="logo">
+                      <img :src="require('../../assets/logo2.png')" alt="" />
+                    </div>
+                    <div class="company__content">
+                      <p class="company__title">Anh Tuyet</p>
+                      <p class="company-address">Da Nang</p>
+                      <div class="tag">
+                        <p>NodeJs</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="company__description"></p>
+                </template>
+              </a-card>
             </div>
           </div>
         </div>
@@ -57,72 +72,33 @@
 import { defineComponent } from "vue";
 import { CaretDownFilled } from "@ant-design/icons-vue";
 import Company from "../../components/company/Company.vue";
-import TopCompany from "../../components/company/TopCompany.vue";
 import axios from "axios";
+import { useMenu } from "../../store/use-menu";
 export default defineComponent({
-  name: "CompanyManagement",
+  name: "SeekerManagement",
   components: {
     CaretDownFilled,
     Company,
-    TopCompany,
+  },
+  setup() {
+    const store = useMenu();
+    store.onSelectedKeys(["seeker-management"]);
+    store.onOpenKeys(["seeker-management"]);
   },
   data() {
     return {
       listCompanies: [],
-      key: true,
-      total: 0,
     };
   },
   mounted() {
-    if (this.$route.query.key) {
-      this.key = true;
-      this.getTopCompanies();
-    } else {
-      this.key = false;
-      this.getListCompany();
-    }
+    // this.getListCompany();
   },
-  watch: {
-    $route() {
-      if (this.$route.query.key) {
-        this.key = true;
-        this.getTopCompanies();
-      } else {
-        this.key = false;
-        this.getListCompany();
-      }
-    },
-  },
-  methods: {
-    async getListCompany() {
-      await axios
-        .get("companies/companies")
-        .then((response) => {
-          this.listCompanies = response.data.results;
-          this.total = this.listCompanies.length;
-        })
-        .catch((error) => console.log(error));
-    },
-    async getTopCompanies() {
-      await axios
-        .get("companies/companies/top_company")
-        .then((response) => {
-          this.listCompanies = response.data;
-          this.total = this.listCompanies.length;
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-  },
+  methods: {},
 });
 </script>
 <style scoped>
 .container {
   background: white;
-  overflow-y: scroll;
-  height: 700px;
 }
 .account-container {
   max-width: 1350px;
@@ -185,9 +161,9 @@ export default defineComponent({
   margin-left: 12px;
   margin-bottom: 20px;
 }
-.ant-card-cover .company__logo img {
+/* .ant-card-cover .company__logo img {
   transform: translateY(0%) !important;
-}
+} */
 .total-companies {
   text-align: left;
   padding-left: 30px;

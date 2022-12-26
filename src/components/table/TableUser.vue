@@ -1,5 +1,6 @@
 <template>
-  <a-table :dataSource="dataSource" :columns="columns">
+  <div class="total-account">Total: {{ total }}</div>
+  <a-table :dataSource="dataSource" :columns="columns" :scroll="{ y: 400 }">
     <template #role="{ text: role }">
       <span>
         <a-tag
@@ -16,16 +17,16 @@
         </a-tag>
       </span>
     </template>
-    <template #status="{ record }">
+    <template #is_active="{ record }">
       <a-popconfirm
         :title="
-          record.status == true
+          record.is_active == true
             ? 'Your want to disable this account'
             : 'Your want to enable this account'
         "
       >
         <span>
-          <a-switch size="small" v-model:checked="record.status" />
+          <a-switch size="small" v-model:checked="record.is_active" />
         </span>
       </a-popconfirm>
     </template>
@@ -37,76 +38,14 @@
   </a-table>
 </template>
 <script lang="ts">
+import axios from "axios";
+import { AccountView } from "@/utils";
 export default {
   name: "TableUser",
-  setup() {
+  data() {
     return {
-      dataSource: [
-        {
-          email: "anhtuyetdutk19@gmail.com",
-          age: 32,
-          role: "admin",
-          created_at: "2020-05-12T23:50:21Z",
-          status: true,
-          address: "Da Nang",
-        },
-        {
-          email: "bingando123@gmail.com",
-          status: false,
-          role: "seeker",
-          created_at: "2020-05-12T23:50:21Z",
-          age: 42,
-          address: "Ha Noi",
-        },
-        {
-          email: "admin@jobfinder.com",
-          age: 32,
-          role: "admin",
-          created_at: "2020-05-12T23:50:21Z",
-          status: true,
-          address: "Ho Chi Minh",
-        },
-        {
-          email: "seeker@jobfinder.com",
-          status: false,
-          role: "seeker",
-          created_at: "2020-05-12T23:50:21Z",
-          age: 42,
-          address: "Ho Chi Minh",
-        },
-        {
-          email: "employer@jobfinder.com",
-          age: 32,
-          role: "employer",
-          created_at: "2020-05-12T23:50:21Z",
-          status: true,
-          address: "Da Nang",
-        },
-        {
-          email: "seeker1@jobfinder.com",
-          status: true,
-          role: "seeker",
-          created_at: "2020-05-12T23:50:21Z",
-          age: 42,
-          address: "Ha Noi",
-        },
-        {
-          email: "seeker2@jobfinder.com",
-          age: 32,
-          role: "seeker",
-          created_at: "2020-05-12T23:50:21Z",
-          status: true,
-          address: "Da Nang",
-        },
-        {
-          email: "employer2@jobfinder.com",
-          status: true,
-          role: "employer",
-          created_at: "2020-05-12T23:50:21Z",
-          age: 42,
-          address: "Da Nang",
-        },
-      ],
+      dataSource: [],
+      total: 0,
 
       columns: [
         {
@@ -133,10 +72,10 @@ export default {
         },
         {
           title: "Status",
-          dataIndex: "status",
-          key: "status",
+          dataIndex: "is_active",
+          key: "is_active",
           className: "custome-column",
-          slots: { customRender: "status" },
+          slots: { customRender: "is_active" },
           width: "15%",
         },
         {
@@ -150,10 +89,47 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.getListAcc();
+  },
+  methods: {
+    async getListAcc() {
+      const data = await axios
+        .get("auth/admin/list-accounts")
+        .then((response) => {
+          const data = response.data;
+          this.total = data.length;
+          data.map((item: AccountView) =>
+            this.dataSource.push({
+              email: item.email,
+              role: item.role,
+              gender: item.gender,
+              is_active: item.is_active.toLowerCase() === "true" ? true : false,
+              created_at: item.created_at,
+            })
+          );
+        })
+        .catch(() => []);
+    },
+    async deleteAcc(id: Number) {
+      await axios
+        .delete("auth/admin/delete-accounts/" + id)
+        .then(() => true)
+        .catch(() => false);
+    },
+  },
 };
 </script>
 <style scoped>
 .account-table thead.ant-table-thead {
   font-weight: 550 !important;
+}
+.total-account {
+  text-align: left;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  font-size: 18px;
+  font-family: Tahoma, sans-serif;
+  color: rgb(188, 71, 108);
 }
 </style>

@@ -25,12 +25,7 @@
                       <a-card hoverable @click="onChange(i)">
                         <template #cover style="border: 1px solid #e9e9e9">
                           <div class="job__logo">
-                            <img
-                              img
-                              v-bind:src="
-                                `https://api.quangdinh.me` + job.company.image
-                              "
-                            />
+                            <img img v-bind:src="job.company.image" />
                           </div>
                         </template>
                         <div class="content-container">
@@ -49,11 +44,7 @@
                             </div>
                             <ul class="benefit">
                               <li class="benefit-text">
-                                Hình thức làm việc hybird
-                              </li>
-                              <li class="benefit-text">Bảo hiểm 100% lương</li>
-                              <li class="benefit-text">
-                                Đài thọ 100% chí phí học tập cho CBNV
+                                {{ job.description }}
                               </li>
                             </ul>
                             <div class="tag">
@@ -174,7 +165,7 @@
                           <a-modal
                             v-model:visible="visible"
                             title="Time Interview"
-                            @ok="handleOk"
+                            @ok="confirmInterview(listAppliedJob[index]?.id)"
                             style="width: fit-content !important"
                           >
                             <div
@@ -185,16 +176,16 @@
 
                               <a-checkbox-group
                                 v-for="item in date.available"
-                                v-model="value"
+                                v-model:value="value"
                               >
                                 <a-row>
                                   <a-col>
                                     <a-checkbox
                                       v-bind:value="
                                         date.day +
-                                        '-' +
+                                        '/' +
                                         item.start +
-                                        '-' +
+                                        '/' +
                                         item.end
                                       "
                                       >{{ item.start }} -
@@ -223,12 +214,12 @@
   </div>
 </template>
 <script lang="ts">
-import AppliedJobComponent from "../components/AppliedJobComponent.vue";
 import EmptyApplied from "../components/EmptyApplied.vue";
 import Header from "../layouts/header.vue";
 import Footer from "../layouts/footer.vue";
 import axios from "axios";
 import { Process } from "../utils";
+import store from "../store";
 import {
   WifiOutlined,
   ContactsOutlined,
@@ -239,7 +230,6 @@ import { status } from "../utils";
 export default {
   name: "AppliedJob",
   components: {
-    AppliedJobComponent,
     EmptyApplied,
     Header,
     Footer,
@@ -249,7 +239,7 @@ export default {
     DollarOutlined,
   },
   data() {
-    const userId = localStorage.getItem("id");
+    const userId = store.state.user.id;
     const listDetailJob = [];
     const listProcess: Process[] = [];
     return {
@@ -262,28 +252,24 @@ export default {
       listProcess,
       listTime: [],
       visible: false,
-      day: "20/12/2022",
+      value: "",
       date_limit: { date_limit_do_test: "", date_limit_interview: "" },
     };
   },
   mounted() {
     this.getListAppliedJob();
+    console.log(this.userId);
   },
   methods: {
     onChange(i: number) {
       this.index = i;
     },
     showModal(status: string, id_applicant: Number) {
-      if (status == "schedule_interview" || status == "interview_pending") {
+      if (status == "interview_pending") {
         this.getTimeInterview(id_applicant);
         // this.available();
         this.visible = true;
       }
-    },
-
-    handleOk(e: MouseEvent) {
-      console.log(e);
-      this.visible = false;
     },
     setStatus(status) {
       const process: Process = {
@@ -295,6 +281,7 @@ export default {
       switch (status) {
         case "apply":
           process.status_do_apply = "#f4e25e";
+          break;
         case "test":
           process.status_do_test = "#f4e25e";
           process.status_do_apply = "#007082";
@@ -394,6 +381,30 @@ export default {
           console.log(this.listTime);
         })
         .catch((error) => console.log(error));
+    },
+    async confirmInterview(id: Number) {
+      const listTime = this.value.toString().split("/");
+      if (listTime.length > 0) {
+        const input = {
+          day: listTime[0],
+          start_time: listTime[1],
+          end_time: listTime[2],
+        };
+        console.log(input);
+        await axios
+          .patch(
+            "https://api.quangdinh.me/applicants/candidate/confirm_interview",
+            input,
+            {
+              params: {
+                id_applicant: id,
+              },
+            }
+          )
+          .then()
+          .catch((error) => error);
+      }
+      this.visible = false;
     },
   },
 };

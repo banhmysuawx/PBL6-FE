@@ -40,12 +40,11 @@
         </div>
       </div>
       <div class="companies-container">
-        <div class="total-companies">Total: {{ total }}</div>
+        <div class="total-companies">Total: 10</div>
         <div class="list-companies">
           <div class="row">
-            <div class="company" v-for="company in listCompanies">
-              <Company v-bind:company="company" v-if="!key" />
-              <TopCompany v-bind:company="company" v-else />
+            <div class="company" v-for="job in listPosts">
+              <Job v-bind:job="job.job" v-bind:image="job.image" />
             </div>
           </div>
         </div>
@@ -54,66 +53,38 @@
   </div>
 </template>
 <script>
-import { defineComponent } from "vue";
-import { CaretDownFilled } from "@ant-design/icons-vue";
-import Company from "../../components/company/Company.vue";
-import TopCompany from "../../components/company/TopCompany.vue";
 import axios from "axios";
+import { defineComponent } from "vue";
+import { useMenu } from "../../store/use-menu";
+import Job from "../../components/job-view/Job.vue";
 export default defineComponent({
-  name: "CompanyManagement",
+  name: "PostManagement",
   components: {
-    CaretDownFilled,
-    Company,
-    TopCompany,
+    Job,
+  },
+  setup() {
+    const store = useMenu();
+    store.onSelectedKeys(["post-management"]);
+    store.onOpenKeys(["post-management"]);
   },
   data() {
     return {
-      listCompanies: [],
-      key: true,
-      total: 0,
+      listPosts: [],
     };
   },
   mounted() {
-    if (this.$route.query.key) {
-      this.key = true;
-      this.getTopCompanies();
-    } else {
-      this.key = false;
-      this.getListCompany();
-    }
-  },
-  watch: {
-    $route() {
-      if (this.$route.query.key) {
-        this.key = true;
-        this.getTopCompanies();
-      } else {
-        this.key = false;
-        this.getListCompany();
-      }
-    },
+    this.getListPosts();
   },
   methods: {
-    async getListCompany() {
+    async getListPosts() {
       await axios
-        .get("companies/companies")
+        .get("jobs/user/get_jobs")
         .then((response) => {
-          this.listCompanies = response.data.results;
-          this.total = this.listCompanies.length;
+          const data = response.data;
+          this.listPosts = data;
+          console.log(this.listPosts);
         })
-        .catch((error) => console.log(error));
-    },
-    async getTopCompanies() {
-      await axios
-        .get("companies/companies/top_company")
-        .then((response) => {
-          this.listCompanies = response.data;
-          this.total = this.listCompanies.length;
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => error);
     },
   },
 });
@@ -121,8 +92,6 @@ export default defineComponent({
 <style scoped>
 .container {
   background: white;
-  overflow-y: scroll;
-  height: 700px;
 }
 .account-container {
   max-width: 1350px;
@@ -166,7 +135,7 @@ export default defineComponent({
   color: white;
 }
 .company {
-  width: 33%;
+  width: 50%;
   padding: 12px;
 }
 .list-companies {

@@ -5,7 +5,11 @@
       <Form class="frm">
         <FormItem name="email">
           <label for="email" class="account-detail__label">Email</label>
-          <Input placeholder="Enter your email" readonly></Input>
+          <Input
+            placeholder="Enter your email"
+            readonly
+            v-model:value="user.email"
+          ></Input>
         </FormItem>
         <FormItem name="date">
           <label for="date" class="account-detail__label">Birthday</label>
@@ -18,7 +22,11 @@
         </FormItem>
         <FormItem name="gender">
           <label for="gender" class="account-detail__label">Gender</label>
-          <Select name="gender" class="select-model">
+          <Select
+            name="gender"
+            class="select-model"
+            v-model:value="user.gender"
+          >
             <SelectOption value="female">Female</SelectOption>
             <SelectOption value="male">Male</SelectOption>
             <SelectOption value="other">Other</SelectOption>
@@ -26,7 +34,7 @@
         </FormItem>
         <FormItem name="Role">
           <label for="Role" class="account-detail__label">Role</label>
-          <Select name="role" class="select-model">
+          <Select name="role" class="select-model" v-model:value="user.role">
             <SelectOption value="admin">Admin</SelectOption>
             <SelectOption value="seeker">Seeker</SelectOption>
             <SelectOption value="employer">Employer</SelectOption>
@@ -94,12 +102,15 @@ import {
   InputPassword,
 } from "ant-design-vue";
 import axios from "axios";
+import store from "../store";
 export default defineComponent({
   name: "AccountComponent",
   data() {
+    const user = store.state.user;
     return {
       old_password: "",
       new_password: "",
+      user,
     };
   },
   components: {
@@ -113,7 +124,7 @@ export default defineComponent({
   },
   methods: {
     async changePassword() {
-      console.log(localStorage.getItem("accessToken"));
+      const accessToken = this.$store.state.accessToken;
       await axios
         .patch(
           "auth/change-password",
@@ -123,7 +134,7 @@ export default defineComponent({
           },
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+              Authorization: "Bearer " + accessToken,
             },
           }
         )

@@ -1,7 +1,7 @@
 export const userId = 8;
 import { notification } from "ant-design-vue";
 export interface Company {
-  id: Number;
+  id: any;
   category_name: string;
   company_name: string;
   salary: number;
@@ -10,6 +10,7 @@ export interface Company {
   company_location: string;
   profile_description: string;
   image: string;
+  average_rating: any;
 }
 
 export interface Job {
@@ -17,16 +18,23 @@ export interface Job {
   name: string;
   image: string;
   salary: string;
-  skills: Number[];
+  skills: any;
+  description: string;
   category_name: string;
-  locations_name: string[];
+  locations: any;
+  company: {
+    company_name: string;
+    company_location: string;
+    description: string;
+    image: string;
+  };
 }
 export const status = {
   apply: "waiting for a reply from company",
   test: "Please do test",
-  set_schedule: "Set schedule",
-  interview_pending: "waiting for the scheduling interview from company",
-  schedule_interview: "Please schedule interview",
+  set_schedule: "Waiting for the scheduling interview from company",
+  interview_pending: "Please schedule interview",
+  schedule_interview: "Waiting for interview",
   cancel_interview: "Cancel interview",
   interview_complete: "Interview complete",
   complete: "Pass",
@@ -87,3 +95,36 @@ export const openNotification = (message: string) => {
     },
   });
 };
+export interface Account {
+  email: string;
+  password: string;
+  password2: string;
+  date_of_birth: string;
+  gender: string;
+  role: string;
+}
+export interface JobDetail {
+  company: {
+    id: Number;
+    company_location: string;
+    company_name: string;
+    established_date: string;
+    image: string;
+  };
+  descriptiong: string;
+  is_active: boolean;
+  locations: [];
+  name: string;
+  salary: string;
+  skills: [];
+}
+
+export interface AccountView {
+  username: string;
+  role: string;
+  gender: string;
+  email: string;
+  updated_at: string;
+  is_active: string;
+  created_at: string;
+}
