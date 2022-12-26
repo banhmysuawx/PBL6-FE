@@ -8,6 +8,7 @@ import HeaderCompanyView from "@/components/HeaderCompany.vue";
 import { mapGetters } from "vuex";
 import { onMounted } from "vue";
 import axios from "axios";
+import store from "./store";
 export default {
   data() {
     return {
@@ -16,22 +17,24 @@ export default {
   },
   setup() {
     onMounted(async () => {
-      const user = await axios
-        .get("auth/me")
-        .then((response) => {
-          const data = response.data;
-          const user = {
-            id: data.id,
-            username: data.username,
-            role: data.role,
-            avatar: data.avatar,
-          };
-          this.$store.commit("setUser", user);
-          localStorage.setItem("id", user.id);
-          localStorage.setItem("username", user.username);
-          localStorage.setItem("role", user.role);
-        })
-        .catch((error) => error);
+      if (localStorage.getItem("refresh")) {
+        const user = await axios
+          .get("auth/me")
+          .then((response) => {
+            const data = response.data;
+            const user = {
+              id: data.id,
+              username: data.username,
+              role: data.role,
+              avatar: data.avatar,
+            };
+            this.$store.commit("setUser", user);
+            localStorage.setItem("id", user.id);
+            localStorage.setItem("username", user.username);
+            localStorage.setItem("role", user.role);
+          })
+          .catch((error) => error);
+      } else store.commit("setIsLoading", false);
     });
   },
   computed: {
