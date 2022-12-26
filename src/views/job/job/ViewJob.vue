@@ -342,8 +342,7 @@
                   <el-col :span="2"
                     ><el-button link @click="DeleteSkill(item.id)"
                       ><Delete
-                        style="
-                          width: 1em;
+                        style="width: 1em;
                           height: 1em;
                           margin-left: 5px;
                       " /></el-button
@@ -355,6 +354,22 @@
         </el-form-item>
 
         <el-row><b>Information Test</b></el-row>
+        <el-form-item>
+          <el-col :span="8"><label>Quiz</label></el-col>
+          <el-col :span="6" style="float:left">
+            <el-select
+              v-model="job.id_test"
+              placeholder="----Select Test----"
+            >
+              <el-option
+                v-for="item in list_test"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-col>
+        </el-form-item>
 
         <el-form-item>
           <el-col :span="8"><label>Expected Result Test</label></el-col>
@@ -557,8 +572,7 @@
                   <el-col :span="2"
                     ><el-button link @click="DeleteSkill(item.id)"
                       ><Delete
-                        style="
-                          width: 1em;
+                        style="width: 1em;
                           height: 1em;
                           margin-left: 5px;
                     "/></el-button
@@ -570,6 +584,22 @@
         </el-form-item>
 
         <el-row><b>Information Test</b></el-row>
+        <el-form-item>
+          <el-col :span="8"><label>Quiz</label></el-col>
+          <el-col :span="6" style="float:left">
+            <el-select
+              v-model="job_choice.id_test"
+              placeholder="----Select Test----"
+            >
+              <el-option
+                v-for="item in list_test"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-col>
+        </el-form-item>
 
         <el-form-item>
           <el-col :span="6"><label>Expected Result Test</label></el-col>
@@ -677,8 +707,10 @@ export default {
         expected_result_test: 0,
         limited_day_confirm_schedule: 0,
         limited_day_do_test: 0,
+        id_test:1,
       },
-      job_choice:{} 
+      job_choice:{} ,
+      list_test : []
     };
   },
   components: {
@@ -723,6 +755,16 @@ export default {
         return err;
       });
     this.createCheckSkillInitial();
+    await axios
+      .get("https://api-exam.quangdinh.me/api/v1/test")
+      .then((response) => {
+        this.list_test = response.data;
+        console.log("Tesssss")
+        console.log(this.list_test)
+      })
+      .catch((err) => {
+        return err;
+      });
   },
   methods: {
     InitValue(){
@@ -734,6 +776,7 @@ export default {
       this.job.expected_result_test=0
       this.job.limited_day_confirm_schedule=0
       this.job.limited_day_do_test=0
+      this.job.id_test = 1
       this.createCheckLocationInitial();
       this.createCheckSkillInitial();
       this.choice_skills=[]
@@ -892,6 +935,7 @@ export default {
         limited_day_do_test: this.job.limited_day_do_test,
         locations: this.ids_locations,
         skills: this.ids_skill,
+        id_test : this.job.id_test
       };
       await axios
         .post("/jobs/jobs", data)
@@ -1015,6 +1059,7 @@ export default {
         limited_day_do_test: this.job_choice.limited_day_do_test,
         locations: this.ids_locations,
         skills: this.ids_skill,
+        id_test :this.job_choice.id_test
       };
        await axios
         .put(`/jobs/jobs/${this.job_choice.id}`, data)
