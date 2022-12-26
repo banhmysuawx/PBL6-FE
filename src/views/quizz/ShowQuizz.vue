@@ -9,17 +9,17 @@
                 <el-row style="margin:20px">
                     <el-col :span="24"><el-button class="button" type="primary" @click="CreateNewQuizz()">Create New Quizz</el-button></el-col>
                 </el-row>
-                <el-row :gutter="20" style="margin:20px" v-for="index in (n+1)">
+                <el-row :gutter="20" style="margin:20px" v-for="index in n" >
                     <el-col :span="8" v-for ="i in 3">
-                        <el-card class="box-card" v-if="index+i < this.list_quiz.length" style="height:350px">
+                        <el-card class="box-card" v-if="((index-1)*3+i-1) < this.list_quiz.length" style="height:370px">
                             <template #header>
                             <div class="card-header" style="background-color: rgba(121, 173, 132, 0.6); height: 30px;">
-                                <span>{{list_quiz[index+i].name}}</span>
+                                <span>{{list_quiz[(index-1)*3+i-1].name}}</span>
                             </div>
                             </template>
                             <el-row>
                                 <el-col :span="6"><b><el-icon size="15px"><AlarmClock /></el-icon> :</b></el-col>
-                                <el-col :span="6"> {{list_quiz[index+i].time_limit}} min</el-col>
+                                <el-col :span="6"> {{list_quiz[(index-1)*3+i-1].time_limit}} min</el-col>
                             </el-row>
                             <el-row>
                                 <el-col :span="6"><b>Category: </b></el-col>
@@ -27,7 +27,7 @@
                             </el-row>
                             <el-row>
                                 <el-col :span="6"><b>Total: </b></el-col>
-                                <el-col :span="8"> 0 questions</el-col>
+                                <el-col :span="8"> {{list_quiz[(index-1)*3+i-1].questions.length }} questions</el-col>
                             </el-row>
                             <el-row>
                                 <el-col :span="6"><b>Descripion: </b></el-col>
@@ -36,9 +36,10 @@
                                 <el-col :span="6">
                                 </el-col>
                                 <el-col>
-                                    {{list_quiz[index+i].description}}
+                                    {{list_quiz[(index-1)*3+i-1].description}}
                                 </el-col>
                             </el-row>
+                            <el-row style="margin:10px"><el-button type="primary" plain @click="DetailQuiz(list_quiz[(index-1)*3+i-1].id)">Detail</el-button></el-row>
                         </el-card>
                     </el-col>
                 </el-row>
@@ -121,11 +122,15 @@ export default {
    },
    mounted(){
      axios
-        .get("/api/v1/test")
+        .get("http://127.0.0.1:8000/api/v1/test")
         .then(response =>{
             this.list_quiz = response.data
             console.log("hellooooooo")
-            this.n = Math.floor(this.list_quiz.length/3)
+            console.log(response.data)
+            if (this.list_quiz.length %3 == 0)
+                this.n = Math.floor(this.list_quiz.length/3)
+            else this.n = Math.floor(this.list_quiz.length/3)+1
+            console.log(this.n)
         })
         .catch(err=>{
             console.log(err)
@@ -133,7 +138,10 @@ export default {
    },
    methods :{
     CreateNewQuizz(){
-        this.drawCreateNewQuiz = true
+        this.$router.push({ name: "create-quizz" });
+    },
+    DetailQuiz(id){
+        this.$router.push({path: `/company/quizz/${id}` });
     }
    },
 }

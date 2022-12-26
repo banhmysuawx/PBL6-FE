@@ -13,81 +13,49 @@
               >
             </el-row>
             <el-row :gutter="20" style="margin: 20px">
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-card class="box-card">
-                  <template #header>
-                    <div class="card-header">
-                      <span>Card name</span>
-                      <el-button class="button" text
-                        >Operation button</el-button
+                  <template #header> 
+                      <el-button class="button" type="primary"
+                        >Applicants</el-button
                       >
-                    </div>
                   </template>
-                  <div v-for="o in 2" :key="o" class="text item">
-                    {{ "List item " + o }}
-                  </div>
+                  <el-row>
+                  <el-col :span="10"><el-icon size="100px" color="blue"><Document /></el-icon></el-col>
+                  <el-col :span="10" style="font: italic 3.5em 'Fira Sans', serif;"><b>{{applicants.length}} </b></el-col>
+                 </el-row>
                 </el-card>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-card class="box-card">
                   <template #header>
-                    <div class="card-header">
-                      <span>Card name</span>
-                      <el-button class="button" text
-                        >Operation button</el-button
+                    <el-button class="button" type="primary"
+                        >Jobs</el-button
                       >
-                    </div>
                   </template>
-                  <div v-for="o in 2" :key="o" class="text item">
-                    {{ "List item " + o }}
-                  </div>
+                 <el-row>
+                  <el-col :span="10"><el-icon size="100px" color="yellow"><Opportunity /></el-icon></el-col>
+                  <el-col :span="10" style="font: italic 3.5em 'Fira Sans' ,serif;"><b>{{jobs.length}} </b></el-col>
+                 </el-row>
                 </el-card>
               </el-col>
-              <el-col :span="6">
-                <el-card class="box-card">
-                  <template #header>
-                    <div class="card-header">
-                      <span>Card name</span>
-                      <el-button class="button" text
-                        >Operation button</el-button
-                      >
-                    </div>
-                  </template>
-                  <div v-for="o in 2" :key="o" class="text item">
-                    {{ "List item " + o }}
-                  </div>
-                </el-card>
-              </el-col>
+              
 
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-card class="box-card">
                   <template #header>
-                    <div class="card-header">
-                      <span>Card name</span>
-                      <el-button class="button" text
-                        >Operation button</el-button
+                    <el-button class="button" type="primary"
+                        >Candidate</el-button
                       >
-                    </div>
                   </template>
-                  <div v-for="o in 2" :key="o" class="text item">
-                    {{ "List item " + o }}
-                  </div>
+                  <el-row>
+                  <el-col :span="10"><el-icon size="100px" color="blue"><User /></el-icon></el-col>
+                  <el-col :span="10" style="font: italic 3.5em 'Fira Sans',serif;"><b>{{ candidates.length }} </b></el-col>
+                 </el-row>
                 </el-card>
               </el-col>
             </el-row>
-            <el-row style="margin: 20px" :gutter="20">
-              <el-col :span="12">
-                <Bar :data="chartData" :options="chartOptions" />
-              </el-col>
-              <el-col :span="12">
-                <Pie
-                  type="pie"
-                  width="380"
-                  :options="chartOptions"
-                  :series="series"
-                ></Pie>
-              </el-col>
-            </el-row>
+          
           </div>
         </el-main>
       </el-container>
@@ -99,88 +67,50 @@
 import SideBar from "@/components/SideBar.vue";
 import HeaderCompanyView from "@/components/HeaderCompany.vue";
 import axios from "axios";
-import { toast } from "bulma-toast";
-import { Bar } from "vue-chartjs";
-import { Pie } from "vue-chartjs";
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-} from "chart.js";
-ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale
-);
 
 export default {
   name: "Dashboard",
 
   data() {
     return {
-      chartData: {
-        labels: [
-          "01",
-          "02",
-          "03",
-          "04",
-          "05",
-          "06",
-          "07",
-          "08",
-          "09",
-          "10",
-          "11",
-          "12",
-        ],
-
-        datasets: [
-          {
-            label: "Number Applicants applied",
-            backgroundColor: " rgba(70, 130, 180, 0.9)",
-            data: [40, 20, 12, 15, 16, 0, 20, 23, 16, 11, 9, 5],
-          },
-        ],
-      },
-      chartOptions: {
-        responsive: true,
-      },
-      series: [44, 55, 13, 43, 22],
-      chartOptions: {
-        chart: {
-          width: 380,
-          type: "pie",
-        },
-        labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
-        responsive: [
-          {
-            breakpoint: 480,
-            options: {
-              chart: {
-                width: 200,
-              },
-              legend: {
-                position: "bottom",
-              },
-            },
-          },
-        ],
-      },
-    };
-  },
+      jobs : [],
+      applicants :[],
+      candidates:[]
+          
+  }},
   components: {
     SideBar,
-    HeaderCompanyView,
-    Bar,
-    Pie,
+    HeaderCompanyView
   },
+  created(){
+    const id = this.$store.state.company.id;
+    axios
+    .get(`/jobs/company/get_jobs?company_id=${id}`)
+    .then(res=>{
+      this.jobs = res.data
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+
+    axios
+    .get(`/applicants/company/get_all_applicants?company_id=${id}`)
+    .then(res=>{
+      this.applicants = res.data
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+
+    axios
+    .get(`/applicants/company/get_all_candidate?company_id=${id}`)
+    .then(res=>{
+      this.candidates = res.data
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+  }
 };
 </script>
 

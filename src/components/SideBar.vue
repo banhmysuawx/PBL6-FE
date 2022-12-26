@@ -30,12 +30,6 @@
     <span style="color: rgb(191, 203, 217)">Job Management</span>
   </el-menu-item>
 
-
-  <el-menu-item index="10"  @click="SkillManagement()">
-    <el-icon><setting /></el-icon>
-    <span style="color: rgb(191, 203, 217)">Skill Management</span>
-  </el-menu-item>
-
   <el-menu-item index="11"  @click="LocationManagement()">
     <el-icon><setting /></el-icon>
     <span style="color: rgb(191, 203, 217)">Location Management</span>
@@ -108,7 +102,9 @@ export default {
     CandidateManagement(){
       this.$router.push({ name: "Candidate" });
     },
-    
+    TestManagement(){
+      this.$router.push({ name: "company-quizz" });
+    }
   }
   
 }

@@ -8,14 +8,11 @@
           <el-aside style="width: 300px">
             <div class="search-container">
               <el-row :justify="center" class="row-bg">
-                <el-col :span="16"
+                <el-col :span="20"
                   ><div class="grid-content ep-bg-purple-dark" />
-                  <el-input v-model="input" placeholder="Please input" />
+                  <el-input v-model="text" placeholder="Please input" @keyup="Search()"/>
                 </el-col>
-                <el-col :span="8"
-                  ><div class="grid-content ep-bg-purple-dark" />
-                  <el-button type="primary">Search</el-button>
-                </el-col>
+               
               </el-row>
             </div>
             <div class="item-location" style="text-align: center">
@@ -27,20 +24,19 @@
               v-for="item in list_location"
               :key="item"
             >
-              <el-icon color="red"><location /></el-icon>
-              <span @click="ChoiceLocation(item)">
-                {{ item.location_name }}</span
-              >
-              <el-button link
-                ><Edit style="width: 1em; height: 1em; margin-left: 10px"
-              /></el-button>
-              <el-button link @click="outerVisible = true"
+            <el-row :gutter="20">
+              <el-col span="2"> <el-icon color="red"><location /></el-icon></el-col>
+              <el-col span="14"> <span @click="ChoiceLocation(item)">{{ item.location_name }}</span></el-col>
+              <el-col span="4">  <el-button link @click="DeleteLocation(item.id)"
                 ><Delete style="width: 1em; height: 1em; margin-left: 5px"
-              /></el-button>
+              /></el-button></el-col>
+            </el-row>
+              
             </div>
           </el-aside>
           <el-main>
-            <el-form v-if="location_choice != '' && is_create == false">
+            <el-card style="margin:100px 50px">
+              <el-form v-if="location_choice != '' && is_create == false">
               <el-form-item>
                 <el-col :span="8">
                   <label>Location Name</label>
@@ -196,9 +192,10 @@
               <el-row></el-row>
               <el-row>
                 <el-col :span="1"></el-col>
-                <el-col :span="3">No data to show</el-col>
+                <el-col :span="5">No data to show</el-col>
               </el-row>
             </div>
+            </el-card>
           </el-main>
         </el-container>
       </el-container>
@@ -218,7 +215,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="outerVisible = false">No</el-button>
-          <el-button type="primary" @click="innerVisible = true">
+          <el-button type="primary" @click="Delete()">
             Yes
           </el-button>
         </div>
@@ -257,6 +254,8 @@ export default {
       },
       outerVisible: false,
       is_create: false,
+      text:'',
+      id_location :0,
     };
   },
   components: {
@@ -275,6 +274,19 @@ export default {
       });
   },
   methods: {
+    Search(){
+      console.log(this.text)
+      const id = this.$store.state.company.id;
+
+      axios
+      .get(`/jobs/company/filter?company_id=${id}&text=${this.text}`)
+      .then(res=>{
+        this.list_location = res.data
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    },
     blurLocation() {
       console.log("hello");
     },
@@ -352,6 +364,34 @@ export default {
             console.log(err);
           });
     },
+    DeleteLocation(id){
+      this.outerVisible = true
+      this.id_location = id
+    },
+    Delete(){ 
+      axios
+      .delete(`/jobs/locations/${this.id_location}`)
+      .then(res=>{
+        var type = "is-success"
+        if (res.data.status==204){
+          type = "is-warning"
+        }
+        toast({
+            message: res.data.msg,
+            type: type,
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: "top-right",
+          });
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+      this.outerVisible = false
+      this.id_location = 0
+
+    }
   },
 };
 </script>

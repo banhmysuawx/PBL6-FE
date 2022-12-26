@@ -170,15 +170,27 @@
 
                 <span v-if="applicant.status == 'schedule_interview'">
                   Status: Schedule Interview
-                  <el-row></el-row>
-                  <el-tag>{{applicant.interview_date_official_format}}</el-tag>
-
-                  <el-row></el-row>
+                  <el-tag v-if="applicant.interview_date_official_format!=null">{{applicant.interview_date_official_format}}</el-tag>
+                  <el-row style="margin-top:10px" v-if="applicant.is_send_email==false">
+                    <el-col :span="6"></el-col>
+                    <el-col :span="12"><el-button type="primary" plain @click="sendMail(applicant)">Send Email</el-button></el-col>
+                    <el-col :span="6"></el-col>
+                  </el-row>
 
                 </span>
 
                 <span v-if="applicant.status == 'cancel_interview'">
                   Status: Cancel Interview
+                </span>
+
+                <span v-if="applicant.status == 'interview_complete'">
+                  Status: Interview complete
+                  <el-row></el-row>
+                  <el-row></el-row>
+                  <el-row>
+                    <el-col :span="12"><el-button type="danger" @click="ChangeInComplete(applicant)">Fail</el-button></el-col> 
+                    <el-col :span="12"><el-button type="success" @click="ChangeComplete(applicant)">Pass</el-button></el-col>
+                  </el-row>
                 </span>
               </el-col>
 
@@ -621,6 +633,26 @@
         </span>
       </div>
     </el-drawer>
+    <!--Send Email-->
+    <el-dialog v-model="dialogSendMail" title="Information Send Mail">
+    <el-form >
+      <el-form-item>
+        <a href="https://meet.google.com/" target="_blank">Please create new meeting and get link</a>
+      </el-form-item>        
+
+      <el-form-item label="Link">
+        <el-input autocomplete="off" placeholder="Please input link google meet" v-model="link"/>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogSendMail = false">Cancel</el-button>
+        <el-button type="primary" @click="sendEmail()">
+          Confirm
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
   </div>
 </template>
 <script>
@@ -638,6 +670,8 @@ export default {
       circleUrl:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       jobs: [],
+      link:"",
+      dialogSendMail : false,
       text_search_job: "",
       jobs_search: [],
       applicants: [],
@@ -715,6 +749,8 @@ export default {
       .catch((err) => {
         console.log(err);
       });
+
+      console.log("Ngo Nguyen Hoang Dung")
   },
 
   components: {
@@ -1112,6 +1148,86 @@ export default {
         }
       }
     },
+    sendMail(applicant){
+      this.dialogSendMail = true
+      this.applicant_choice = applicant
+    },
+    sendEmail(){
+      const data={
+        link : this.link
+      }
+      axios
+      .patch(`/applicants/company/${this.applicant_choice.id}/send_email_schedule`,data)
+      .then(res=>{
+        toast({
+            message: res.data.msg,
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: "top-right",
+          });
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+      this.dialogSendMail = false
+
+    },
+    async ChangeInComplete(applicant){
+      const form = {
+        status: "incomplete",
+      };
+      await axios
+        .patch(`/applicants/applicant/${applicant.id}`, form)
+        .then((response) => {})
+        .catch((err) => {});
+      await axios
+        .get(`/applicants/company/get_applicant?id_job=${this.id_job_current}`)
+        .then((response) => {
+          this.applicants = response.data;
+          this.processPercentageForResult();
+          this.applicants_search = this.applicants;
+          toast({
+            message: "Mark Fail successful",
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: "top-right",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    async ChangeComplete(applicant){
+      const form = {
+        status: "complete",
+      };
+      await axios
+        .patch(`/applicants/applicant/${applicant.id}`, form)
+        .then((response) => {})
+        .catch((err) => {});
+      await axios
+        .get(`/applicants/company/get_applicant?id_job=${this.id_job_current}`)
+        .then((response) => {
+          this.applicants = response.data;
+          this.processPercentageForResult();
+          this.applicants_search = this.applicants;
+          toast({
+            message: "Mark Pass successful",
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: "top-right",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+},
   },
 };
 </script>
