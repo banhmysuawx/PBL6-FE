@@ -122,7 +122,7 @@ export default {
    },
    mounted(){
      axios
-        .get("http://127.0.0.1:8000/api/v1/test")
+        .get("https://api-exam.quangdinh.me/api/v1/test")
         .then(response =>{
             this.list_quiz = response.data
             console.log("hellooooooo")

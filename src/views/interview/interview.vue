@@ -11,6 +11,32 @@
         </div>
       </el-container>
     </el-container>
+
+    <!-- Information event-->
+    
+  <el-drawer v-model="drawer" title="I am the title" :with-header="false">
+    <span>Information Applicant</span>
+    <el-row></el-row>
+    <el-row></el-row>
+    <el-row></el-row>
+    <el-row></el-row>
+   <el-row>
+      <el-form-item label="Job name">
+        <el-input v-model="job.name"/>
+      </el-form-item>
+    </el-row>
+    <el-row>
+      <el-form-item label="Mark Quizz">
+        <el-input v-model="applicant.result_test"/>
+      </el-form-item>
+    </el-row>
+   
+    <el-row>
+      <el-form-item label="Link google">
+        <el-input v-model="applicant.link_gg_meet" />
+      </el-form-item>
+    </el-row>
+  </el-drawer>
   </div>
 </template>
 
@@ -35,6 +61,10 @@ export default {
         slotMinTime: "06:00:00",
         slotMaxTime: "20:00:00",
       },
+      drawer : false,
+      applicant:{},
+      job:{},
+      profile : {}
     };
   },
   components: {
@@ -55,9 +85,33 @@ export default {
   },
   methods:{
 
-    handleDateClick(info) {
-      alert(info);
-      console.log(info)
+    async handleDateClick(info) {
+      var time = info.date.getFullYear() + "-" + info.date.getMonth() + "-" + info.date.getDate() +" " + info.date.getHours() + ":" + info.date.getMinutes()
+      const id = this.$store.state.company.id;
+      await axios
+      .get(`/applicants/company/applicant-interview/get_event_by_time?id_company=${id}&time=${time}`)
+      .then(res=>{
+        this.applicant = res.data
+        console.log(this.applicant)
+        if (res.data.status.length>0){
+          this.drawer = true
+        }
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+     
+      axios
+      .get(`/jobs/jobs/${this.applicant.job}`)
+      .then(res=>{
+        this.job = res.data
+        console.log(res.data)
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+
+      
     },
  
   }
