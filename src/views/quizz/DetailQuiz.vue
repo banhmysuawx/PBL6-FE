@@ -191,7 +191,7 @@ export default {
   mounted() {
     const id =  this.$route.params.id;
     axios
-      .get(`http://127.0.0.1:8000/api/v1/test/${id}`)
+      .get(`https://api-exam.quangdinh.me/api/v1/test/${id}`)
       .then((response) => {
         this.test = response.data[0]
         console.log(this.test)
@@ -204,7 +204,7 @@ export default {
   methods: {
     choiceQuestion(id){
       axios
-      .get(`http://127.0.0.1:8000/api/v1/test/question/${id}`)
+      .get(`https://api-exam.quangdinh.me/api/v1/test/question/${id}`)
       .then(response=>{
         console.log(response.data[0])
         this.choice_question = response.data[0]
