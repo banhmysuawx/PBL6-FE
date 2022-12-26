@@ -124,3 +124,10 @@ span.anticon {
 .favorite p:hover {
   color: red;
 }
+.benefit-text {
+  color: rgb(127, 124, 124) !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3;
+  height: 70px;
+}

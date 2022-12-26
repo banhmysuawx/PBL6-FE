@@ -3,8 +3,11 @@
     {{ jobDetail.name }}
     <div class="company">{{ jobDetail.company?.company_name }}</div>
     <div class="apply-btn">
-      <a-button @click="showModal" :style="{ background: color }"
-        >Apply Now</a-button
+      <a-button
+        @click="showModal"
+        :style="{ background: style.background }"
+        :disabled="style.disabled"
+        >{{ style.text }}</a-button
       >
       <a-modal v-model:visible="visible" title="Apply Form" @ok="submitApply">
         <a-form class="apply-form">
@@ -52,7 +55,7 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { Input, InputPassword, FormItem } from "ant-design-vue";
 import { defineComponent } from "vue";
 import {
@@ -62,8 +65,8 @@ import {
   ContactsOutlined,
   UploadOutlined,
 } from "@ant-design/icons-vue";
+import store from "../../store";
 import axios from "axios";
-import { openNotification } from "../../utils";
 export default defineComponent({
   name: "JobDetail",
   components: {
@@ -77,7 +80,7 @@ export default defineComponent({
     FormItem,
   },
   data() {
-    const userId = localStorage.getItem("id");
+    const userId = store.state.user.id;
     return {
       jobDetail: {},
       name: Number,
@@ -88,9 +91,9 @@ export default defineComponent({
       isFavorite: "#d8d8d8",
       favoriteId: null,
       userId,
+      style: { background: "#007082", text: "Apply now", disabled: false },
     };
   },
-
   props: {
     id: Number,
   },
@@ -101,10 +104,27 @@ export default defineComponent({
   },
   mounted() {
     this.getJobDetail();
+    this.styleApply();
   },
   methods: {
+    async styleApply() {
+      const url = `jobs/user/${this.id}/job_is_apply`;
+      const isApplied = await axios
+        .get(url, { params: { id_user: this.userId } })
+        .then((response) => response.data.is_apply)
+        .catch(() => false);
+      let style = { background: "#007082", text: "Apply now", disabled: false };
+      console.log(isApplied);
+      if (isApplied && this.userId != 0)
+        style = {
+          background: "#e9e9e9",
+          text: "Applied",
+          disabled: true,
+        };
+      this.style = style;
+    },
     showModal() {
-      if (!localStorage.getItem("id")) this.$router.push({ name: "login" });
+      if (!this.userId) this.$router.push({ name: "login" });
       this.visible = true;
     },
     uploadFile(event) {

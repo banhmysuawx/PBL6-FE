@@ -7,20 +7,7 @@
           <div class="container">
             <div class="filter-container">
               <div class="filter">
-                <a-dropdown>
-                  <template #overlay>
-                    <a-menu>
-                      <a-menu-item key="1">
-                        <UserOutlined />
-                        1st menu item
-                      </a-menu-item>
-                    </a-menu>
-                  </template>
-                  <a-button>
-                    Job Level
-                    <CaretDownFilled />
-                  </a-button>
-                </a-dropdown>
+                <a-input class="input-filter" placeholder="keyword" />
               </div>
               <div class="filter">
                 <a-dropdown>
@@ -33,7 +20,7 @@
                     </a-menu>
                   </template>
                   <a-button>
-                    Salary Range
+                    Job Level
                     <CaretDownFilled />
                   </a-button>
                 </a-dropdown>
@@ -66,12 +53,14 @@
                       v-bind:job="job.job"
                       v-bind:isFavorite="`red`"
                       @click="onChange(job.job.id)"
+                      v-bind:show="show"
+                      v-bind:image="job.image"
                     />
                   </div>
                 </div>
                 <div class="job-detail-box">
                   <div class="job-detail-box__content">
-                    <JobDetail v-bind:id="currentJob" />
+                    <JobDetail v-bind:id="currentJob" v-if="currentJob" />
                   </div>
                 </div>
               </div>
@@ -95,10 +84,12 @@ import { CaretDownFilled } from "@ant-design/icons-vue";
 export default defineComponent({
   name: "JobView",
   data() {
+    console.log(this.$route);
     return {
       listJobs: [],
       total: 0,
-      currentJob: 1,
+      currentJob: 0,
+      show: false,
     };
   },
   mounted() {
@@ -112,13 +103,21 @@ export default defineComponent({
     JobDetail,
     CaretDownFilled,
   },
+  watch: {
+    $route() {
+      this.getListJobs();
+    },
+  },
   methods: {
     async getListJobs() {
+      const query = this.$route.query;
+      console.log(query);
       await axios
-        .get("jobs/user/get_jobs")
+        .get("jobs/user/filter_job", { params: query })
         .then((response) => {
           const data = response.data;
           this.listJobs = data;
+          console.log(this.listJobs);
           this.total = data.length;
           this.currentJob = this.listJobs[0]["job"]["id"];
         })
@@ -179,10 +178,14 @@ export default defineComponent({
 .filter {
   padding-right: 30px;
 }
+.input-filter,
 .filter button.ant-btn.ant-dropdown-trigger {
   font-size: 16px;
   height: 38px;
   padding: 6px 15px;
+}
+.input-filter {
+  width: 200px !important;
 }
 .filter span.anticon.anticon-caret-down {
   margin-left: 40px;

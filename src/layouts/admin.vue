@@ -1,67 +1,98 @@
 <template>
-  <a-layout>
-    <Header />
-    <a-layout :style="style">
-      <div class="layout-sider">
-        <a-layout-sider
-          style="background: #fff"
-          v-model:collapsed="collapsed"
-          :trigger="null"
-          collapsible
-        >
-          <a-menu
-            mode="inline"
-            :style="{ height: '100%', borderRight: 0 }"
-            v-model:openKeys="openKeys"
-            v-model:selectedKeys="selectedKeys"
-            v-model:defaultSelectedKeys="selectedKeys"
+  <div class="home">
+    <a-layout>
+      <Header />
+      <a-layout
+        style="
+          flex-direction: unset;
+          position: fixed;
+          height: 100%;
+          width: 100%;
+        "
+      >
+        <div class="layout-sider">
+          <a-layout-sider
+            style="background: #fff"
+            v-model:collapsed="collapsed"
+            :trigger="null"
+            collapsible
           >
-            <a-menu-item
-              style="
-                min-height: 80px;
-                padding-top: 0.3rem !important;
-                border-bottom: 1px solid #e9e9e9;
-              "
+            <a-menu
+              mode="inline"
+              :style="{ height: '100%', borderRight: 0 }"
+              v-model:openKeys="openKeys"
+              v-model:selectedKeys="selectedKeys"
+              v-model:defaultSelectedKeys="selectedKeys"
             >
-              <div class="layout-user">
-                <UserOutlined />
-                <div class="layout-account">
-                  <span class="user-name"
-                    ><a href="">Nguyen Thi Anh Tuyet</a></span
-                  >
-                  <span class="user-role">Employer</span>
-                  <span class="user-role user-company">Meta Technology</span>
+              <a-menu-item
+                style="
+                  min-height: 80px;
+                  padding-top: 0.3rem !important;
+                  border-bottom: 1px solid #e9e9e9;
+                "
+              >
+                <div class="layout-user">
+                  <UserOutlined />
+                  <div class="layout-account">
+                    <span class="user-name"
+                      ><a href="">Nguyen Thi Anh Tuyet</a></span
+                    >
+                    <span class="user-role">Employer</span>
+                    <span class="user-role user-company">Meta Technology</span>
+                  </div>
                 </div>
-              </div>
-            </a-menu-item>
+              </a-menu-item>
 
-            <a-menu-item key="dashboard">
-              <router-link :to="{ name: 'dashboard' }">
-                <HomeOutlined />
-                <span>Dashboard</span>
-              </router-link>
-            </a-menu-item>
-            <a-menu-item key="account-management">
-              <router-link :to="{ name: 'account-management' }">
-                <TeamOutlined />
-                <span>Account Mananagement</span>
-              </router-link>
-            </a-menu-item>
-            <a-menu-item key="company-management">
-              <router-link :to="{ name: 'company-management' }">
-                <WifiOutlined />
-                <span>Company Mananagement</span>
-              </router-link>
-            </a-menu-item>
-            <a-menu-item key="seeker-management">
-              <FileSearchOutlined />
-              <span>Seeker Mananagement</span>
-            </a-menu-item>
-            <a-menu-item key="post-management">
-              <FileTextOutlined />
-              <span>Post Mananagement</span>
-            </a-menu-item>
-            <!-- <a-menu-item key="2">
+              <a-menu-item key="dashboard">
+                <router-link :to="{ name: 'dashboard' }">
+                  <HomeOutlined />
+                  <span>Dashboard</span>
+                </router-link>
+              </a-menu-item>
+              <a-menu-item key="account-management">
+                <router-link :to="{ name: 'account-management' }">
+                  <TeamOutlined />
+                  <span>Account Mananagement</span>
+                </router-link>
+              </a-menu-item>
+              <a-sub-menu key="sub-company">
+                <template #title>
+                  <WifiOutlined />
+                  <span>Company Mananagement</span>
+                </template>
+                <a-menu-item key="top-companies">
+                  <router-link
+                    :to="{
+                      name: 'company-management',
+                      query: { key: 'top-companies' },
+                    }"
+                  >
+                    <span>Top Companies</span>
+                  </router-link>
+                </a-menu-item>
+                <a-menu-item key="company-management">
+                  <router-link
+                    :to="{
+                      name: 'company-management',
+                    }"
+                  >
+                    <span>List Companies</span>
+                  </router-link>
+                </a-menu-item>
+              </a-sub-menu>
+              <a-menu-item key="seeker-management">
+                <router-link :to="{ name: 'seeker-management' }">
+                  <FileSearchOutlined />
+                  <span>Seeker Mananagement</span>
+                </router-link>
+              </a-menu-item>
+              <a-menu-item key="post-management">
+                <router-link :to="{ name: 'post-management' }">
+                  <FileTextOutlined />
+                  <span>Post Mananagement</span>
+                </router-link>
+              </a-menu-item>
+              <!-- <a-menu-item key="2">
           <EnvironmentOutlined />
           <span>Location Management</span>
         </a-menu-item>
@@ -86,14 +117,15 @@
           <SettingOutlined />
           <span>Setting</span>
         </a-menu-item> -->
-          </a-menu>
-        </a-layout-sider>
-      </div>
-      <a-layout-content>
-        <router-view></router-view>
-      </a-layout-content>
+            </a-menu>
+          </a-layout-sider>
+        </div>
+        <a-layout-content>
+          <router-view></router-view>
+        </a-layout-content>
+      </a-layout>
     </a-layout>
-  </a-layout>
+  </div>
 </template>
 <script lang="ts">
 import Header from "../components/Header.vue";
@@ -131,6 +163,7 @@ export default defineComponent({
   },
   setup() {
     const store = useMenu();
+    console.log(store.selectedKeys);
 
     return {
       ...storeToRefs(store),

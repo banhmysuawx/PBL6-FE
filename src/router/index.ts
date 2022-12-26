@@ -15,11 +15,11 @@ import ListCompany from "../views/ListCompany.vue";
 import CompanyDetail from "../views/CompanyDetail.vue";
 import admin from "./admin";
 import FavoriteJob from "../views/FavoriteJob.vue";
-import ShowQuizz from "../views/quizz/ShowQuizz.vue"
-import CreateQuizz from "../views/quizz/CreateQuizz.vue"
-import DetailQuizz from "../views/quizz/DetailQuiz.vue"
-import Dashboard from "../views/dashboard/dashboard.vue"
-
+import JobDetails from "../views/JobDetail.vue";
+import ShowQuizz from "../views/quizz/ShowQuizz.vue";
+import CreateQuizz from "../views/quizz/CreateQuizz.vue";
+import DetailQuizz from "../views/quizz/DetailQuiz.vue";
+import Dashboard from "../views/dashboard/dashboard.vue";
 const routes = [
   {
     path: "/",
@@ -99,9 +99,14 @@ const routes = [
     component: FavoriteJob,
   },
   {
-    path: "/jobs/:name",
+    path: "/jobs",
     name: "jobview",
     component: JobView,
+  },
+  {
+    path: "/jobs/:name",
+    name: "jobdetail",
+    component: JobDetails,
   },
   {
     path: "/test/:company/:id",

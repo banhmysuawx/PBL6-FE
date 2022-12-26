@@ -4,7 +4,7 @@
       <Header />
       <a-layout-content>
         <div class="container">
-          <PageHeader v-bind:totalCompany="totalCompany" />
+          <PageHeader v-bind:totalCompany="totalJobs" />
           <div class="top-companies">
             <div class="title">Top Companies</div>
             <div class="row">
@@ -28,7 +28,7 @@ import Header from "../layouts/header.vue";
 import Footer from "../layouts/footer.vue";
 import TopCompany from "../components/company/TopCompany.vue";
 import PageHeader from "../components/PageHeader.vue";
-import { openNotification } from "../utils";
+import { mapGetters } from "vuex";
 export default defineComponent({
   name: "HomeView",
   components: {
@@ -37,10 +37,19 @@ export default defineComponent({
     TopCompany,
     PageHeader,
   },
+  computed: {
+    ...mapGetters(["isLoading"]),
+  },
+  watch: {
+    isLoading(newVal, oldVal) {
+      console.log(newVal);
+      this.isLoading = newVal;
+    },
+  },
   data() {
     return {
       topCompanies: [],
-      totalCompany: 0,
+      totalJobs: 0,
     };
   },
   mounted() {
@@ -63,7 +72,7 @@ export default defineComponent({
       await axios
         .get("jobs/jobs/sum_jobs")
         .then((response) => {
-          this.totalCompany = response.data.count;
+          this.totalJobs = response.data.sum_job;
         })
         .catch((error) => {
           console.log(error);

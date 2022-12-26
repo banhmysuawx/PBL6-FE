@@ -8,20 +8,10 @@
             <div class="my-profile">
               <div class="my-profile-wrapper">
                 <div class="my-account-info-box">
-                  <div class="nav">
-                    <a-tabs>
-                      <a-tab-pane class="nav-item" key="1" tab="Profile">
-                        <profile-component />
-                      </a-tab-pane>
-                      <a-tab-pane
-                        class="nav-item"
-                        key="2"
-                        tab="Account"
-                        force-render
-                        ><account-component
-                      /></a-tab-pane>
-                    </a-tabs>
-                  </div>
+                  <profile-component />
+                </div>
+                <div class="my-account-info-box">
+                  <account-component />
                 </div>
               </div>
             </div>
@@ -77,6 +67,9 @@ export default {
   height: 100%;
   overflow: hidden;
   background-color: white;
+  padding: 20px;
+  overflow-y: scroll;
+  height: 700px;
 }
 .home main.ant-layout-content {
   position: relative;

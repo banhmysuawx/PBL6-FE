@@ -11,11 +11,7 @@
           <img v-bind:alt="company.company_name" v-bind:src="image" />
         </div>
       </template>
-      <a-rate
-        v-bind:value="company.average_rating.rating__avg"
-        disabled
-        allow-half
-      />
+      <a-rate v-bind:value="company.average_rating" disabled allow-half />
       <div class="top-company__content">
         <p class="top-company__title">{{ company.company_name }}</p>
 
@@ -33,7 +29,7 @@ export default defineComponent({
   name: "TopCompany",
   data() {
     return {
-      image: "https://api.quangdinh.me/" + this.company?.image,
+      image: "https://api.quangdinh.me" + this.company?.image,
     };
   },
   props: {

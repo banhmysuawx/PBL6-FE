@@ -6,7 +6,7 @@
         <div class="search-company">
           <div class="search-form">
             <h1 class="slogan">
-              {{ totalCompany }} Việc làm IT cho Developer "Chất"
+              {{ totalCompany }} Jobs for "Cools" Developer
             </h1>
             <form action="" class="search-form-content">
               <div class="search-form__keyword">

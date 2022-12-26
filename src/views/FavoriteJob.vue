@@ -30,10 +30,6 @@
                       </div>
                       <ul class="benefit">
                         <li class="benefit-text">Hình thức làm việc hybird</li>
-                        <li class="benefit-text">Bảo hiểm 100% lương</li>
-                        <li class="benefit-text">
-                          Đài thọ 100% chí phí học tập cho CBNV
-                        </li>
                       </ul>
                       <div class="tag">
                         <p v-for="skill in job.job.skills">{{ skill.name }}</p>
@@ -86,7 +82,7 @@ export default {
     DollarOutlined,
   },
   data() {
-    const userId = localStorage.getItem("id");
+    const userId = this.$store.state.user.id;
     return {
       listJobs: [],
       isFavorite: "red",

@@ -67,6 +67,7 @@ import { CheckCircleFilled } from "@ant-design/icons-vue";
 import axios from "axios";
 import { formatDate, openNotification } from "../utils";
 import EmptyApplied from "./EmptyApplied.vue";
+import store from "../store";
 export default defineComponent({
   name: "Test",
   components: {
@@ -82,7 +83,7 @@ export default defineComponent({
       result: [],
       time_start: new Date().toISOString(),
       id: this.$route.params.id,
-      userId: Number(localStorage.getItem("id")),
+      userId: store.state.user.id,
       job: this.$route.query.job,
     };
   },
@@ -92,7 +93,7 @@ export default defineComponent({
   methods: {
     async getTest() {
       await axios
-        .get("https://api-exam.quangdinh.me/api/v1/test/" + 1)
+        .get("https://api-exam.quangdinh.me/api/v1/test/" + this.id)
         .then((response) => {
           const data = response.data[0];
           this.data = data;
@@ -105,15 +106,19 @@ export default defineComponent({
     },
     async onSubmit() {
       const token = axios.defaults.headers.common["Authorization"];
-      const userId = localStorage.getItem("id");
+      const userId = this.$store.state.user.id;
       const data = {
         user_id: userId,
+        job_id: this.id,
         questions: this.result,
         time_done: formatDate(new Date().toISOString()),
         time_start: formatDate(this.time_start),
       };
       await axios
-        .post("https://api-exam.quangdinh.me/api/v1/test/" + 1 + "/doing", data)
+        .post(
+          "https://api-exam.quangdinh.me/api/v1/test/" + this.id + "/doing",
+          data
+        )
         .then((response) => {
           const result = response.data.data?.result;
           if (result) this.doneTest(result);

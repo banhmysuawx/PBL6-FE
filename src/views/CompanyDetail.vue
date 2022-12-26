@@ -38,8 +38,6 @@
                 </div>
                 <div class="company-introduce__actions">
                   <a-button class="actions-btn">Write review</a-button>
-
-                  <a-button class="actions-btn follow">Follow</a-button>
                 </div>
               </div>
               <div class="nav">
@@ -48,7 +46,9 @@
                     <div class="company-detail-wrapper">
                       <div class="company-detail-box">
                         <div class="company-description">
-                          <h2>Overview about Paradox</h2>
+                          <h2>
+                            Overview about {{ company_detail.company_name }}
+                          </h2>
                           <div class="company-description__text">
                             "{{ company_detail.profile_description }}"
                           </div>
@@ -69,13 +69,11 @@
                             <h2>Rating</h2>
                             <div class="rating">
                               <a-rate
-                                v-bind:value="
-                                  company_detail.average_rating?.rating__avg
-                                "
+                                v-bind:value="company_detail.average_rating"
                                 disabled
                                 allow-half
                               />
-                              {{ company_detail.average_rating?.rating__avg }}
+                              {{ company_detail.average_rating }}
                             </div>
                           </div>
                           <div class="review-box__content__review">
@@ -136,13 +134,11 @@
                           </h2>
                           <div class="rating">
                             <a-rate
-                              v-bind:value="
-                                company_detail.average_rating?.rating__avg
-                              "
+                              v-bind:value="company_detail.average_rating"
                               disabled
                               allow-half
                             />
-                            {{ company_detail.average_rating?.rating__avg }}
+                            {{ company_detail.average_rating }}
                           </div>
                         </div>
                         <div class="job-opportunities">
@@ -242,11 +238,12 @@ import {
   WifiOutlined,
   SendOutlined,
 } from "@ant-design/icons-vue";
+import { useMenu } from "../store/use-menu";
 export default defineComponent({
   name: "CompanyDetail",
   data() {
     const id: Number = Number(this.$route.params.id);
-    const userId = Number(localStorage.getItem("id"));
+    const userId = 1;
     const comment: Comment = { user: userId, company: id };
     const listComments: Comment[] = [];
     return {
@@ -302,7 +299,7 @@ export default defineComponent({
         .catch((error) => console.log(error));
     },
     async createComment() {
-      if (!this.userId) this.$router.push({ name: "login" });
+      // if (!this.userId) this.$router.push({ name: "login" });
       await axios
         .post("reviews/reviews/create", this.comment)
         .then((response) => {

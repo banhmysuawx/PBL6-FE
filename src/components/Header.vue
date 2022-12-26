@@ -7,7 +7,7 @@
         @click="onChangeCollapsed()"
       />
       <MenuFoldOutlined v-else class="trigger" @click="onChangeCollapsed()" />
-      <div class="logo"><img src="../assets/logo2.png" alt="" /></div>
+      <div class="logo-header"><img src="../assets/logo2.png" alt="" /></div>
       <a-menu mode="horizontal" :style="{ lineHeight: '64px' }">
         <a-menu-item key="1">
           <PlusCircleOutlined />
@@ -81,7 +81,7 @@ export default defineComponent({
   justify-content: center;
   margin: 1rem !important;
 }
-.logo img {
+.logo-header img {
   max-width: 150px;
   filter: brightness(0) invert(1);
 }

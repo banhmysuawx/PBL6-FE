@@ -67,7 +67,6 @@
                       @change="handleChange"
                       class="select-model"
                     >
-                      <SelectOption value="admin">Admin</SelectOption>
                       <SelectOption value="seeker">Seeker</SelectOption>
                       <SelectOption value="employer">Employer</SelectOption>
                     </Select>

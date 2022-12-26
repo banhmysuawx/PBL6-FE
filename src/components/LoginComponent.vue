@@ -129,11 +129,15 @@ export default {
         .post("auth/login", this.model)
         .then(async (response) => {
           const accessToken = response.data.tokens.access;
+          const refreshToken = response.data.tokens.refresh;
           localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("refresh", refreshToken);
           this.$store.commit("setAccessToken", accessToken);
+          this.$store.commit("setRefreshToken", refreshToken);
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${accessToken}`;
+          console.log(axios.defaults.headers.common["Authorization"]);
           await this.getInfo();
           this.$router.push({ name: "home" });
         })
@@ -146,15 +150,16 @@ export default {
       await axios
         .get("auth/me")
         .then((response) => {
+          const data = response.data;
           const user = {
-            id: response.data.id,
-            username: response.data.username,
-            role: response.data.role,
+            id: data.id,
+            username: data.username,
+            role: data.role,
+            avatar: data.avatar,
+            email: data.email,
+            gender: data.gender,
           };
           this.$store.commit("setUser", user);
-          localStorage.setItem("id", user.id);
-          localStorage.setItem("username", user.username);
-          localStorage.setItem("role", user.role);
         })
         .catch((error) => error);
     },
