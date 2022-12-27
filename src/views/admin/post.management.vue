@@ -1,46 +1,32 @@
 <template>
   <div class="home">
     <div class="container">
-      <div class="filter-container">
-        <div class="search-item">
-          <a-input></a-input>
-        </div>
-        <div class="filter">
-          <a-dropdown>
-            <template #overlay>
-              <a-menu>
-                <a-menu-item key="Da Nang"> Da Nang </a-menu-item>
-                <a-menu-item key="Ha Noi"> Ha Noi </a-menu-item>
-                <a-menu-item key="Ho Chi Minh"> Ho Chi Minh </a-menu-item>
-                <a-menu-item key="other"> Others </a-menu-item>
-              </a-menu>
-            </template>
-            <a-button>
-              Address
-              <CaretDownFilled />
-            </a-button>
-          </a-dropdown>
-        </div>
-        <div class="filter">
-          <a-dropdown>
-            <template #overlay>
-              <a-menu>
-                <a-menu-item key="dissble"> disable </a-menu-item>
-                <a-menu-item key="enable"> enable </a-menu-item>
-              </a-menu>
-            </template>
-            <a-button>
-              Status
-              <CaretDownFilled />
-            </a-button>
-          </a-dropdown>
-        </div>
-        <div class="action">
-          <a-button class="filter-btn">Filter</a-button>
+      <div class="account-header">
+        <div class="total">{{ total }} posts</div>
+        <div class="filter-container">
+          <div class="search-item">
+            <a-input v-model:value="text"></a-input>
+          </div>
+          <div class="filter">
+            <a-dropdown>
+              <template #overlay>
+                <a-menu v-model:value="status">
+                  <a-menu-item value="dissbled"> disable </a-menu-item>
+                  <a-menu-item value="enabled"> enable </a-menu-item>
+                </a-menu>
+              </template>
+              <a-button>
+                Status
+                <CaretDownFilled />
+              </a-button>
+            </a-dropdown>
+          </div>
+          <div class="action">
+            <a-button class="filter-btn">Filter</a-button>
+          </div>
         </div>
       </div>
       <div class="companies-container">
-        <div class="total-companies">Total: 10</div>
         <div class="list-companies">
           <div class="row">
             <div class="company" v-for="job in listPosts">
@@ -70,6 +56,7 @@ export default defineComponent({
   data() {
     return {
       listPosts: [],
+      total: 0,
     };
   },
   mounted() {
@@ -82,6 +69,7 @@ export default defineComponent({
         .then((response) => {
           const data = response.data;
           this.listPosts = data;
+          this.total = this.listPosts.length;
           console.log(this.listPosts);
         })
         .catch((error) => error);
@@ -93,6 +81,20 @@ export default defineComponent({
 .container {
   background: white;
 }
+.account-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 50px 20px 30px 50px;
+}
+.account-header .total {
+  margin-right: 20px;
+  font-size: 17px;
+  color: #007082;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  border: 1px solid #e9e9e9;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
 .account-container {
   max-width: 1350px;
   margin: auto;
@@ -100,11 +102,6 @@ export default defineComponent({
 }
 .filter-container {
   display: flex;
-  max-width: 1350px !important;
-  margin: 30px auto;
-  width: fit-content;
-  margin-right: 0;
-  margin-top: 50px;
 }
 .filter {
   padding-right: 20px;
@@ -134,6 +131,25 @@ export default defineComponent({
   background: #007082;
   color: white;
 }
+.account-container {
+  padding: 0 40px;
+}
+.ant-form-item {
+  margin-bottom: 12px;
+  font-size: 10px;
+}
+.ant-form-item .ant-select,
+.filter-container .ant-cascader-picker {
+  width: 280px;
+  height: 35px !important;
+  border-radius: 7px;
+}
+.ant-form-item .ant-select-selector {
+  border-radius: 7px;
+}
+.account-table thead.ant-table-thead {
+  font-weight: 550 !important;
+}
 .company {
   width: 50%;
   padding: 12px;
@@ -156,12 +172,5 @@ export default defineComponent({
 }
 .ant-card-cover .company__logo img {
   transform: translateY(0%) !important;
-}
-.total-companies {
-  text-align: left;
-  padding-left: 30px;
-  font-size: 18px;
-  font-family: Tahoma, sans-serif;
-  color: rgb(188, 71, 108);
 }
 </style>

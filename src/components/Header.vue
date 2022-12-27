@@ -1,30 +1,37 @@
 <template>
   <div class="header-component">
     <a-layout-header class="header">
-      <MenuUnfoldOutlined
-        v-if="collapsed"
-        class="trigger"
-        @click="onChangeCollapsed()"
-      />
-      <MenuFoldOutlined v-else class="trigger" @click="onChangeCollapsed()" />
-      <div class="logo-header"><img src="../assets/logo2.png" alt="" /></div>
-      <a-menu mode="horizontal" :style="{ lineHeight: '64px' }">
-        <a-menu-item key="1">
-          <PlusCircleOutlined />
-          <span>Post Job</span>
-        </a-menu-item>
-        <a-menu-item key="2">
-          <MessageOutlined />
-          <span>Connect</span>
-        </a-menu-item>
-        <a-menu-item key="3">
-          <SearchOutlined />
-          <span>Find CV</span>
-        </a-menu-item>
-        <a-menu-item key="4">
-          <BellOutlined />
-        </a-menu-item>
-      </a-menu>
+      <div class="header-left">
+        <MenuUnfoldOutlined
+          v-if="collapsed"
+          class="trigger"
+          @click="onChangeCollapsed()"
+        />
+        <MenuFoldOutlined v-else class="trigger" @click="onChangeCollapsed()" />
+        <div class="logo-header"><img src="../assets/logo2.png" alt="" /></div>
+      </div>
+      <div class="header-right">
+        <a-menu mode="horizontal" :style="{ lineHeight: '64px' }">
+          <a-menu-item key="1">
+            <router-link :to="{ name: 'JobBoard' }">
+              <MessageOutlined />
+              <span>Company</span>
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="2">
+            <router-link :to="{ name: 'home' }">
+              <MessageOutlined />
+              <span>Seeker</span>
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="3" v-if="id" @click="logout">
+            <span>Logout</span>
+          </a-menu-item>
+          <a-menu-item key="4" v-else @click="login">
+            <span>Login</span>
+          </a-menu-item>
+        </a-menu>
+      </div>
     </a-layout-header>
   </div>
 </template>
@@ -32,7 +39,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useMenu } from "../store/use-menu";
-
+import store from "../store";
+import axios from "axios";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -54,6 +62,7 @@ export default defineComponent({
     return {
       collapsed: false,
       size: "",
+      id: store.state.user.id,
     };
   },
   setup() {
@@ -70,6 +79,18 @@ export default defineComponent({
       store.onChangeSize();
       this.collapsed = store.collapsed;
       this.size = store.size;
+    },
+    async logout() {
+      axios.defaults.headers.common["Authorization"] = "";
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("id");
+      localStorage.removeItem("role");
+      localStorage.removeItem("username");
+      this.$router.push("/login");
+    },
+    async login() {
+      this.$router.push("/login");
     },
   },
 });
@@ -138,8 +159,13 @@ export default defineComponent({
 .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu {
   padding: 0 7px !important;
 }
-.header-component
-  ul.ant-menu-overflow.ant-menu.ant-menu-root.ant-menu-horizontal.ant-menu-light {
-  margin-left: 50%;
+.header-left {
+  display: flex;
+}
+.header {
+  justify-content: space-between;
+}
+.header .ant-menu-horizontal > .ant-menu-item a {
+  color: white;
 }
 </style>

@@ -29,11 +29,7 @@
             </p>
           </router-link>
           <p class="company-address">{{ company.company_location }}</p>
-          <a-rate
-            v-bind:value="company.average_rating.rating__avg"
-            disabled
-            allow-half
-          />
+          <a-rate v-bind:value="company.average_rating" disabled allow-half />
         </div>
       </div>
       <p class="company__description">

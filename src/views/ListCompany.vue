@@ -6,13 +6,14 @@
         <div class="search-company">
           <div class="search-form">
             <h1 class="slogan">
-              {{ totalCompany }} Jobs for "Cools" Developer
+              {{ totalCompany }} Companies for "Cools" Developer
             </h1>
             <form action="" class="search-form-content">
               <div class="search-form__keyword">
                 <input
                   class="search-form__keyword-input"
                   placeholder="Nhập tên công ty"
+                  v-model="text"
                 />
               </div>
               <div class="search-form__action-section">
@@ -20,6 +21,7 @@
                   type="primary"
                   htmlType="submit"
                   class="search-form__action-search"
+                  @click="filterByText(text)"
                   >Search</Button
                 >
               </div>
@@ -58,7 +60,16 @@ export default defineComponent({
   data() {
     return {
       listCompany: [],
+      listCompanyClone: [],
+      totalCompany: 0,
+      text: "",
     };
+  },
+  watch: {
+    text() {
+      console.log(this.text);
+      this.filterByText(this.text);
+    },
   },
   mounted() {
     this.getListCompany();
@@ -70,10 +81,22 @@ export default defineComponent({
         .then((response) => {
           const listCompany = response.data.results;
           this.listCompany = listCompany;
+          this.listCompanyClone = listCompany;
+          this.totalCompany = this.listCompany.length;
         })
         .catch((error) => {
           console.log(error);
         });
+    },
+    filterByText(text: string) {
+      this.listCompany = this.listCompanyClone;
+      if (text.length)
+        this.listCompany = this.listCompany.filter(
+          (item: { company_name: string; company_location: string }) =>
+            item.company_name.toUpperCase().includes(text.toUpperCase()) ||
+            item.company_location.toUpperCase().includes(text.toUpperCase())
+        );
+      this.totalCompany = this.listCompany.length;
     },
   },
 });

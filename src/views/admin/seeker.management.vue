@@ -1,66 +1,62 @@
 <template>
   <div class="home">
     <div class="container">
-      <div class="filter-container">
-        <div class="search-item">
-          <a-input></a-input>
-        </div>
-        <div class="filter">
-          <a-dropdown>
-            <template #overlay>
-              <a-menu>
-                <a-menu-item key="Da Nang"> Da Nang </a-menu-item>
-                <a-menu-item key="Ha Noi"> Ha Noi </a-menu-item>
-                <a-menu-item key="Ho Chi Minh"> Ho Chi Minh </a-menu-item>
-                <a-menu-item key="other"> Others </a-menu-item>
-              </a-menu>
-            </template>
-            <a-button>
-              Address
-              <CaretDownFilled />
-            </a-button>
-          </a-dropdown>
-        </div>
-        <div class="filter">
-          <a-dropdown>
-            <template #overlay>
-              <a-menu>
-                <a-menu-item key="dissble"> disable </a-menu-item>
-                <a-menu-item key="enable"> enable </a-menu-item>
-              </a-menu>
-            </template>
-            <a-button>
-              Status
-              <CaretDownFilled />
-            </a-button>
-          </a-dropdown>
-        </div>
-        <div class="action">
-          <a-button class="filter-btn">Filter</a-button>
+      <div class="account-header">
+        <div class="total">{{ total }} seekers</div>
+        <div class="filter-container">
+          <div class="search-item">
+            <a-input v-model:value="text"></a-input>
+          </div>
+          <div class="filter">
+            <a-dropdown>
+              <template #overlay>
+                <a-menu v-model:value="status">
+                  <a-menu-item value="dissbled"> disable </a-menu-item>
+                  <a-menu-item value="enabled"> enable </a-menu-item>
+                </a-menu>
+              </template>
+              <a-button>
+                Status
+                <CaretDownFilled />
+              </a-button>
+            </a-dropdown>
+          </div>
+          <div class="action">
+            <a-button class="filter-btn">Filter</a-button>
+          </div>
         </div>
       </div>
       <div class="companies-container">
-        <div class="total-companies">Total: 10</div>
         <div class="list-companies">
           <div class="row">
-            <div class="company">
-              <a-card hoverable>
-                <template #cover>
-                  <div class="company__logo">
-                    <div class="logo">
-                      <img :src="require('../../assets/logo2.png')" alt="" />
-                    </div>
-                    <div class="company__content">
-                      <p class="company__title">Anh Tuyet</p>
-                      <p class="company-address">Da Nang</p>
-                      <div class="tag">
-                        <p>NodeJs</p>
+            <div class="company" v-for="seeker in listSeekers">
+              <router-link
+                :to="{
+                  name: 'seeker-detail',
+                  params: { id: seeker.user.id },
+                }"
+              >
+                <a-card hoverable>
+                  <template #cover>
+                    <div class="company__logo">
+                      <div class="logo">
+                        <img :src="require('../../assets/logo2.png')" alt="" />
+                      </div>
+                      <div class="company__content">
+                        <p class="company__title">
+                          {{ seeker.seeker.first_name.toUpperCase() }}
+                          {{ seeker.seeker.last_name.toUpperCase() }}
+                        </p>
+                        <p class="company-address">Da Nang</p>
+                        <div class="tag" v-for="skill in seeker.skills">
+                          <p>{{ skill.skill_name }}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <p class="company__description"></p>
-                </template>
-              </a-card>
+                    <p class="company__description"></p>
+                  </template>
+                </a-card>
+              </router-link>
             </div>
           </div>
         </div>
@@ -87,18 +83,43 @@ export default defineComponent({
   },
   data() {
     return {
-      listCompanies: [],
+      listSeekers: [],
+      total: 0,
     };
   },
   mounted() {
-    // this.getListCompany();
+    this.getListSeekers();
   },
-  methods: {},
+  methods: {
+    async getListSeekers() {
+      await axios
+        .get("seekers/candidate-profile/get_all_information")
+        .then((response) => {
+          this.listSeekers = response.data;
+          this.total = this.listSeekers.length;
+        })
+        .catch((error) => error);
+    },
+  },
 });
 </script>
 <style scoped>
 .container {
   background: white;
+}
+.account-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 50px 20px 30px 50px;
+}
+.account-header .total {
+  margin-right: 20px;
+  font-size: 17px;
+  color: #007082;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  border: 1px solid #e9e9e9;
+  border-radius: 5px;
+  padding: 5px 10px;
 }
 .account-container {
   max-width: 1350px;
@@ -107,11 +128,6 @@ export default defineComponent({
 }
 .filter-container {
   display: flex;
-  max-width: 1350px !important;
-  margin: 30px auto;
-  width: fit-content;
-  margin-right: 0;
-  margin-top: 50px;
 }
 .filter {
   padding-right: 20px;
@@ -141,6 +157,25 @@ export default defineComponent({
   background: #007082;
   color: white;
 }
+.account-container {
+  padding: 0 40px;
+}
+.ant-form-item {
+  margin-bottom: 12px;
+  font-size: 10px;
+}
+.ant-form-item .ant-select,
+.filter-container .ant-cascader-picker {
+  width: 280px;
+  height: 35px !important;
+  border-radius: 7px;
+}
+.ant-form-item .ant-select-selector {
+  border-radius: 7px;
+}
+.account-table thead.ant-table-thead {
+  font-weight: 550 !important;
+}
 .company {
   width: 33%;
   padding: 12px;
@@ -160,15 +195,5 @@ export default defineComponent({
   margin-right: 12px;
   margin-left: 12px;
   margin-bottom: 20px;
-}
-/* .ant-card-cover .company__logo img {
-  transform: translateY(0%) !important;
-} */
-.total-companies {
-  text-align: left;
-  padding-left: 30px;
-  font-size: 18px;
-  font-family: Tahoma, sans-serif;
-  color: rgb(188, 71, 108);
 }
 </style>
