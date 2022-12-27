@@ -238,12 +238,12 @@ import {
   WifiOutlined,
   SendOutlined,
 } from "@ant-design/icons-vue";
-import { useMenu } from "../store/use-menu";
+import store from "../store";
 export default defineComponent({
   name: "CompanyDetail",
   data() {
     const id: Number = Number(this.$route.params.id);
-    const userId = 1;
+    const userId = store.state.user.id;
     const comment: Comment = { user: userId, company: id };
     const listComments: Comment[] = [];
     return {
@@ -252,6 +252,7 @@ export default defineComponent({
       company_detail: {},
       comment,
       listComments,
+      userId,
     };
   },
   components: {
@@ -299,12 +300,14 @@ export default defineComponent({
         .catch((error) => console.log(error));
     },
     async createComment() {
-      // if (!this.userId) this.$router.push({ name: "login" });
+      console.log(this.userId);
+      if (!this.userId) this.$router.push({ name: "login" });
       await axios
         .post("reviews/reviews/create", this.comment)
         .then((response) => {
           const newComment: Comment = response.data;
           this.listComments.push(newComment);
+          this.comment = { user: this.userId, company: this.id };
         })
         .catch((error) => console.log(error));
     },
