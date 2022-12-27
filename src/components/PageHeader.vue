@@ -2,11 +2,12 @@
   <div class="search-header">
     <div class="search-form">
       <h1 class="slogan">{{ totalCompany }} Jobs for "Cool" Developers</h1>
-      <form action="" class="search-form-content">
+      <form class="search-form-content">
         <div class="search-form__keyword">
           <input
             class="search-form__keyword-input"
             placeholder="Tìm kiếm theo kỹ năng, chức vụ, công ty..."
+            v-model="input"
           />
         </div>
         <div class="search-from__city-section">
@@ -19,7 +20,7 @@
         <div class="search-form__action-section">
           <Button
             type="primary"
-            htmlType="submit"
+            @click="filterJob"
             class="search-form__action-search"
             >Search</Button
           >
@@ -36,8 +37,19 @@ export default defineComponent({
   props: {
     totalCompany: Number,
   },
+  data() {
+    return {
+      input: "",
+    };
+  },
   components: {
     Button,
+  },
+  methods: {
+    async filterJob() {
+      if (!this.input.length) this.$router.push({ name: "jobview" });
+      else this.$router.push({ name: "jobview", query: { text: this.input } });
+    },
   },
 });
 </script>

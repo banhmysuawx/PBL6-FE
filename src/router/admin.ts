@@ -1,6 +1,7 @@
 export const admin = [
   {
     path: "/admin",
+    redirect: "/admin/dashboard",
     component: () => import("../layouts/admin.vue"),
     children: [
       {
@@ -37,6 +38,11 @@ export const admin = [
         path: "posts/:name",
         name: "admin-job-detail",
         component: () => import("../views/admin/post.detail.vue"),
+      },
+      {
+        path: "seeker/:id",
+        name: "seeker-detail",
+        component: () => import("../views/admin/seeker.detail.vue"),
       },
     ],
   },

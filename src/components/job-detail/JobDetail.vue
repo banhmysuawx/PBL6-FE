@@ -100,6 +100,7 @@ export default defineComponent({
   watch: {
     id() {
       this.getJobDetail();
+      this.styleApply();
     },
   },
   mounted() {
@@ -111,7 +112,10 @@ export default defineComponent({
       const url = `jobs/user/${this.id}/job_is_apply`;
       const isApplied = await axios
         .get(url, { params: { id_user: this.userId } })
-        .then((response) => response.data.is_apply)
+        .then((response) => {
+          console.log(response.data.is_apply);
+          return response.data.is_apply;
+        })
         .catch(() => false);
       let style = { background: "#007082", text: "Apply now", disabled: false };
       console.log(isApplied);

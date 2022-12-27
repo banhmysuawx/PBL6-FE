@@ -1,7 +1,7 @@
 <template>
   <router-link
     :to="{
-      name: 'company-detail',
+      name: name,
       params: { name: company.company_name, id: company.id },
     }"
   >
@@ -25,10 +25,19 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { Company } from "../../utils";
+import store from "../../store";
 export default defineComponent({
   name: "TopCompany",
   data() {
+    const role = store.state.user.role;
+    const name = role === "admin" ? "admin-company-detail" : "company-detail";
+    const params =
+      role === "admin"
+        ? { id: this.company.id }
+        : { name: this.company.company_name, id: this.company.id };
     return {
+      role,
+      name,
       image: "https://api.quangdinh.me" + this.company?.image,
     };
   },

@@ -13,7 +13,7 @@
             {{ education.certificate_degree_name }} - {{ education.major }}
             <div class="content-title-bar__icon">
               <a><EditOutlined @click="showModal" /></a>
-              <a><DeleteOutlined /></a>
+              <a><DeleteOutlined @click="deleteEducation(education.id)" /></a>
             </div>
           </div>
           <p>{{ education.starting_date }} - {{ education.completion_date }}</p>
@@ -294,6 +294,12 @@ export default defineComponent({
     // this.getProfile();
     this.getInfo();
   },
+  watch: {
+    listEducations() {
+      console.log("OK");
+      console.log(this.listEducations.length);
+    },
+  },
   methods: {
     async getProfile() {
       let profile = await axios
@@ -316,24 +322,34 @@ export default defineComponent({
     },
     async createEducation() {
       this.education.seeker = this.seeker;
-      this.education.starting_date = formatTime(this.education.starting_date);
-      this.education.completion_date = formatTime(
-        this.education.completion_date
-      );
+      if (this.education.starting_date)
+        this.education.starting_date = formatTime(this.education.starting_date);
+      else delete this.education.starting_date;
+      if (this.education.completion_date)
+        this.education.completion_date = formatTime(
+          this.education.completion_date
+        );
+      else delete this.education.completion_date;
       await axios
         .post("seekers/educations", this.education)
-        .then((response) => this.listEducations.push(this.education))
-        .catch((error) => error);
-      this.visible = false;
+        .then((response) => {
+          this.visible = false;
+          this.listEducations.push(response.data);
+        })
+        .catch((error) => this.$message.error("Try again"));
     },
 
     async createExperience() {
       this.experience.seeker = this.seeker;
-      this.experience.start_date = formatTime(this.experience.start_date);
-      this.experience.end_date = formatTime(this.experience.end_date);
+      if (this.experience.start_date)
+        this.experience.start_date = formatTime(this.experience.start_date);
+      else delete this.experience.start_date;
+      if (this.experience.end_date)
+        this.experience.end_date = formatTime(this.experience.end_date);
+      else delete this.experience.end_date;
       await axios
         .post("seekers/expirences", this.experience)
-        .then((response) => this.listExperiences.push(this.experience))
+        .then((response) => this.listExperiences.push(response.data))
         .catch((error) => error);
       this.visible2 = false;
     },
@@ -342,7 +358,7 @@ export default defineComponent({
       this.skill.seeker = this.seeker;
       await axios
         .post("seekers/skills", this.skill)
-        .then((response) => this.listSkills.push(this.skill))
+        .then((response) => this.listSkills.push(response.data))
         .catch((error) => error);
       this.visible1 = false;
     },
@@ -377,6 +393,42 @@ export default defineComponent({
 
       [this.listEducations, this.listExperiences, this.listSkills] =
         await Promise.all([infoEducation, infoExperience, infoSkill]);
+    },
+    async deleteEducation(id: Number) {
+      const url = "seekers/educations/";
+      await axios
+        .delete(url + id)
+        .then((response) => {
+          this.listEducations = this.listEducations.filter(
+            (item: { id: Number }) => item.id != id
+          );
+          return response.data;
+        })
+        .catch((error) => error);
+    },
+    async deleteExperience(id: Number) {
+      const url = "seekers/educations/";
+      await axios
+        .delete(url + id)
+        .then((response) => {
+          this.listExperiences = this.listExperiences.filter(
+            (item: { id: Number }) => item.id != id
+          );
+          return response.data;
+        })
+        .catch((error) => error);
+    },
+    async deleteSkill(id: Number) {
+      const url = "seekers/skills/";
+      await axios
+        .delete(url + id)
+        .then((response) => {
+          this.listSkills = this.listSkills.filter(
+            (item: { id: Number }) => item.id != id
+          );
+          return response.data;
+        })
+        .catch((error) => error);
     },
   },
 });

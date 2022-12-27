@@ -92,6 +92,7 @@ export default defineComponent({
   },
   methods: {
     async getTest() {
+      // delete axios.defaults.headers.common["Authorization"];
       await axios
         .get("https://api-exam.quangdinh.me/api/v1/test/" + this.id)
         .then((response) => {
@@ -105,7 +106,6 @@ export default defineComponent({
         .catch((error) => console.log(error));
     },
     async onSubmit() {
-      const token = axios.defaults.headers.common["Authorization"];
       const userId = this.$store.state.user.id;
       const data = {
         user_id: userId,
