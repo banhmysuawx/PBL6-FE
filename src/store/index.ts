@@ -6,7 +6,8 @@ export default createStore({
     refreshToken: "",
     isLoading: true,
     company: {
-      id: 3,
+      id: 1,
+      name: ''
     },
     user: {
       username: "",

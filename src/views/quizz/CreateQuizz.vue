@@ -182,6 +182,7 @@ export default {
     };
   },
   mounted() {
+    delete axios.defaults.headers.common["Authorization"];
     axios
       .get("https://api-exam.quangdinh.me/api/v1/test/category")
       .then((response) => {
@@ -241,6 +242,7 @@ export default {
       console.log(this.list_question);
     },
     CreateNewQuizz() {
+      delete axios.defaults.headers.common["Authorization"];
       const data = {
         name: this.name,
         category: this.category,
