@@ -20,6 +20,8 @@ import ShowQuizz from "../views/quizz/ShowQuizz.vue";
 import CreateQuizz from "../views/quizz/CreateQuizz.vue";
 import DetailQuizz from "../views/quizz/DetailQuiz.vue";
 import Dashboard from "../views/dashboard/dashboard.vue";
+import Information from "../views/information/company_information.vue"
+
 const routes = [
   {
     path: "/",
@@ -56,6 +58,11 @@ const routes = [
     path: "/company/quizz",
     name: "company-quizz",
     component: ShowQuizz,
+  },
+  {
+    path: "/company/information",
+    name: "company-information",
+    component: Information,
   },
   {
     path: "/company/create-quizz",

@@ -723,7 +723,6 @@ export default {
       .get(`/jobs/company/get_category_and_job?company_id=${id}`)
       .then((response) => {
         this.list_category = response.data;
-        console.log("heleo");
         console.log(this.list_category);
       })
       .catch((err) => {
@@ -755,6 +754,7 @@ export default {
         return err;
       });
     this.createCheckSkillInitial();
+    delete axios.defaults.headers.common["Authorization"];
     await axios
       .get("https://api-exam.quangdinh.me/api/v1/test")
       .then((response) => {

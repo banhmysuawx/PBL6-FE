@@ -749,8 +749,6 @@ export default {
       .catch((err) => {
         console.log(err);
       });
-
-      console.log("Ngo Nguyen Hoang Dung")
   },
 
   components: {

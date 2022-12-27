@@ -56,11 +56,6 @@
     <span style="color: rgb(191, 203, 217)">Information</span>
   </el-menu-item>
 
-  <el-menu-item index="7"  @click="Setting()">
-    <el-icon><setting /></el-icon>
-    <span style="color: rgb(191, 203, 217)">Setting</span>
-  </el-menu-item>
-
   <el-menu-item index="8"  @click="UserView()">
     <el-icon><setting /></el-icon>
     <span style="color: rgb(191, 203, 217)">User View</span>
@@ -104,6 +99,12 @@ export default {
     },
     TestManagement(){
       this.$router.push({ name: "company-quizz" });
+    },
+    Information(){
+      this.$router.push({ name: "company-information" });
+    },
+    UserView(){
+      this.$router.push({ name: "home" });
     }
   }
   

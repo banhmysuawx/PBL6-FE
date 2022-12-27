@@ -189,6 +189,7 @@ export default {
   }
 },
   mounted() {
+    delete axios.defaults.headers.common["Authorization"];
     const id =  this.$route.params.id;
     axios
       .get(`https://api-exam.quangdinh.me/api/v1/test/${id}`)
@@ -203,6 +204,7 @@ export default {
   },
   methods: {
     choiceQuestion(id){
+      delete axios.defaults.headers.common["Authorization"];
       axios
       .get(`https://api-exam.quangdinh.me/api/v1/test/question/${id}`)
       .then(response=>{
