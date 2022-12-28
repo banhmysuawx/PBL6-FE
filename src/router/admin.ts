@@ -3,6 +3,9 @@ export const admin = [
     path: "/admin",
     redirect: "/admin/dashboard",
     component: () => import("../layouts/admin.vue"),
+    meta: {
+      role: "admin",
+    },
     children: [
       {
         path: "account",

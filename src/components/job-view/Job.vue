@@ -1,10 +1,10 @@
 <template>
-  <div class="job-component">
+  <div class="job-component" v-if="this.job.id">
     <router-link
       :to="{
         name: name,
         params: { name: job.name },
-        query: { idJob: job.id, idCompany: job.company.id },
+        query: { idJob: job.id, idCompany: idCompany },
       }"
       v-show="show"
     >
@@ -32,6 +32,17 @@
             </div>
           </div>
           <div class="city-and-date">
+            <div class="company__content-title-action" v-if="role === 'admin'">
+              <a><EditOutlined /></a>
+              <a-popconfirm
+                title="Are you sure delete this post?"
+                ok-text="Yes"
+                cancel-text="No"
+                @confirm="deleteJob(job.id)"
+              >
+                <a><DeleteOutlined /></a>
+              </a-popconfirm>
+            </div>
             <!-- <div class="favorite">
             <p :style="{ color: isFavorite }">❤</p>
           </div> -->
@@ -85,13 +96,21 @@
 </template>
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { DollarOutlined } from "@ant-design/icons-vue";
+import {
+  DollarOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons-vue";
 import { Job } from "../../utils";
 import store from "../../store/index";
+import axios from "axios";
+import { message } from "ant-design-vue";
 export default defineComponent({
   name: "Job",
   components: {
     DollarOutlined,
+    EditOutlined,
+    DeleteOutlined,
   },
   data() {
     const role = store.state.user.role;
@@ -102,11 +121,15 @@ export default defineComponent({
     return {
       name,
       role,
-      jobId: this.job,
+      jobId: this.job.id,
+      idCompany: this.job.company["id"]
+        ? this.job.company["id"]
+        : this.job.company,
     };
   },
   mounted() {
-    console.log(this.image);
+    console.log(this.job.id);
+    console.log(this.job);
   },
   props: {
     job: {
@@ -119,8 +142,31 @@ export default defineComponent({
     },
     image: String,
   },
+  async deleteJob(id: number) {
+    await axios
+      .delete("jobs/jobs/" + id)
+      .then(() => {
+        delete this.job.id;
+        message.success("Delete success");
+      })
+      .catch(() => message.error("Delete failed"));
+  },
+  async editJob() {
+    this.$router.push({
+      name: "admin-job-detail",
+      params: { name: this.job.name },
+      query: { idJob: this.job.id, idCompany: this.job.company.id },
+    });
+  },
 });
 </script>
 <style scoped>
 @import "./index.css";
+.job__content-title {
+  display: flex;
+  justify-content: space-between;
+}
+.company__content-title-action {
+  text-align: right;
+}
 </style>

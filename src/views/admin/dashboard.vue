@@ -205,7 +205,7 @@ export default defineComponent({
       const urlAcc = `auth/admin/sum-accounts`;
       const urlEmployer = `auth/admin/sum-employer`;
       const urlSeeker = `auth/admin/sum-seeker`;
-      const urlJob = `jobs/admin/jobs/sum_jobs`;
+      const urlJob = `jobs/jobs/sum_jobs`;
 
       const accPromise = axios
         .get(urlAcc)
