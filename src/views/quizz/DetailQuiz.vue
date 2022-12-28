@@ -2,13 +2,15 @@
   <el-container class="layout-container-demo">
     <SideBar />
     <el-container>
-      <el-header style="height: 50px"><HeaderCompanyView /></el-header>
+      <el-header style="height: 80px; background: #007082; padding: 0"
+        ><HeaderCompanyView
+      /></el-header>
       <el-container>
         <el-aside style="width: 500px">
           <el-row></el-row>
           <el-row>
             <el-col :span="8" style="font-size: 20px"
-              ><b>{{n }} questions</b></el-col
+              ><b>{{ n }} questions</b></el-col
             >
           </el-row>
           <el-row v-for="(item, index) in test.questions" :key="item">
@@ -20,7 +22,7 @@
             >
               {{ index + 1 }}. {{ item.content }}
             </el-card>
-          </el-row> 
+          </el-row>
         </el-aside>
         <el-main>
           <div class="main-container">
@@ -89,7 +91,7 @@
               </el-card>
             </el-row>
 
-             <el-row style="margin: 20px">
+            <el-row style="margin: 20px">
               <el-card class="box-card">
                 <template #header>
                   <div class="card-header">
@@ -105,9 +107,8 @@
                     ><el-button type="primary" plain @click="clear()"
                       >Clear</el-button
                     >
-                   </el-col>
-                    <el-col :span="4"
-                    >
+                  </el-col>
+                  <el-col :span="4">
                     <el-button type="primary" plain @click="addQuestion()"
                       >Add Question</el-button
                     ></el-col
@@ -127,9 +128,9 @@
                   /></el-col>
                 </el-row>
                 <el-radio-group v-model="value_answer.is_check">
-                  <el-row v-for="item,index in answers" :key="item">
+                  <el-row v-for="(item, index) in answers" :key="item">
                     <el-col :span="4">
-                      <el-radio :label="index+1" size="large"></el-radio>
+                      <el-radio :label="index + 1" size="large"></el-radio>
                     </el-col>
                     <el-col :span="20">
                       <el-input
@@ -150,12 +151,11 @@
                   <el-col :span="8"></el-col>
                 </el-row>
               </el-card>
-            </el-row> 
-
+            </el-row>
           </div>
-        </el-main> 
+        </el-main>
       </el-container>
-    </el-container> 
+    </el-container>
   </el-container>
 </template>
 
@@ -174,57 +174,54 @@ export default {
   },
   data() {
     return {
-      test : {},
-      n : 0,
+      test: {},
+      n: 0,
       len_answer: 3,
       value_answer: {
         question: "",
         value: ["", "", ""],
         is_check: false,
       },
-      choice_question:{
-      },
-      answers :[]
-      
-  }
-},
+      choice_question: {},
+      answers: [],
+    };
+  },
   mounted() {
     delete axios.defaults.headers.common["Authorization"];
-    const id =  this.$route.params.id;
+    const id = this.$route.params.id;
     axios
       .get(`https://api-exam.quangdinh.me/api/v1/test/${id}`)
       .then((response) => {
-        this.test = response.data[0]
-        console.log(this.test)
-        this.n = this.test.questions.length
+        this.test = response.data[0];
+        console.log(this.test);
+        this.n = this.test.questions.length;
       })
       .catch((err) => {
         console.log(err);
       });
   },
   methods: {
-    choiceQuestion(id){
+    choiceQuestion(id) {
       delete axios.defaults.headers.common["Authorization"];
       axios
-      .get(`https://api-exam.quangdinh.me/api/v1/test/question/${id}`)
-      .then(response=>{
-        console.log(response.data[0])
-        this.choice_question = response.data[0]
-        this.len_answer = this.choice_question.answers.length
-        this.answers = this.choice_question.answers
-        for (var index =0; index<this.answers.length; index++){
-          if (this.answers[index].is_correct){
-            this.value_answer.is_check = index+1
-            break;
+        .get(`https://api-exam.quangdinh.me/api/v1/test/question/${id}`)
+        .then((response) => {
+          console.log(response.data[0]);
+          this.choice_question = response.data[0];
+          this.len_answer = this.choice_question.answers.length;
+          this.answers = this.choice_question.answers;
+          for (var index = 0; index < this.answers.length; index++) {
+            if (this.answers[index].is_correct) {
+              this.value_answer.is_check = index + 1;
+              break;
+            }
           }
-        }
-        console.log(this.value_answer.is_check)
-      })
-      .catch(err=>{
-        console.log(err)
-      })
-    }
-  
+          console.log(this.value_answer.is_check);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>

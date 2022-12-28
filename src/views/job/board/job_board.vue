@@ -3,7 +3,9 @@
     <el-container class="layout-container-demo">
       <SideBar />
       <el-container>
-        <el-header style="height: 50px"><HeaderCompanyView /></el-header>
+        <el-header style="height: 80px; background: #007082; padding: 0"
+          ><HeaderCompanyView
+        /></el-header>
         <el-container>
           <el-aside>
             <el-row class="row-aside" style="margin: 10px 0px">
@@ -45,7 +47,7 @@
                 <p>{{ job_current.number_applicants_search }} Candidates</p>
               </div>
 
-              <el-row :gutter="20" style="margin-left: 100px">
+              <el-row :gutter="20">
                 <div class="filter-item">
                   <el-select
                     v-model="sort_by_value"
@@ -757,14 +759,8 @@ import HeaderCompanyView from "@/components/HeaderCompany.vue";
 import axios from "axios";
 import "@fullcalendar/core/vdom";
 import { toast } from "bulma-toast";
-import { useMenu } from "../../../store/use-menu";
 export default {
   name: "JobBoard",
-  setup() {
-    const store = useMenu();
-    store.onSelectedKeys(["JobBoard"]);
-    store.onOpenKeys(["JobBoard"]);
-  },
   data() {
     return {
       drawerDetailCandidate: false,

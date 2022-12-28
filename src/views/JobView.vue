@@ -7,39 +7,25 @@
           <div class="container">
             <div class="filter-container">
               <div class="filter">
-                <a-input class="input-filter" placeholder="keyword" />
+                <a-input
+                  class="input-filter"
+                  placeholder="keyword"
+                  v-model:value="keyword"
+                />
               </div>
               <div class="filter">
-                <a-dropdown>
-                  <template #overlay>
-                    <a-menu>
-                      <a-menu-item key="1">
-                        <UserOutlined />
-                        1st menu item
-                      </a-menu-item>
-                    </a-menu>
-                  </template>
-                  <a-button>
-                    Job Level
-                    <CaretDownFilled />
-                  </a-button>
-                </a-dropdown>
+                <a-input
+                  class="input-filter"
+                  placeholder="skill"
+                  v-model:value="skill"
+                />
               </div>
               <div class="filter">
-                <a-dropdown>
-                  <template #overlay>
-                    <a-menu>
-                      <a-menu-item key="1">
-                        <UserOutlined />
-                        1st menu item
-                      </a-menu-item>
-                    </a-menu>
-                  </template>
-                  <a-button>
-                    Address
-                    <CaretDownFilled />
-                  </a-button>
-                </a-dropdown>
+                <a-input
+                  class="input-filter"
+                  placeholder="address"
+                  v-model:value="address"
+                />
               </div>
             </div>
             <div class="list-job-content">
@@ -87,9 +73,13 @@ export default defineComponent({
     console.log(this.$route);
     return {
       listJobs: [],
+      listJobsClone: [],
       total: 0,
       currentJob: 0,
       show: false,
+      keyword: "",
+      skill: "",
+      address: "",
     };
   },
   mounted() {
@@ -106,6 +96,16 @@ export default defineComponent({
   watch: {
     $route() {
       this.getListJobs();
+      console.log(this.currentJob);
+    },
+    keyword() {
+      this.filterJob(this.keyword, this.skill, this.address);
+    },
+    skill() {
+      this.filterJob(this.keyword, this.skill, this.address);
+    },
+    address() {
+      this.filterJob(this.keyword, this.skill, this.address);
     },
   },
   methods: {
@@ -117,14 +117,48 @@ export default defineComponent({
         .then((response) => {
           const data = response.data;
           this.listJobs = data;
+          this.listJobsClone = data;
           console.log(this.listJobs);
           this.total = data.length;
-          this.currentJob = this.listJobs[0]["job"]["id"];
+          if (this.total) this.currentJob = this.listJobs[0]["job"]["id"];
+          else this.currentJob = 0;
         })
         .catch((error) => console.log(error));
     },
     onChange(id: number) {
       this.currentJob = id;
+    },
+    filterJob(keyword: string, skill: string, address: string) {
+      this.listJobs = this.listJobsClone;
+      if (keyword && keyword.length) {
+        keyword = keyword.toLowerCase();
+        this.listJobs = this.listJobs.filter(
+          (item) =>
+            item.job.name.toLowerCase().includes(keyword) ||
+            item.job.company.company_name.toLowerCase().includes(keyword)
+        );
+      }
+      if (skill && skill.length) {
+        skill = skill.toLowerCase();
+        this.listJobs = this.listJobs.filter((item) =>
+          item.job.skills
+            .map((skill) => skill.name)
+            .join(",")
+            .toLowerCase()
+            .includes(skill)
+        );
+      }
+      if (address && address.length) {
+        address = address.toLowerCase();
+        this.listJobs = this.listJobs.filter((item) =>
+          item.job.locations
+            .map((location) => location.location_name)
+            .join(",")
+            .toLowerCase()
+            .includes(address)
+        );
+      }
+      this.total = this.listJobs.length;
     },
   },
 });

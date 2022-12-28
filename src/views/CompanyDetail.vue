@@ -169,33 +169,73 @@
                             <div class="top-review">
                               <div
                                 class="top-review__item"
-                                v-for="review in listComments"
+                                v-for="(review, index) in listComments"
                               >
                                 <!-- <h3>Môi trường làm việc tốt cho Fresher</h3> -->
                                 <div class="author">
-                                  <a-avatar
-                                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                                  />
-                                  <div class="author-info">
-                                    <p>{{ review.author }}</p>
-                                    <p class="created-at">
-                                      {{
-                                        review.created_at.replace(/\.\d+/, "")
-                                      }}
-                                    </p>
+                                  <div class="author-info-left">
+                                    <a-avatar
+                                      src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                                    />
+                                    <div class="author-info">
+                                      <p>{{ review.author }}</p>
+                                      <p class="created-at">
+                                        {{
+                                          review.created_at.replace(/\.\d+/, "")
+                                        }}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div
+                                    class="author-info-right"
+                                    v-if="review.user == userId"
+                                  >
+                                    <a
+                                      ><EditOutlined
+                                        @click="changeStatusEdit(index)"
+                                    /></a>
+                                    <a-popconfirm
+                                      title="Are you sure delete this company?"
+                                      ok-text="Yes"
+                                      cancel-text="No"
+                                      @confirm="confirmDelete(review.id)"
+                                    >
+                                      <a><DeleteOutlined /></a>
+                                    </a-popconfirm>
                                   </div>
                                 </div>
                                 <div class="rating">
                                   <a-rate
                                     v-bind:value="review.rating"
                                     disabled
-                                    allow-half
                                   />
                                   {{ review.rating }}
                                 </div>
-                                <p>
+                                <p v-if="!editStatus[index]">
                                   {{ review.comment }}
                                 </p>
+                                <a-form class="form-write-review" v-else>
+                                  <a-form-item name="email">
+                                    <a-textarea
+                                      placeholder="Write your comment..."
+                                      auto-size
+                                      v-model:value="editComment"
+                                    />
+                                    <a-button
+                                      class="send-icon"
+                                      @click="
+                                        editReview(
+                                          review.id,
+                                          id,
+                                          review.user,
+                                          index
+                                        )
+                                      "
+                                    >
+                                      <span><SendOutlined /></span>
+                                    </a-button>
+                                  </a-form-item>
+                                </a-form>
                               </div>
                             </div>
                           </div>
@@ -232,11 +272,14 @@ import Footer from "../layouts/footer.vue";
 import Job from "../components/job-view/Job.vue";
 import axios from "axios";
 import { Comment } from "../utils";
+import { message } from "ant-design-vue";
 import {
   PhoneFilled,
   MailFilled,
   WifiOutlined,
   SendOutlined,
+  DeleteOutlined,
+  EditOutlined,
 } from "@ant-design/icons-vue";
 import store from "../store";
 export default defineComponent({
@@ -253,6 +296,10 @@ export default defineComponent({
       comment,
       listComments,
       userId,
+      editComment: "",
+      visible: false,
+      editStatus: [],
+      indexStatus: null,
     };
   },
   components: {
@@ -263,12 +310,32 @@ export default defineComponent({
     PhoneFilled,
     MailFilled,
     SendOutlined,
+    DeleteOutlined,
+    EditOutlined,
   },
   mounted() {
     this.getJobByCompany();
     this.getCompanyDetails();
   },
+  watch: {
+    listComments() {
+      const total = this.listComments.length;
+      this.editStatus = Array(total).fill(false);
+    },
+  },
   methods: {
+    changeStatusEdit(index: number) {
+      const isExists =
+        Boolean(this.indexStatus + 1) &&
+        Boolean(this.indexStatus != index) &&
+        Boolean(this.editStatus[this.indexStatus] == true);
+      if (isExists) {
+        this.editStatus[this.indexStatus] = false;
+      }
+      this.editComment = this.listComments[index].comment;
+      this.editStatus[index] = !this.editStatus[index];
+      this.indexStatus = index;
+    },
     async getJobByCompany() {
       await axios
         .get("jobs/company/get_jobs", {
@@ -276,7 +343,6 @@ export default defineComponent({
         })
         .then((response) => {
           this.listJobs = response.data;
-          console.log(this.listJobs);
         })
         .catch((error) => console.log(error));
     },
@@ -287,6 +353,7 @@ export default defineComponent({
           this.company_detail = response.data;
           response.data.reviews?.map((item: any) => {
             const comment: Comment = {
+              id: item["id"],
               rating: item["rating"],
               comment: item["comment"],
               author: item["author"],
@@ -310,6 +377,33 @@ export default defineComponent({
           this.comment = { user: this.userId, company: this.id };
         })
         .catch((error) => console.log(error));
+    },
+    async confirmDelete(id: Number) {
+      await axios
+        .delete("comment_posts/comments/delete/" + id)
+        .then(() => {
+          this.listComments = this.listComments.filter(
+            (item: { id: Number }) => item.id != id
+          );
+          message.success("Delete success");
+        })
+        .catch(() => message.error("Delete failed"));
+    },
+    async editReview(id: number, job: number, user: number, index: number) {
+      const comment = {
+        job,
+        user,
+        comment_body: this.editComment,
+      };
+      console.log(comment);
+      await axios
+        .patch("comment_posts/comments/update/" + id, comment)
+        .then((response) => {
+          this.listComments[index].comment = this.editComment;
+          this.editComment = "";
+          this.editStatus[index] = false;
+        })
+        .catch((error) => error);
     },
   },
 });
@@ -556,5 +650,12 @@ export default defineComponent({
 }
 .send-icon span.anticon {
   padding: 0;
+}
+.author {
+  display: flex;
+  justify-content: space-between;
+}
+.author-info-left {
+  display: flex;
 }
 </style>

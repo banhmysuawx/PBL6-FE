@@ -11,10 +11,12 @@ export const useMenu = defineStore("menuId", {
   actions: {
     onSelectedKeys(data: any) {
       this.selectedKeys = data;
+      console.log(this.selectedKeys);
     },
 
     onOpenKeys(data: any) {
       this.openKeys = data;
+      console.log(this.openKeys);
       console.log(this.openKeys);
     },
     onChangeCollapsed() {
