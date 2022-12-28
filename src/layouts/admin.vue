@@ -252,9 +252,6 @@ hr {
 .layout-account {
   padding: 12px 0;
 }
-.ant-menu-inline.ant-menu-root .ant-menu-item {
-  background: red;
-}
 .layout-account span.user-name {
   line-height: 17px;
   display: block;

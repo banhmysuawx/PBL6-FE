@@ -53,9 +53,22 @@
             </router-link>
           </a-sub-menu>
 
+          <a-menu-item key="home" v-if="role && role != 'seeker'">
+            <router-link :to="{ name: 'home' }">
+              <span>Sign to User</span>
+            </router-link>
+          </a-menu-item>
           <a-menu-item key="JobBoard" v-if="role && role != 'seeker'">
             <router-link :to="{ name: 'JobBoard' }">
               <span>Sign to Company</span>
+            </router-link>
+          </a-menu-item>
+          <a-menu-item
+            key="dashboard"
+            v-if="role && role != 'seeker' && role == 'admin'"
+          >
+            <router-link :to="{ name: 'dashboard' }">
+              <span>Sign to Admin</span>
             </router-link>
           </a-menu-item>
         </a-menu>
@@ -110,7 +123,6 @@ export default defineComponent({
     MessageFilled,
   },
   mounted() {
-    console.log(this.userId);
     this.getInfoJob();
   },
   methods: {
@@ -150,7 +162,7 @@ export default defineComponent({
   justify-content: center;
   margin: 1rem !important;
 }
-.logo img {
+.header-component .logo img {
   max-width: 150px;
   filter: brightness(0) invert(1);
 }

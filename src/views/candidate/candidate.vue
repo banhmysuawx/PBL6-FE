@@ -3,13 +3,14 @@
     <el-container class="layout-container-demo">
       <SideBar />
       <el-container>
-        <el-header style="height: 50px"><HeaderCompanyView /></el-header>
+        <el-header style="height: 80px; background: #007082; padding: 0"
+          ><HeaderCompanyView
+        /></el-header>
         <el-container style="display: flex; flex-direction: row">
           <el-main>
             <el-row></el-row>
-            <el-row :gutter="20">
-              <el-col :span="1"></el-col>
-              <el-col :span="8">
+            <div class="filter-header">
+              <div class="filter-item">
                 <el-input
                   v-model="input3"
                   placeholder="Please input"
@@ -17,8 +18,8 @@
                 >
                   <template #prepend> Filter By Name </template>
                 </el-input>
-              </el-col>
-              <el-col :span="8">
+              </div>
+              <div class="filter-item">
                 <el-input
                   v-model="input3"
                   placeholder="Please input"
@@ -26,29 +27,27 @@
                 >
                   <template #prepend> Filter By Email </template>
                 </el-input>
-              </el-col>
-              <el-col :span="4">
+              </div>
+              <div class="filter-item">
                 <el-date-picker
                   v-model="value1"
                   type="date"
                   placeholder="Pick a day"
                   :size="size"
                 />
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="2" style="padding-top: 10px"
-                ><div>Show to</div></el-col
-              >
-              <el-col :span="4">
+              </div>
+            </div>
+            <div class="select-candidate">
+              <span>Show to</span>
+              <div class="select-candidate-item">
                 <el-select v-model="value">
                   <el-option label="50" value="50" />
                   <el-option label="100" value="100" />
                   <el-option label="500" value="500" />
                 </el-select>
-              </el-col>
-              <el-col :span="2" style="padding-top: 10px">candidates</el-col>
-            </el-row>
+              </div>
+              <span>candidates</span>
+            </div>
             <el-row></el-row>
             <el-row style="margin-left: 2px">
               <el-table :data="tableData" style="width: 100%">
@@ -293,4 +292,38 @@ export default {
 <style lang="scss">
 @import "../../assets/css/index.css";
 @import "./index.scss";
+.filter-header {
+  display: flex;
+}
+.filter-item .el-input__wrapper {
+  width: 200px;
+}
+.filter-item {
+  width: fit-content;
+}
+.filter-item
+  .el-input.el-input--prefix.el-input--suffix.el-date-editor.el-date-editor--date.el-tooltip__trigger.el-tooltip__trigger {
+  height: 37px;
+}
+.filter-header {
+  margin-left: 20%;
+}
+.select-candidate {
+  display: flex;
+  margin: 10px 0 0 20px;
+}
+.select-candidate .el-input.el-input--suffix {
+  width: 100px;
+}
+.select-candidate-item {
+  padding: 0 10px;
+}
+.select-candidate span {
+  margin: auto 0;
+  font-size: 16px;
+  font-style: italic;
+}
+.cell {
+  font-size: 15px;
+}
 </style>

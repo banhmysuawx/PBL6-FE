@@ -2,7 +2,9 @@
   <el-container class="layout-container-demo">
     <SideBar />
     <el-container>
-      <el-header style="height: 50px"><HeaderCompanyView /></el-header>
+      <el-header style="height: 80px; background: #007082; padding: 0"
+        ><HeaderCompanyView
+      /></el-header>
       <el-container>
         <el-aside style="width: 500px">
           <el-row></el-row>
