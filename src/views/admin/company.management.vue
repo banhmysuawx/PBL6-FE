@@ -7,22 +7,10 @@
           <div class="search-item">
             <a-input v-model:value="text"></a-input>
           </div>
-          <div class="filter">
-            <a-dropdown>
-              <template #overlay>
-                <a-menu v-model:value="status">
-                  <a-menu-item value="dissbled"> disable </a-menu-item>
-                  <a-menu-item value="enabled"> enable </a-menu-item>
-                </a-menu>
-              </template>
-              <a-button>
-                Status
-                <CaretDownFilled />
-              </a-button>
-            </a-dropdown>
-          </div>
           <div class="action">
-            <a-button class="filter-btn">Filter</a-button>
+            <a-button class="filter-btn" @click="filterCompany(text)"
+              >Filter</a-button
+            >
           </div>
         </div>
       </div>
@@ -39,7 +27,7 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import { CaretDownFilled } from "@ant-design/icons-vue";
 import Company from "../../components/company/Company.vue";
@@ -55,8 +43,10 @@ export default defineComponent({
   data() {
     return {
       listCompanies: [],
+      listCompaniesClone: [],
       key: true,
       total: 0,
+      text: "",
     };
   },
   mounted() {
@@ -78,6 +68,9 @@ export default defineComponent({
         this.getListCompany();
       }
     },
+    text() {
+      this.filterCompany(this.text);
+    },
   },
   methods: {
     async getListCompany() {
@@ -86,6 +79,8 @@ export default defineComponent({
         .then((response) => {
           this.listCompanies = response.data.results;
           this.total = this.listCompanies.length;
+          this.listCompaniesClone = response.data.results;
+          console.log(this.listCompanies);
         })
         .catch((error) => console.log(error));
     },
@@ -101,12 +96,25 @@ export default defineComponent({
           console.log(error);
         });
     },
+    filterCompany(text: string) {
+      this.listCompanies = this.listCompaniesClone;
+      if (Array.isArray(this.listCompanies) && text.length != 0) {
+        this.listCompanies = this.listCompanies.filter(
+          (item: { company_location: string; company_name: string }) =>
+            item.company_location.toLowerCase().includes(text.toLowerCase()) ||
+            item.company_name.toLowerCase().includes(text.toLowerCase())
+        );
+        this.total = this.listCompanies.length;
+      }
+    },
   },
 });
 </script>
 <style scoped>
 .container {
   background: white;
+  overflow-y: scroll;
+  height: 700px;
 }
 .account-header {
   display: flex;

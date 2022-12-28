@@ -143,6 +143,14 @@ export default defineComponent({
     this.getJobByCompany();
     this.getJobDetail();
   },
+  watch: {
+    $route() {
+      this.idJob = this.$route.query.idJob;
+      this.idCompany = this.$route.query.idCompany;
+      this.getJobByCompany();
+      this.getJobDetail();
+    },
+  },
   methods: {
     async getJobByCompany() {
       await axios

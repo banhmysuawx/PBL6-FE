@@ -39,7 +39,10 @@ axios.interceptors.response.use(
             };
             store.commit("setUser", user);
             store.commit("setIsLoading", false);
+            localStorage.setItem("id", data.id);
+            localStorage.setItem("role", data.role);
           });
+        return axios(error.config);
       }
     }
     refresh = false;

@@ -33,7 +33,15 @@
             </div>
           </div>
           <div class="company-introduce__actions">
-            <a-button class="actions-btn">Write review</a-button>
+            <a-popconfirm
+              title="Are you sure delete this company?"
+              ok-text="Yes"
+              cancel-text="No"
+              @confirm="confirmDelete(company.id)"
+            >
+              <a-button class="actions-btn">Delete</a-button>
+            </a-popconfirm>
+            <a-button class="actions-btn">Edit</a-button>
           </div>
         </div>
         <div class="nav">
@@ -154,31 +162,59 @@
                       <div class="top-review">
                         <div
                           class="top-review__item"
-                          v-for="review in listComments"
+                          v-for="(review, index) in listComments"
                         >
                           <!-- <h3>Môi trường làm việc tốt cho Fresher</h3> -->
                           <div class="author">
-                            <a-avatar
-                              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                            />
-                            <div class="author-info">
-                              <p>{{ review.author }}</p>
-                              <p class="created-at">
-                                {{ review.created_at.replace(/\.\d+/, "") }}
-                              </p>
+                            <div class="author-info-left">
+                              <a-avatar
+                                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                              />
+                              <div class="author-info">
+                                <p>{{ review.author }}</p>
+                                <p class="created-at">
+                                  {{ review.created_at.replace(/\.\d+/, "") }}
+                                </p>
+                              </div>
+                            </div>
+                            <div class="author-info-right">
+                              <a
+                                ><EditOutlined @click="changeStatusEdit(index)"
+                              /></a>
+                              <a-popconfirm
+                                title="Are you sure delete this company?"
+                                ok-text="Yes"
+                                cancel-text="No"
+                                @confirm="confirmDelete(review.id)"
+                              >
+                                <a><DeleteOutlined /></a>
+                              </a-popconfirm>
                             </div>
                           </div>
                           <div class="rating">
-                            <a-rate
-                              v-bind:value="review.rating"
-                              disabled
-                              allow-half
-                            />
+                            <a-rate v-bind:value="review.rating" disabled />
                             {{ review.rating }}
                           </div>
-                          <p>
+                          <p v-if="!editStatus[index]">
                             {{ review.comment }}
                           </p>
+                          <a-form class="form-write-review" v-else>
+                            <a-form-item name="email">
+                              <a-textarea
+                                placeholder="Write your comment..."
+                                auto-size
+                                v-model:value="editComment"
+                              />
+                              <a-button
+                                class="send-icon"
+                                @click="
+                                  editReview(review.id, id, review.user, index)
+                                "
+                              >
+                                <span><SendOutlined /></span>
+                              </a-button>
+                            </a-form-item>
+                          </a-form>
                         </div>
                       </div>
                     </div>
@@ -207,6 +243,7 @@ import { defineComponent } from "vue";
 import Header from "../../layouts/header.vue";
 import Footer from "../../layouts/footer.vue";
 import Job from "../../components/job-view/Job.vue";
+import { message } from "ant-design-vue";
 import axios from "axios";
 import { Comment } from "../../utils";
 import { useMenu } from "../../store/use-menu";
@@ -215,12 +252,15 @@ import {
   MailFilled,
   WifiOutlined,
   SendOutlined,
+  EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons-vue";
+import store from "../../store";
 export default defineComponent({
   name: "admin-company-detail",
   data() {
     const id: Number = Number(this.$route.params.id);
-    const userId = 1;
+    const userId = store.state.user.id;
     const comment: Comment = { user: userId, company: id };
     const listComments: Comment[] = [];
     return {
@@ -229,6 +269,10 @@ export default defineComponent({
       company_detail: {},
       comment,
       listComments,
+      editComment: "",
+      visible: false,
+      editStatus: [],
+      indexStatus: null,
     };
   },
   setup() {
@@ -244,12 +288,32 @@ export default defineComponent({
     PhoneFilled,
     MailFilled,
     SendOutlined,
+    EditOutlined,
+    DeleteOutlined,
+  },
+  watch: {
+    listComments() {
+      const total = this.listComments.length;
+      this.editStatus = Array(total).fill(false);
+    },
   },
   mounted() {
     this.getJobByCompany();
     this.getCompanyDetails();
   },
   methods: {
+    changeStatusEdit(index: number) {
+      const isExists =
+        Boolean(this.indexStatus + 1) &&
+        Boolean(this.indexStatus != index) &&
+        Boolean(this.editStatus[this.indexStatus] == true);
+      if (isExists) {
+        this.editStatus[this.indexStatus] = false;
+      }
+      this.editComment = this.listComments[index].comment;
+      this.editStatus[index] = !this.editStatus[index];
+      this.indexStatus = index;
+    },
     async getJobByCompany() {
       await axios
         .get("jobs/company/get_jobs", {
@@ -269,6 +333,7 @@ export default defineComponent({
           console.log(this.company_detail.average_rating);
           response.data.reviews?.map((item: any) => {
             const comment: Comment = {
+              id: item["id"],
               rating: item["rating"],
               comment: item["comment"],
               author: item["author"],
@@ -278,18 +343,48 @@ export default defineComponent({
             };
             this.listComments.push(comment);
           });
+          console.log(this.listComments);
         })
         .catch((error) => console.log(error));
     },
     async createComment() {
       // if (!this.userId) this.$router.push({ name: "login" });
+      if (!this.userId) this.$router.push({ name: "login" });
       await axios
         .post("reviews/reviews/create", this.comment)
         .then((response) => {
           const newComment: Comment = response.data;
           this.listComments.push(newComment);
+          this.comment = { user: this.userId, company: this.id };
         })
         .catch((error) => console.log(error));
+    },
+    async confirmDelete(id: Number) {
+      await axios
+        .delete("comment_posts/comments/delete/" + id)
+        .then(() => {
+          this.listComments = this.listComments.filter(
+            (item: { id: Number }) => item.id != id
+          );
+          message.success("Delete success");
+        })
+        .catch(() => message.error("Delete failed"));
+    },
+    async editReview(id: number, job: number, user: number, index: number) {
+      const comment = {
+        job,
+        user,
+        comment_body: this.editComment,
+      };
+      console.log(comment);
+      await axios
+        .patch("comment_posts/comments/update/" + id, comment)
+        .then((response) => {
+          this.listComments[index].comment = this.editComment;
+          this.editComment = "";
+          this.editStatus[index] = false;
+        })
+        .catch((error) => error);
     },
   },
 });
@@ -534,5 +629,12 @@ export default defineComponent({
 }
 .send-icon span.anticon {
   padding: 0;
+}
+.author {
+  display: flex;
+  justify-content: space-between;
+}
+.author-info-left {
+  display: flex;
 }
 </style>

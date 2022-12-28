@@ -53,6 +53,10 @@
               <div class="submit-btn">
                 <a-button @click="onSubmit">Submit</a-button>
               </div>
+              <a-modal v-model:visible="visible" title="Result" @ok="handleOK">
+                <a-progress type="circle" :percent="100" :width="80" />
+                <h2 class="result">{{ finalResult }}</h2>
+              </a-modal>
             </div>
           </div>
         </div>
@@ -83,21 +87,31 @@ export default defineComponent({
       result: [],
       time_start: new Date().toISOString(),
       id: this.$route.params.id,
-      userId: store.state.user.id,
+      userId: localStorage.getItem("id"),
       job: this.$route.query.job,
+      visible: false,
+      finalResult: 0,
+      access: axios.defaults.headers.common["Authorization"],
     };
   },
   mounted() {
     this.getTest();
   },
   methods: {
+    showModal() {
+      this.visible = true;
+    },
+    handleOK() {
+      this.$router.push({ name: "appliedJob" });
+    },
     async getTest() {
-      // delete axios.defaults.headers.common["Authorization"];
+      delete axios.defaults.headers.common["Authorization"];
       await axios
         .get("https://api-exam.quangdinh.me/api/v1/test/" + this.id)
         .then((response) => {
           const data = response.data[0];
           this.data = data;
+          this.deadline = Date.now() + 1000 * 60 * 60 * Number(data.time_limit);
           const result = data.questions.map((item: any) => {
             return { id: item.id, answers: [0] };
           });
@@ -106,14 +120,15 @@ export default defineComponent({
         .catch((error) => console.log(error));
     },
     async onSubmit() {
-      const userId = this.$store.state.user.id;
+      this.refreshToken();
       const data = {
-        user_id: userId,
+        user_id: this.userId,
         job_id: this.id,
         questions: this.result,
         time_done: formatDate(new Date().toISOString()),
         time_start: formatDate(this.time_start),
       };
+      console.log(data);
       await axios
         .post(
           "https://api-exam.quangdinh.me/api/v1/test/" + this.id + "/doing",
@@ -121,11 +136,26 @@ export default defineComponent({
         )
         .then((response) => {
           const result = response.data.data?.result;
-          if (result) this.doneTest(result);
-          this.$router.push({ name: "appliedJob" });
+          if (result) {
+            this.visible = true;
+            this.finalResult = result;
+            this.doneTest(result);
+          }
         })
         .catch((error) => console.log(error));
       // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    },
+    async refreshToken() {
+      const data = await axios
+        .post("/auth/token/refresh", {
+          refresh: localStorage.getItem("refresh"),
+        })
+        .then((response) => {
+          axios.defaults.headers.common["Authorization"] =
+            "Bearer " + response.data.access;
+          console.log(axios.defaults.headers.common["Authorization"]);
+          return response.data;
+        });
     },
     async doneTest(result: Number) {
       const input = {
@@ -279,5 +309,21 @@ p.question {
   line-height: 10px;
   font-size: 15px;
   color: #007082;
+}
+.list-question-container .ant-modal-content {
+  width: fit-content !important;
+}
+.list-question-container span.ant-progress-text {
+  top: 40% !important;
+  left: 50% !important;
+}
+.list-question-container .ant-progress-inner {
+  width: 150px !important;
+  height: 180px !important;
+  font-size: 60px !important;
+}
+.list-question-container
+  .ant-progress.ant-progress-circle.ant-progress-show-info.ant-progress-default.ant-progress-status-success {
+  padding: 10px 40px;
 }
 </style>

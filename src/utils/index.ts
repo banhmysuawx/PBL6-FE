@@ -41,6 +41,7 @@ export const status = {
   incomplete: "Fail",
 };
 export interface Comment {
+  id?: Number;
   rating?: Number;
   comment?: string;
   company: Number;

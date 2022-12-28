@@ -106,6 +106,8 @@ export default defineComponent({
 <style scoped>
 .container {
   background: white;
+  overflow-y: scroll;
+  height: 700px;
 }
 .account-header {
   display: flex;

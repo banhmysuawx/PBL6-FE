@@ -7,7 +7,7 @@ export default createStore({
     isLoading: true,
     company: {
       id: 1,
-      name: ''
+      name: "mgm",
     },
     user: {
       username: "",

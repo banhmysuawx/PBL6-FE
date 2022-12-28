@@ -6,13 +6,13 @@
         <el-header style="height: 50px"><HeaderCompanyView /></el-header>
         <el-container>
           <el-aside>
-            <el-row style="margin: 10px 0px">
+            <el-row class="row-aside" style="margin: 10px 0px">
               <el-input
                 v-model="text_search_job"
                 placeholder="Please input"
                 class="input-with-select"
                 @keyup="searchJob()"
-                style="margin:10px"
+                style="margin: 10px"
               >
                 <template #prepend>
                   <el-icon color="blue"><Search /></el-icon>
@@ -30,60 +30,92 @@
                 class="infinite-list-item infinite-list-scroll-item"
                 :class="{ active: isActive[index] }"
                 @click="ShowApplicant(item, index)"
-                style="height:50px; border-radius: 10px;"
+                style="height: 50px; border-radius: 10px"
               >
                 <el-row style="margin: 5px 0px">{{ item.name }}</el-row>
               </li>
             </ul>
           </el-aside>
           <el-main>
-            <div>
-              <el-row style="margin: 5px 10px; font-size: 30px">{{
-                job_current.name
-              }}</el-row>
-              <el-row style="margin: 5px 10px; font-size: 15px"
-                >{{ job_current.number_applicants_search }} Candidates</el-row
-              >
+            <div class="job-board-title">
+              <h2>{{ job_current.name }}</h2>
             </div>
+            <div class="job-board-header">
+              <div class="job-board-header__text">
+                <p>{{ job_current.number_applicants_search }} Candidates</p>
+              </div>
 
-            <el-row :gutter="20" style="margin-left:100px">
-              <el-col :span="5">
-                <el-select v-model="sort_by_value" placeholder="Sort By" @change="searchApplicant()">
-                  <el-option label="Day Applied" value="apply_date"></el-option>
-                  <el-option label="Day Do Test" value="status_do_test_date"></el-option>
-                  <el-option label="Day Interview" value="status_interview_date"></el-option>
-                </el-select>
-              </el-col>
-              <el-col :span="8">
-                <el-input
-                  v-model="text_search_applicant"
-                  placeholder="Please input"
-                  class="input-with-select"
-                  @keyup="searchApplicant()"
-                >
-                  <template #prepend>
-                    <el-icon color="blue"><Search /></el-icon>
-                  </template>
-                </el-input>
-              </el-col>
-              <el-col :span="11">
-                <el-col :span="13">
-                <el-select v-model="status_filter_text" placeholder="Filter" @change="searchApplicant()">
-                  <el-option label="All" value="all"></el-option>
-                  <el-option label="Apply" value="apply"></el-option>
-                  <el-option label="Do Test" value="test"></el-option>
-                  <el-option label="Set Schedule" value="set_schedule"></el-option>
-                  <el-option label="Interview Pending" value="interview_pending"></el-option>
-                  <el-option label="Scheduled Interview" value="schedule_interview"></el-option>
-                  <el-option label="Cancel Interview" value="cancel_interview"></el-option>
-                  <el-option label="Interview Complete" value="interview_complete"></el-option>
-                  <el-option label="Complete" value="complete"></el-option>
-                  <el-option label="Incomplete" value="incomplete"></el-option>
-
-                </el-select>
-              </el-col>
-              </el-col>
-            </el-row>
+              <el-row :gutter="20" style="margin-left: 100px">
+                <div class="filter-item">
+                  <el-select
+                    v-model="sort_by_value"
+                    placeholder="Sort By"
+                    @change="searchApplicant()"
+                  >
+                    <el-option
+                      label="Day Applied"
+                      value="apply_date"
+                    ></el-option>
+                    <el-option
+                      label="Day Do Test"
+                      value="status_do_test_date"
+                    ></el-option>
+                    <el-option
+                      label="Day Interview"
+                      value="status_interview_date"
+                    ></el-option>
+                  </el-select>
+                </div>
+                <div class="filter-item">
+                  <el-input
+                    v-model="text_search_applicant"
+                    placeholder="Please input"
+                    class="input-with-select"
+                    @keyup="searchApplicant()"
+                  >
+                    <template #prepend>
+                      <el-icon color="blue"><Search /></el-icon>
+                    </template>
+                  </el-input>
+                </div>
+                <div class="filter-item">
+                  <el-select
+                    v-model="status_filter_text"
+                    placeholder="Filter"
+                    @change="searchApplicant()"
+                  >
+                    <el-option label="All" value="all"></el-option>
+                    <el-option label="Apply" value="apply"></el-option>
+                    <el-option label="Do Test" value="test"></el-option>
+                    <el-option
+                      label="Set Schedule"
+                      value="set_schedule"
+                    ></el-option>
+                    <el-option
+                      label="Interview Pending"
+                      value="interview_pending"
+                    ></el-option>
+                    <el-option
+                      label="Scheduled Interview"
+                      value="schedule_interview"
+                    ></el-option>
+                    <el-option
+                      label="Cancel Interview"
+                      value="cancel_interview"
+                    ></el-option>
+                    <el-option
+                      label="Interview Complete"
+                      value="interview_complete"
+                    ></el-option>
+                    <el-option label="Complete" value="complete"></el-option>
+                    <el-option
+                      label="Incomplete"
+                      value="incomplete"
+                    ></el-option>
+                  </el-select>
+                </div>
+              </el-row>
+            </div>
             <el-row
               class="el-row-class"
               v-for="applicant in applicants_search"
@@ -96,11 +128,15 @@
                   </div>
                 </div>
                 <div class="block el-col-sub-item">
-                  <div class="el-col-item">
-                       <el-button type="success"  v-if="applicant.status == 'apply'">Apply</el-button>
-                       <el-button type="info" plain v-else>Apply</el-button>
+                  <div class="el-col-item btn">
+                    <el-button type="success" v-if="applicant.status == 'apply'"
+                      >Apply</el-button
+                    >
+                    <el-button type="info" plain v-else>Apply</el-button>
                   </div>
-                  <div class="el-col-item">{{ applicant.candidate_name }}</div>
+                  <div class="el-col-item name">
+                    {{ applicant.candidate_name }}
+                  </div>
                   <div class="el-col-item">
                     Apply on: {{ applicant.apply_format_day }}
                   </div>
@@ -115,13 +151,19 @@
                 </div>
               </el-col>
               <el-col :span="5" class="el-col-sub-item">
-                <div class="el-col-item">
-                  <el-button type="success"  v-if="applicant.status == 'test'">Do Test</el-button>
-                  <el-button plain type="info"  v-else>Do Test</el-button>
+                <div class="el-col-item btn">
+                  <el-button type="success" v-if="applicant.status == 'test'"
+                    >Do Test</el-button
+                  >
+                  <el-button plain type="info" v-else>Do Test</el-button>
                 </div>
                 <span v-if="applicant.status_do_test_date != null">
-                  <div class="el-col-item" v-if="applicant.result_test==0">
-                    <el-tag>{{ applicant.test_format_day }}</el-tag><el-tag>{{ applicant.expired_format_day }}</el-tag>
+                  <div
+                    class="el-col-item status"
+                    v-if="applicant.result_test == 0"
+                  >
+                    <el-tag>{{ applicant.test_format_day }}</el-tag
+                    ><el-tag>{{ applicant.expired_format_day }}</el-tag>
                   </div>
                   <el-row v-else></el-row>
 
@@ -136,14 +178,25 @@
                 </span>
               </el-col>
               <el-col :span="7" class="el-col-sub-item">
-                <div class="el-col-item">
-                  <el-button plain type="info"  v-if="applicant.status == 'apply' || applicant.status == 'test' || applicant.status == 'complete' || applicant.status == 'incomplete'">Interview</el-button>
-                  <el-button type="success"  v-else>Interview</el-button>
+                <div class="el-col-item btn">
+                  <el-button
+                    plain
+                    type="info"
+                    v-if="
+                      applicant.status == 'apply' ||
+                      applicant.status == 'test' ||
+                      applicant.status == 'complete' ||
+                      applicant.status == 'incomplete'
+                    "
+                    >Interview</el-button
+                  >
+                  <el-button type="success" v-else>Interview</el-button>
                 </div>
 
                 <span v-if="applicant.status == 'set_schedule'">
-                  Status: Send Interview Schedule
-                  <el-row></el-row>
+                  <a-tag class="status-tag" color="purple"
+                    >Send Interview Schedule</a-tag
+                  >
                   <el-row></el-row>
                   <el-button
                     type="primary"
@@ -155,8 +208,9 @@
                 </span>
 
                 <span v-if="applicant.status == 'interview_pending'">
-                  Status: Interview Pending
-                  <el-row></el-row>
+                  <a-tag class="status-tag" color="orange"
+                    >Interview Pending</a-tag
+                  >
                   <el-row></el-row>
                   <el-button
                     type="primary"
@@ -169,35 +223,69 @@
                 </span>
 
                 <span v-if="applicant.status == 'schedule_interview'">
-                  Status: Schedule Interview
-                  <el-tag v-if="applicant.interview_date_official_format!=null">{{applicant.interview_date_official_format}}</el-tag>
-                  <el-row style="margin-top:10px" v-if="applicant.is_send_email==false">
+                  <a-tag class="status-tag" color="blue"
+                    >Schedule Interview</a-tag
+                  ><br />
+                  <el-tag
+                    v-if="applicant.interview_date_official_format != null"
+                    >{{ applicant.interview_date_official_format }}</el-tag
+                  >
+                  <el-row
+                    style="margin-top: 10px"
+                    v-if="applicant.is_send_email == false"
+                  >
                     <el-col :span="6"></el-col>
-                    <el-col :span="12"><el-button type="primary" plain @click="sendMail(applicant)">Send Email</el-button></el-col>
+                    <el-col :span="12"
+                      ><el-button
+                        type="primary"
+                        plain
+                        @click="sendMail(applicant)"
+                        >Send Email</el-button
+                      ></el-col
+                    >
                     <el-col :span="6"></el-col>
                   </el-row>
-
                 </span>
 
                 <span v-if="applicant.status == 'cancel_interview'">
-                  Status: Cancel Interview
+                  <a-tag class="status-tag" color="red">Cancel Interview</a-tag>
                 </span>
 
                 <span v-if="applicant.status == 'interview_complete'">
-                  Status: Interview complete
-                  <el-row></el-row>
+                  <a-tag class="status-tag" color="green"
+                    >Interview complete</a-tag
+                  >
                   <el-row></el-row>
                   <el-row>
-                    <el-col :span="12"><el-button type="danger" @click="ChangeInComplete(applicant)">Fail</el-button></el-col> 
-                    <el-col :span="12"><el-button type="success" @click="ChangeComplete(applicant)">Pass</el-button></el-col>
+                    <el-col :span="12"
+                      ><el-button
+                        type="danger"
+                        @click="ChangeInComplete(applicant)"
+                        >Fail</el-button
+                      ></el-col
+                    >
+                    <el-col :span="12"
+                      ><el-button
+                        type="success"
+                        @click="ChangeComplete(applicant)"
+                        >Pass</el-button
+                      ></el-col
+                    >
                   </el-row>
                 </span>
               </el-col>
 
               <el-col :span="3" style="background: white; margin: 0px 2px">
-                <div class="el-col-item">
-                  <el-button type="success"  v-if="applicant.status == 'complete'|| applicant.status == 'incomplete'">Result</el-button>
-                  <el-button type="info"  v-else plain>Result</el-button>
+                <div class="el-col-item btn">
+                  <el-button
+                    type="success"
+                    v-if="
+                      applicant.status == 'complete' ||
+                      applicant.status == 'incomplete'
+                    "
+                    >Result</el-button
+                  >
+                  <el-button type="info" v-else plain>Result</el-button>
                 </div>
                 <el-result icon="success" v-if="applicant.status == 'complete'">
                 </el-result>
@@ -225,13 +313,18 @@
               <el-avatar :size="50" :src="circleUrl" />
             </div>
           </div>
-          <div>{{ applicant_choice.candidate_name }}</div>
+          <div class="candidate-name">
+            {{ applicant_choice.candidate_name }}
+          </div>
           <a :href="applicant_choice.cv">CV: {{ applicant_choice.cv }}</a>
         </div>
 
         <div style="margin: 20px 0px">
           <el-row
-            ><div style="float: left; margin: 5px; font-size: 20px">
+            ><div
+              style="float: left; margin: 5px; font-size: 20px"
+              class="profile-item__title"
+            >
               Job Expirences
             </div></el-row
           >
@@ -255,7 +348,10 @@
 
         <div style="margin: 20px 0px">
           <el-row
-            ><div style="float: left; margin: 5px; font-size: 20px">
+            ><div
+              style="float: left; margin: 5px; font-size: 20px"
+              class="profile-item__title"
+            >
               Skills
             </div></el-row
           >
@@ -279,7 +375,10 @@
 
         <div style="margin: 20px 0px">
           <el-row
-            ><div style="float: left; margin: 5px; font-size: 20px">
+            ><div
+              style="float: left; margin: 5px; font-size: 20px"
+              class="profile-item__title"
+            >
               Education & Achievement
             </div></el-row
           >
@@ -353,17 +452,6 @@
 
     <!--Drawer for set schedule-->
     <el-drawer v-model="isSetSchedule" title="Schedule To Interview" size="40%">
-      <div style="float: right; margin-bottom: 10px">
-        <el-button
-          type="danger"
-          @click="UpdateApplicantInterview()"
-          v-if="applicant_choice.status == 'interview_pending'"
-          >Update</el-button
-        >
-        <el-button type="primary" @click="CreateApplicantInterview()" v-else
-          >Save</el-button
-        >
-      </div>
       <el-row>
         <el-col :span="8">
           <div class="demo-basic--circle">
@@ -371,11 +459,9 @@
               <el-avatar :size="75" :src="circleUrl" />
             </div>
           </div>
-          <div>Ngo Nguyen Hoang Dung</div>
+          <div class="candidate-name">Ngo Nguyen Hoang Dung</div>
         </el-col>
         <el-col :span="16">
-          <el-row></el-row>
-          <el-row></el-row>
           <span class="demonstration">Set Schedule: </span>
           <el-select
             v-model="applicant_interview.value_choice_set_schedule"
@@ -391,34 +477,40 @@
               :value="item"
             />
           </el-select>
-          <div class="demo-date-picker">
-            <div class="block">
-              <span class="demonstration">Limited Day:</span>
-              <el-date-picker
-                v-model="applicant_interview.end_set_schedule_interview"
-                type="date"
-                placeholder="Pick a day"
-                size="default"
-                value-format="YYYY-MM-DD"
-                style="cursor: pointer"
-              />
-            </div>
-          </div>
+          <!-- <div class="demo-date-picker"> -->
+          <span class="demonstration">Limited Day:</span>
+          <el-date-picker
+            v-model="applicant_interview.end_set_schedule_interview"
+            type="date"
+            placeholder="Pick a day"
+            size="default"
+            value-format="YYYY-MM-DD"
+            style="cursor: pointer"
+          />
+          <!-- </div> -->
         </el-col>
       </el-row>
 
       <div>
-        <div style="padding: 10px">
+        <div class="bar-update" style="padding: 10px">
           <el-button @click="showPeriodSchedule()"
             >Watch period availabel period</el-button
           >
           <el-button type="primary" @click="isMyCalendar = true"
             >My Calendar</el-button
           >
+          <div style="margin-bottom: 10px" class="btn-update">
+            <el-button
+              type="danger"
+              @click="UpdateApplicantInterview()"
+              v-if="applicant_choice.status == 'interview_pending'"
+              >Update</el-button
+            >
+            <el-button type="primary" @click="CreateApplicantInterview()" v-else
+              >Save</el-button
+            >
+          </div>
         </div>
-
-        <el-row></el-row>
-        <el-row></el-row>
         <span v-for="(item, index) in list_period_to_schedule" :key="index">
           <el-row v-if="index % 2 == 0">
             <el-col :span="12">
@@ -635,24 +727,28 @@
     </el-drawer>
     <!--Send Email-->
     <el-dialog v-model="dialogSendMail" title="Information Send Mail">
-    <el-form >
-      <el-form-item>
-        <a href="https://meet.google.com/" target="_blank">Please create new meeting and get link</a>
-      </el-form-item>        
+      <el-form>
+        <el-form-item>
+          <a href="https://meet.google.com/" target="_blank"
+            >Please create new meeting and get link</a
+          >
+        </el-form-item>
 
-      <el-form-item label="Link">
-        <el-input autocomplete="off" placeholder="Please input link google meet" v-model="link"/>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogSendMail = false">Cancel</el-button>
-        <el-button type="primary" @click="sendEmail()">
-          Confirm
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
+        <el-form-item label="Link">
+          <el-input
+            autocomplete="off"
+            placeholder="Please input link google meet"
+            v-model="link"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogSendMail = false">Cancel</el-button>
+          <el-button type="primary" @click="sendEmail()"> Confirm </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -661,17 +757,22 @@ import HeaderCompanyView from "@/components/HeaderCompany.vue";
 import axios from "axios";
 import "@fullcalendar/core/vdom";
 import { toast } from "bulma-toast";
-
+import { useMenu } from "../../../store/use-menu";
 export default {
   name: "JobBoard",
+  setup() {
+    const store = useMenu();
+    store.onSelectedKeys(["JobBoard"]);
+    store.onOpenKeys(["JobBoard"]);
+  },
   data() {
     return {
       drawerDetailCandidate: false,
       circleUrl:
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       jobs: [],
-      link:"",
-      dialogSendMail : false,
+      link: "",
+      dialogSendMail: false,
       text_search_job: "",
       jobs_search: [],
       applicants: [],
@@ -686,7 +787,7 @@ export default {
       isActive: [],
       text_search_applicant: "",
       sort_by_value: "apply_date",
-      status_filter_text:"all",
+      status_filter_text: "all",
       applicants_search: [],
       data_filter: {
         name: "",
@@ -712,13 +813,13 @@ export default {
   async created() {
     const id = this.$store.state.company.id;
     await axios
-    .get(`/applicants/company/outdated_do_test?company_id=${id}`)
-    .then(response=>{
-      console.log(response)
-    })
-    .catch(err=>{
-      console.log(err)
-    })
+      .get(`/applicants/company/outdated_do_test?company_id=${id}`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     await axios
       .get(`/jobs/company/get_jobs?company_id=${id}`)
@@ -744,7 +845,6 @@ export default {
         this.applicants_search = this.applicants;
         this.job_current["number_applicants"] = this.applicants.length;
         this.job_current["number_applicants_search"] = this.applicants.length;
-
       })
       .catch((err) => {
         console.log(err);
@@ -757,10 +857,9 @@ export default {
   },
 
   methods: {
-
-    processPercentageForResult(){
-      for (var i=0;i<this.applicants.length;i++){
-        this.applicants[i].result_test *= 100
+    processPercentageForResult() {
+      for (var i = 0; i < this.applicants.length; i++) {
+        this.applicants[i].result_test *= 100;
       }
     },
 
@@ -787,21 +886,23 @@ export default {
 
     async searchApplicant() {
       const id_company = this.$store.state.company.id;
-      const id_job = this.id_job_current
+      const id_job = this.id_job_current;
       axios
-      .get(`/applicants/company/filter_applicants?company_id=${id_company}&job_id=${id_job}&text=${this.text_search_applicant}&status=${this.status_filter_text}&sort_by=${this.sort_by_value}`)
-      .then(response=>{
+        .get(
+          `/applicants/company/filter_applicants?company_id=${id_company}&job_id=${id_job}&text=${this.text_search_applicant}&status=${this.status_filter_text}&sort_by=${this.sort_by_value}`
+        )
+        .then((response) => {
           this.applicants = response.data;
-          console.log("hiiii")
-          console.log(this.applicants)
-          this.processPercentageForResult()
+          console.log("hiiii");
+          console.log(this.applicants);
+          this.processPercentageForResult();
           this.applicants_search = this.applicants;
           this.job_current["number_applicants"] = this.applicants.length;
           this.job_current["number_applicants_search"] = this.applicants.length;
-      })
-      .catch(err =>{
-        console.log(err)
-      })
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
 
     async ShowApplicant(item, index) {
@@ -816,7 +917,7 @@ export default {
         .get(`/applicants/company/get_applicant?id_job=${item.id}`)
         .then((response) => {
           this.applicants = response.data;
-          this.processPercentageForResult()
+          this.processPercentageForResult();
           this.applicants_search = this.applicants;
           this.job_current["number_applicants"] = this.applicants.length;
           this.job_current["number_applicants_search"] = this.applicants.length;
@@ -1146,18 +1247,21 @@ export default {
         }
       }
     },
-    sendMail(applicant){
-      this.dialogSendMail = true
-      this.applicant_choice = applicant
+    sendMail(applicant) {
+      this.dialogSendMail = true;
+      this.applicant_choice = applicant;
     },
-    sendEmail(){
-      const data={
-        link : this.link
-      }
+    sendEmail() {
+      const data = {
+        link: this.link,
+      };
       axios
-      .patch(`/applicants/company/${this.applicant_choice.id}/send_email_schedule`,data)
-      .then(res=>{
-        toast({
+        .patch(
+          `/applicants/company/${this.applicant_choice.id}/send_email_schedule`,
+          data
+        )
+        .then((res) => {
+          toast({
             message: res.data.msg,
             type: "is-success",
             dismissible: true,
@@ -1165,14 +1269,13 @@ export default {
             duration: 2000,
             position: "top-right",
           });
-      })
-      .catch(err=>{
-        console.log(err)
-      })
-      this.dialogSendMail = false
-
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      this.dialogSendMail = false;
     },
-    async ChangeInComplete(applicant){
+    async ChangeInComplete(applicant) {
       const form = {
         status: "incomplete",
       };
@@ -1199,7 +1302,7 @@ export default {
           console.log(err);
         });
     },
-    async ChangeComplete(applicant){
+    async ChangeComplete(applicant) {
       const form = {
         status: "complete",
       };
@@ -1225,7 +1328,7 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-},
+    },
   },
 };
 </script>
@@ -1233,4 +1336,150 @@ export default {
 <style lang="scss">
 @import "../../../assets/css/index.css";
 @import "./index.scss";
+.job-board-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 30px;
+}
+.filter-item {
+  padding: 0 10px;
+  width: 210px;
+}
+.job-board-header__text {
+  font-size: 17px;
+  font-style: italic;
+}
+.job-board-title h2 {
+  font-weight: 550;
+  font-size: 25px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-align: left;
+  margin-top: 30px;
+  margin-bottom: 1rem;
+  margin-left: 20px;
+  line-height: 35px;
+  color: #888686;
+}
+.row-aside .el-input.el-input-group.el-input-group--prepend.input-with-select,
+.filter-item .el-input.el-input-group.el-input-group--prepend.input-with-select,
+.filter-item .el-input__wrapper {
+  border-radius: 8px;
+}
+.filter-item input.el-input__inner,
+.filter-item .el-select .el-input__inner {
+  height: 35px;
+  font-size: 15px;
+}
+.el-row-class .el-col.el-col-8.demo-avatar.demo-basic.el-col-avatar {
+  padding: 15px;
+  border-right: 4px solid #e9e9e9;
+  border-radius: 8px;
+}
+.el-col-item.btn {
+  text-align: center;
+}
+.el-col-item {
+  text-align: left;
+}
+.el-col-item.name {
+  font-size: 17px;
+  font-weight: 550;
+}
+.el-col.el-col-5.el-col-sub-item,
+.el-col.el-col-7.el-col-sub-item,
+.el-col.el-col-3 {
+  padding: 15px;
+}
+.el-col.el-col-5.el-col-sub-item,
+.el-col.el-col-7.el-col-sub-item {
+  border-right: 4px solid #e9e9e9;
+}
+.el-col.el-col-3 {
+  border-radius: 8px;
+}
+.status-tag {
+  margin: 10px !important;
+  font-size: 14px !important;
+  padding: 5px 20px !important;
+  padding-bottom: 0 !important;
+  border-radius: 7px !important;
+  text-align: center;
+}
+.span.el-tag.el-tag--light {
+  margin: 10px;
+  font-size: 13px;
+}
+.el-row.el-row-class {
+  background: white;
+  margin-right: 10px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px 4px rgb(0 0 0 / 5%);
+}
+.el-col-item.status {
+  display: flex;
+  margin: auto;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+.el-row {
+  margin-bottom: 10px;
+}
+.el-result {
+  padding: 20px;
+}
+.infinite-list-scroll .infinite-list-scroll-item {
+  box-shadow: 0;
+}
+li.infinite-list-item.infinite-list-scroll-item {
+  color: rgb(48, 65, 86);
+}
+.infinite-list-scroll .active {
+  box-shadow: 0px 5px 5px rgb(144 150 157);
+  color: rgb(144, 150, 157) !important;
+  border: 1px solid rgb(144, 150, 157);
+}
+.profile-item__title {
+  font-size: 21px;
+  font-weight: 550;
+  color: #2c3e50;
+}
+.candidate-name {
+  font-size: 22px;
+  font-weight: 550;
+  color: #2c3e50;
+}
+// .set-schedule {
+//   display: flex;
+// }
+.el-col.el-col-16 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: auto;
+}
+span.demonstration {
+  margin: auto;
+}
+.el-select.el-select--large.m-2 {
+  margin: 0 !important;
+}
+.el-input.el-input--large.el-input--suffix {
+  margin-bottom: 15px;
+}
+.bar-update {
+  display: flex;
+  margin: 50px;
+  justify-content: space-between;
+}
+.btn-update {
+  margin-left: 10px;
+}
+.candidate-name {
+  font-size: 17px;
+  font-weight: 550;
+  color: #2c3e50;
+}
+main.el-main {
+  overflow-y: scroll;
+  height: 700px;
+}
 </style>

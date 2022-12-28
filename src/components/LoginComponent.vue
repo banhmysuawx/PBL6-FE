@@ -160,21 +160,26 @@ export default {
             gender: data.gender,
           };
           this.$store.commit("setUser", user);
+          localStorage.setItem("id", data.id);
+          localStorage.setItem("role", data.role);
         })
         .catch((error) => error);
 
-      if (this.$store.state.user.role=="employer"){
+      if (this.$store.state.user.role == "employer") {
         await axios
-        .get(`/companies/company-profile/${this.$store.state.user.id}`)
-        .then(res=>{
-          this.$store.state.company.id = res.data[0].id
-          this.$store.state.company.name = res.data[0].company_name
-          localStorage.setItem("id_company", this.$store.state.company.id);
-          localStorage.setItem("name_company", this.$store.state.company.name);
-        })
-        .catch(err=>{
-          console.log(err)
-        })
+          .get(`/companies/company-profile/${this.$store.state.user.id}`)
+          .then((res) => {
+            this.$store.state.company.id = res.data[0].id;
+            this.$store.state.company.name = res.data[0].company_name;
+            localStorage.setItem("id_company", this.$store.state.company.id);
+            localStorage.setItem(
+              "name_company",
+              this.$store.state.company.name
+            );
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
   },

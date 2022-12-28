@@ -27,24 +27,27 @@
               <el-card class="box-card">
                 <template #header>
                   <div class="card-header">
-                    <span style="font-size: 20px"
-                      ><b>Information of Test</b></span
-                    >
-                    <el-button type="primary" @click="CreateNewQuizz()"
-                      >Publish</el-button
+                    <span class="card-header__title">Information of Test</span>
+                    <a-button
+                      class="card-header__btn"
+                      type="primary"
+                      @click="CreateNewQuizz()"
+                      >Publish</a-button
                     >
                   </div>
                 </template>
-                <el-row :gutter="20">
-                  <el-col :span="8">Name Test</el-col>
-                  <el-col :span="16"
-                    ><el-input v-model="name" placeholder="Please input"
-                  /></el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="8" style="margin-top: 10px">Category</el-col>
-                  <el-col :span="8"
-                    ><el-select
+                <div class="card-content">
+                  <div class="card-title">
+                    <span>Name Test</span>
+                  </div>
+                  <div class="card-input">
+                    <a-input v-model="name" placeholder="Please input" />
+                  </div>
+                  <div class="card-title">
+                    <span>Category</span>
+                  </div>
+                  <div class="card-input">
+                    <el-select
                       v-model="category"
                       class="m-2"
                       placeholder="Select"
@@ -56,45 +59,40 @@
                         :value="item.id"
                       />
                     </el-select>
-                  </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                  <el-col :span="8">Description: </el-col>
-                  <el-col :span="16">
-                    <el-input
-                      v-model="description"
-                      :rows="2"
-                      type="textarea"
-                      placeholder="Please input"
-                  /></el-col>
-                </el-row>
-                <el-row :gutter="20">
-                  <el-col :span="8">Time Limit</el-col>
-                  <el-col :span="6">
-                    <el-input-number v-model="time_limit" :step="15"
-                  /></el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="8">Percent Pass (%)</el-col>
-                  <el-col :span="6"
-                    ><el-input-number
+                  </div>
+                  <div class="card-title">
+                    <span>Description</span>
+                  </div>
+                  <div class="card-input">
+                    <a-textarea placeholder="Please input" />
+                  </div>
+                  <div class="card-title">
+                    <span>Time Limit</span>
+                  </div>
+                  <div class="card-input">
+                    <el-input-number v-model="time_limit" :step="15" />
+                  </div>
+                  <div class="card-title">
+                    <span>Percent Pass (%)</span>
+                  </div>
+                  <div class="card-input">
+                    <el-input-number
                       v-model="percent_pass"
                       :min="0"
                       :max="100"
                       @change="handleChange"
                       :step="10"
-                  /></el-col>
-                </el-row>
+                    />
+                  </div>
+                </div>
               </el-card>
             </el-row>
 
-            <el-row style="margin: 20px">
+            <el-row class="question" style="margin: 20px">
               <el-card class="box-card">
                 <template #header>
                   <div class="card-header">
-                    <span style="font-size: 20px"
-                      ><b>Detail of question</b></span
-                    >
+                    <span class="card-header__title">Detail of question</span>
                   </div>
                 </template>
 
@@ -111,11 +109,9 @@
                   <el-col span="4" style="margin-top: 15px; font-size: 20px"
                     >Question:
                   </el-col>
-                  <el-col :span="20">
-                    <el-input
+                  <el-col :span="20" class="card-input">
+                    <a-textarea
                       v-model="value_answer.question"
-                      :rows="2"
-                      type="textarea"
                       placeholder="Please input"
                   /></el-col>
                 </el-row>
@@ -124,8 +120,8 @@
                     <el-col :span="4">
                       <el-radio :label="index" size="large"></el-radio>
                     </el-col>
-                    <el-col :span="20">
-                      <el-input
+                    <el-col :span="20" class="card-input">
+                      <a-input
                         style="width: 550px"
                         v-model="value_answer.value[index]"
                         placeholder="Please input"
@@ -280,4 +276,74 @@ export default {
 
 <style>
 @import "../../assets/css/index.css";
+.card-header__title {
+  font-size: 25px !important;
+  padding: 3px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
+  font-weight: 550 !important;
+}
+.card-header__btn {
+  background: #007082 !important;
+  border-color: #007082 !important;
+  font-size: 17px !important;
+  padding: 3px 20px !important;
+  font-weight: 550 !important;
+}
+.card-header__btn span {
+  padding: 0;
+}
+.card-header {
+  height: fit-content;
+  padding: 10px;
+}
+.card-content {
+  display: grid;
+  grid-template-columns: 0.3fr 1fr;
+}
+.card-content input.ant-input {
+  text-align: left;
+  width: 100% !important;
+  height: 35px;
+}
+.card-title {
+  font-size: 16px;
+  font-weight: 550;
+  text-align: right;
+  margin: auto 0;
+}
+.card-input {
+  padding-bottom: 10px;
+  padding-left: 20px;
+  text-align: left;
+}
+.card-input .el-input__wrapper {
+  border-radius: 10px;
+}
+.card-input .el-select.m-2 {
+  width: 100%;
+  margin: 0 !important;
+}
+.card-input textarea.ant-input {
+  width: 100% !important;
+}
+.card-input .el-input__wrapper {
+  height: 35px;
+  font-size: 16px;
+  color: black;
+}
+.question .card-input {
+  padding: 0;
+}
+.question .el-col.el-col-20.card-input,
+.question input.ant-input {
+  width: 100% !important;
+}
+.question .el-radio-group {
+  display: grid;
+}
+.question .el-col.is-guttered {
+  font-size: 18px !important;
+  font-weight: 550;
+}
 </style>

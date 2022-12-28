@@ -20,11 +20,12 @@ import ShowQuizz from "../views/quizz/ShowQuizz.vue";
 import CreateQuizz from "../views/quizz/CreateQuizz.vue";
 import DetailQuizz from "../views/quizz/DetailQuiz.vue";
 import Dashboard from "../views/dashboard/dashboard.vue";
-import Information from "../views/information/company_information.vue"
-
+import Information from "../views/information/company_information.vue";
+import store from "../store";
+import type { RouteRecordRaw } from "vue-router";
 const routes = [
   {
-    path: "/",
+    path: "",
     name: "home",
     component: HomeView,
   },
@@ -140,7 +141,15 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes,
+  routes: routes as RouteRecordRaw[],
+});
+
+router.beforeEach((to, from, next) => {
+  const role = localStorage.getItem("role");
+  console.log(role);
+  if (role != to.meta.role && to.meta.role == "admin") next("/login");
+  if (role == "seeker" && to.meta.role == "employer") next("/login");
+  next();
 });
 
 export default router;

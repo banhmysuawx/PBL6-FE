@@ -7,20 +7,6 @@
           <div class="search-item">
             <a-input v-model:value="text"></a-input>
           </div>
-          <div class="filter">
-            <a-dropdown>
-              <template #overlay>
-                <a-menu v-model:value="status">
-                  <a-menu-item value="dissbled"> disable </a-menu-item>
-                  <a-menu-item value="enabled"> enable </a-menu-item>
-                </a-menu>
-              </template>
-              <a-button>
-                Status
-                <CaretDownFilled />
-              </a-button>
-            </a-dropdown>
-          </div>
           <div class="action">
             <a-button class="filter-btn">Filter</a-button>
           </div>
@@ -38,7 +24,7 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import axios from "axios";
 import { defineComponent } from "vue";
 import { useMenu } from "../../store/use-menu";
@@ -57,10 +43,17 @@ export default defineComponent({
     return {
       listPosts: [],
       total: 0,
+      text: "",
+      listPostsClone: [],
     };
   },
   mounted() {
     this.getListPosts();
+  },
+  watch: {
+    text() {
+      this.filterJob(this.text);
+    },
   },
   methods: {
     async getListPosts() {
@@ -70,9 +63,26 @@ export default defineComponent({
           const data = response.data;
           this.listPosts = data;
           this.total = this.listPosts.length;
+          this.listPostsClone = this.listPosts;
           console.log(this.listPosts);
         })
         .catch((error) => error);
+    },
+    filterJob(text: string) {
+      this.listPosts = this.listPostsClone;
+      if (Array.isArray(this.listPosts) && text.length != 0) {
+        this.listPosts = this.listPosts.filter(
+          (item) =>
+            item.job.name.toLowerCase().includes(text.toLowerCase()) ||
+            item.job.company.company_location
+              .toLowerCase()
+              .includes(text.toLowerCase()) ||
+            item.job.company.company_name
+              .toLowerCase()
+              .includes(text.toLowerCase())
+        );
+        this.total = this.listPosts.length;
+      }
     },
   },
 });
@@ -80,6 +90,8 @@ export default defineComponent({
 <style scoped>
 .container {
   background: white;
+  overflow-y: scroll;
+  height: 700px;
 }
 .account-header {
   display: flex;
