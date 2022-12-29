@@ -728,7 +728,11 @@
       </div>
     </el-drawer>
     <!--Send Email-->
-    <el-dialog v-model="dialogSendMail" title="Information Send Mail">
+    <el-dialog
+      v-model="dialogSendMail"
+      title="Information Send Mail"
+      style="width: fit-content"
+    >
       <el-form>
         <el-form-item>
           <a href="https://meet.google.com/" target="_blank"
